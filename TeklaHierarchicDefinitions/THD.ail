@@ -1,0 +1,561 @@
+﻿string_utf8 albl_WindowName
+{
+    entry = ("enu", "Element list specification");
+    entry = ("chs", "Element list specification");
+    entry = ("cht", "Element list specification");
+    entry = ("csy", "Element list specification");
+    entry = ("deu", "Element list specification");
+    entry = ("esp", "Element list specification");
+    entry = ("fra", "Element list specification");
+    entry = ("hun", "Element list specification");
+    entry = ("ita", "Element list specification");
+    entry = ("jpn", "Element list specification");
+    entry = ("kor", "Element list specification");
+    entry = ("nld", "Element list specification");
+    entry = ("plk", "Element list specification");
+    entry = ("ptb", "Element list specification");
+    entry = ("ptg", "Element list specification");
+    entry = ("rus", "Ведомость элементов");
+};
+
+string_utf8 albl_Select_profile
+{
+    entry = ("enu", "Select profile");
+    entry = ("chs", "Select profile");
+    entry = ("cht", "Select profile");
+    entry = ("csy", "Select profile");
+    entry = ("deu", "Select profile");
+    entry = ("esp", "Select profile");
+    entry = ("fra", "Select profile");
+    entry = ("hun", "Select profile");
+    entry = ("ita", "Select profile");
+    entry = ("jpn", "Select profile");
+    entry = ("kor", "Select profile");
+    entry = ("nld", "Select profile");
+    entry = ("plk", "Select profile");
+    entry = ("ptb", "Select profile");
+    entry = ("ptg", "Select profile");
+    entry = ("rus", "Выберите профиль");
+};
+
+string_utf8 albl_Select_material
+{
+    entry = ("enu", "Select material");
+    entry = ("chs", "Select material");
+    entry = ("cht", "Select material");
+    entry = ("csy", "Select material");
+    entry = ("deu", "Select material");
+    entry = ("esp", "Select material");
+    entry = ("fra", "Select material");
+    entry = ("hun", "Select material");
+    entry = ("ita", "Select material");
+    entry = ("jpn", "Select material");
+    entry = ("kor", "Select material");
+    entry = ("nld", "Select material");
+    entry = ("plk", "Select material");
+    entry = ("ptb", "Select material");
+    entry = ("ptg", "Select material");
+    entry = ("rus", "Выберите материал");
+};
+
+string_utf8 albl_Add_row
+{
+    entry = ("enu", "Add row");
+    entry = ("chs", "Add row");
+    entry = ("cht", "Add row");
+    entry = ("csy", "Add row");
+    entry = ("deu", "Add row");
+    entry = ("esp", "Add row");
+    entry = ("fra", "Add row");
+    entry = ("hun", "Add row");
+    entry = ("ita", "Add row");
+    entry = ("jpn", "Add row");
+    entry = ("kor", "Add row");
+    entry = ("nld", "Add row");
+    entry = ("plk", "Add row");
+    entry = ("ptb", "Add row");
+    entry = ("ptg", "Add row");
+    entry = ("rus", "Добавить строку");
+};
+
+string_utf8 albl_Delete_row
+{
+    entry = ("enu", "Delete row");
+    entry = ("chs", "Delete row");
+    entry = ("cht", "Delete row");
+    entry = ("csy", "Delete row");
+    entry = ("deu", "Delete row");
+    entry = ("esp", "Delete row");
+    entry = ("fra", "Delete row");
+    entry = ("hun", "Delete row");
+    entry = ("ita", "Delete row");
+    entry = ("jpn", "Delete row");
+    entry = ("kor", "Delete row");
+    entry = ("nld", "Delete row");
+    entry = ("plk", "Delete row");
+    entry = ("ptb", "Delete row");
+    entry = ("ptg", "Delete row");
+    entry = ("rus", "Удалить строку");
+};
+
+string_utf8 albl_Table_is_blocked
+{
+    entry = ("enu", "Table is blocked");
+    entry = ("chs", "Table is blocked");
+    entry = ("cht", "Table is blocked");
+    entry = ("csy", "Table is blocked");
+    entry = ("deu", "Table is blocked");
+    entry = ("esp", "Table is blocked");
+    entry = ("fra", "Table is blocked");
+    entry = ("hun", "Table is blocked");
+    entry = ("ita", "Table is blocked");
+    entry = ("jpn", "Table is blocked");
+    entry = ("kor", "Table is blocked");
+    entry = ("nld", "Table is blocked");
+    entry = ("plk", "Table is blocked");
+    entry = ("ptb", "Table is blocked");
+    entry = ("ptg", "Table is blocked");
+    entry = ("rus", "Таблица заблокирована");
+};
+
+string_utf8 albl_Update_parts_instantly
+{
+    entry = ("enu", "Update parts instantly");
+    entry = ("chs", "Update parts instantly");
+    entry = ("cht", "Update parts instantly");
+    entry = ("csy", "Update parts instantly");
+    entry = ("deu", "Update parts instantly");
+    entry = ("esp", "Update parts instantly");
+    entry = ("fra", "Update parts instantly");
+    entry = ("hun", "Update parts instantly");
+    entry = ("ita", "Update parts instantly");
+    entry = ("jpn", "Update parts instantly");
+    entry = ("kor", "Update parts instantly");
+    entry = ("nld", "Update parts instantly");
+    entry = ("plk", "Update parts instantly");
+    entry = ("ptb", "Update parts instantly");
+    entry = ("ptg", "Update parts instantly");
+    entry = ("rus", "Обновлять автоматически");
+};
+
+string_utf8 albl_Update_parts
+{
+    entry = ("enu", "Update parts");
+    entry = ("chs", "Update parts");
+    entry = ("cht", "Update parts");
+    entry = ("csy", "Update parts");
+    entry = ("deu", "Update parts");
+    entry = ("esp", "Update parts");
+    entry = ("fra", "Update parts");
+    entry = ("hun", "Update parts");
+    entry = ("ita", "Update parts");
+    entry = ("jpn", "Update parts");
+    entry = ("kor", "Update parts");
+    entry = ("nld", "Update parts");
+    entry = ("plk", "Update parts");
+    entry = ("ptb", "Update parts");
+    entry = ("ptg", "Update parts");
+    entry = ("rus", "Обновить детали");
+};
+
+string_utf8 albl_Unbounded_parts
+{
+    entry = ("enu", "Unbounded parts");
+    entry = ("chs", "Unbounded parts");
+    entry = ("cht", "Unbounded parts");
+    entry = ("csy", "Unbounded parts");
+    entry = ("deu", "Unbounded parts");
+    entry = ("esp", "Unbounded parts");
+    entry = ("fra", "Unbounded parts");
+    entry = ("hun", "Unbounded parts");
+    entry = ("ita", "Unbounded parts");
+    entry = ("jpn", "Unbounded parts");
+    entry = ("kor", "Unbounded parts");
+    entry = ("nld", "Unbounded parts");
+    entry = ("plk", "Unbounded parts");
+    entry = ("ptb", "Unbounded parts");
+    entry = ("ptg", "Unbounded parts");
+    entry = ("rus", "Выделить открепленные");
+};
+
+string_utf8 albl_Remove_parts
+{
+    entry = ("enu", "Remove parts");
+    entry = ("chs", "Remove parts");
+    entry = ("cht", "Remove parts");
+    entry = ("csy", "Remove parts");
+    entry = ("deu", "Remove parts");
+    entry = ("esp", "Remove parts");
+    entry = ("fra", "Remove parts");
+    entry = ("hun", "Remove parts");
+    entry = ("ita", "Remove parts");
+    entry = ("jpn", "Remove parts");
+    entry = ("kor", "Remove parts");
+    entry = ("nld", "Remove parts");
+    entry = ("plk", "Remove parts");
+    entry = ("ptb", "Remove parts");
+    entry = ("ptg", "Remove parts");
+    entry = ("rus", "Открепить детали");
+};
+
+string_utf8 albl_Highlight_objects_in_model_view
+{
+    entry = ("enu", "Highlight objects in model view");
+    entry = ("chs", "Highlight objects in model view");
+    entry = ("cht", "Highlight objects in model view");
+    entry = ("csy", "Highlight objects in model view");
+    entry = ("deu", "Highlight objects in model view");
+    entry = ("esp", "Highlight objects in model view");
+    entry = ("fra", "Highlight objects in model view");
+    entry = ("hun", "Highlight objects in model view");
+    entry = ("ita", "Highlight objects in model view");
+    entry = ("jpn", "Highlight objects in model view");
+    entry = ("kor", "Highlight objects in model view");
+    entry = ("nld", "Highlight objects in model view");
+    entry = ("plk", "Highlight objects in model view");
+    entry = ("ptb", "Highlight objects in model view");
+    entry = ("ptg", "Highlight objects in model view");
+    entry = ("rus", "Выделить в модели");
+};
+
+string_utf8 albl_Attach_parts
+{
+    entry = ("enu", "Attach parts");
+    entry = ("chs", "Attach parts");
+    entry = ("cht", "Attach parts");
+    entry = ("csy", "Attach parts");
+    entry = ("deu", "Attach parts");
+    entry = ("esp", "Attach parts");
+    entry = ("fra", "Attach parts");
+    entry = ("hun", "Attach parts");
+    entry = ("ita", "Attach parts");
+    entry = ("jpn", "Attach parts");
+    entry = ("kor", "Attach parts");
+    entry = ("nld", "Attach parts");
+    entry = ("plk", "Attach parts");
+    entry = ("ptb", "Attach parts");
+    entry = ("ptg", "Attach parts");
+    entry = ("rus", "Прикрепить детали");
+};
+
+string_utf8 albl_Selection
+{
+    entry = ("enu", "Selection");
+    entry = ("chs", "Selection");
+    entry = ("cht", "Selection");
+    entry = ("csy", "Selection");
+    entry = ("deu", "Selection");
+    entry = ("esp", "Selection");
+    entry = ("fra", "Selection");
+    entry = ("hun", "Selection");
+    entry = ("ita", "Selection");
+    entry = ("jpn", "Selection");
+    entry = ("kor", "Selection");
+    entry = ("nld", "Selection");
+    entry = ("plk", "Selection");
+    entry = ("ptb", "Selection");
+    entry = ("ptg", "Selection");
+    entry = ("rus", "Выбор");
+};
+
+string_utf8 albl_Mark
+{
+    entry = ("enu", "Mark");
+    entry = ("chs", "Mark");
+    entry = ("cht", "Mark");
+    entry = ("csy", "Mark");
+    entry = ("deu", "Mark");
+    entry = ("esp", "Mark");
+    entry = ("fra", "Mark");
+    entry = ("hun", "Mark");
+    entry = ("ita", "Mark");
+    entry = ("jpn", "Mark");
+    entry = ("kor", "Mark");
+    entry = ("nld", "Mark");
+    entry = ("plk", "Mark");
+    entry = ("ptb", "Mark");
+    entry = ("ptg", "Mark");
+    entry = ("rus", "Марка");
+};
+
+string_utf8 albl_BOE
+{
+    entry = ("enu", "EL");
+    entry = ("chs", "EL");
+    entry = ("cht", "EL");
+    entry = ("csy", "EL");
+    entry = ("deu", "EL");
+    entry = ("esp", "EL");
+    entry = ("fra", "EL");
+    entry = ("hun", "EL");
+    entry = ("ita", "EL");
+    entry = ("jpn", "EL");
+    entry = ("kor", "EL");
+    entry = ("nld", "EL");
+    entry = ("plk", "EL");
+    entry = ("ptb", "EL");
+    entry = ("ptg", "EL");
+    entry = ("rus", "ВЭ");
+};
+
+string_utf8 albl_Classificator
+{
+    entry = ("enu", "Class");
+    entry = ("chs", "Class");
+    entry = ("cht", "Class");
+    entry = ("csy", "Class");
+    entry = ("deu", "Class");
+    entry = ("esp", "Class");
+    entry = ("fra", "Class");
+    entry = ("hun", "Class");
+    entry = ("ita", "Class");
+    entry = ("jpn", "Class");
+    entry = ("kor", "Class");
+    entry = ("nld", "Class");
+    entry = ("plk", "Class");
+    entry = ("ptb", "Class");
+    entry = ("ptg", "Class");
+    entry = ("rus", "Класс");
+};
+
+string_utf8 albl_Father
+{
+    entry = ("enu", "Father");
+    entry = ("chs", "Father");
+    entry = ("cht", "Father");
+    entry = ("csy", "Father");
+    entry = ("deu", "Father");
+    entry = ("esp", "Father");
+    entry = ("fra", "Father");
+    entry = ("hun", "Father");
+    entry = ("ita", "Father");
+    entry = ("jpn", "Father");
+    entry = ("kor", "Father");
+    entry = ("nld", "Father");
+    entry = ("plk", "Father");
+    entry = ("ptb", "Father");
+    entry = ("ptg", "Father");
+    entry = ("rus", "Родитель");
+};
+
+string_utf8 albl_Position
+{
+    entry = ("enu", "Position");
+    entry = ("chs", "Position");
+    entry = ("cht", "Position");
+    entry = ("csy", "Position");
+    entry = ("deu", "Position");
+    entry = ("esp", "Position");
+    entry = ("fra", "Position");
+    entry = ("hun", "Position");
+    entry = ("ita", "Position");
+    entry = ("jpn", "Position");
+    entry = ("kor", "Position");
+    entry = ("nld", "Position");
+    entry = ("plk", "Position");
+    entry = ("ptb", "Position");
+    entry = ("ptg", "Position");
+    entry = ("rus", "Поз.");
+};
+
+string_utf8 albl_Material
+{
+    entry = ("enu", "Material");
+    entry = ("chs", "Material");
+    entry = ("cht", "Material");
+    entry = ("csy", "Material");
+    entry = ("deu", "Material");
+    entry = ("esp", "Material");
+    entry = ("fra", "Material");
+    entry = ("hun", "Material");
+    entry = ("ita", "Material");
+    entry = ("jpn", "Material");
+    entry = ("kor", "Material");
+    entry = ("nld", "Material");
+    entry = ("plk", "Material");
+    entry = ("ptb", "Material");
+    entry = ("ptg", "Material");
+    entry = ("rus", "Материал");
+};
+
+string_utf8 albl_Profile
+{
+    entry = ("enu", "Profile");
+    entry = ("chs", "Profile");
+    entry = ("cht", "Profile");
+    entry = ("csy", "Profile");
+    entry = ("deu", "Profile");
+    entry = ("esp", "Profile");
+    entry = ("fra", "Profile");
+    entry = ("hun", "Profile");
+    entry = ("ita", "Profile");
+    entry = ("jpn", "Profile");
+    entry = ("kor", "Profile");
+    entry = ("nld", "Profile");
+    entry = ("plk", "Profile");
+    entry = ("ptb", "Profile");
+    entry = ("ptg", "Profile");
+    entry = ("rus", "Профиль");
+};
+
+string_utf8 albl_ProfileForSpec
+{
+    entry = ("enu", "Profile for EL");
+    entry = ("chs", "Profile for EL");
+    entry = ("cht", "Profile for EL");
+    entry = ("csy", "Profile for EL");
+    entry = ("deu", "Profile for EL");
+    entry = ("esp", "Profile for EL");
+    entry = ("fra", "Profile for EL");
+    entry = ("hun", "Profile for EL");
+    entry = ("ita", "Profile for EL");
+    entry = ("jpn", "Profile for EL");
+    entry = ("kor", "Profile for EL");
+    entry = ("nld", "Profile for EL");
+    entry = ("plk", "Profile for EL");
+    entry = ("ptb", "Profile for EL");
+    entry = ("ptg", "Profile for EL");
+    entry = ("rus", "Профиль в ВЭ");
+};
+
+string_utf8 albl_Notes
+{
+    entry = ("enu", "Notes");
+    entry = ("chs", "Notes");
+    entry = ("cht", "Notes");
+    entry = ("csy", "Notes");
+    entry = ("deu", "Notes");
+    entry = ("esp", "Notes");
+    entry = ("fra", "Notes");
+    entry = ("hun", "Notes");
+    entry = ("ita", "Notes");
+    entry = ("jpn", "Notes");
+    entry = ("kor", "Notes");
+    entry = ("nld", "Notes");
+    entry = ("plk", "Notes");
+    entry = ("ptb", "Notes");
+    entry = ("ptg", "Notes");
+    entry = ("rus", "Примечание");
+};
+
+string_utf8 albl_Sketch
+{
+    entry = ("enu", "Sketch");
+    entry = ("chs", "Sketch");
+    entry = ("cht", "Sketch");
+    entry = ("csy", "Sketch");
+    entry = ("deu", "Sketch");
+    entry = ("esp", "Sketch");
+    entry = ("fra", "Sketch");
+    entry = ("hun", "Sketch");
+    entry = ("ita", "Sketch");
+    entry = ("jpn", "Sketch");
+    entry = ("kor", "Sketch");
+    entry = ("nld", "Sketch");
+    entry = ("plk", "Sketch");
+    entry = ("ptb", "Sketch");
+    entry = ("ptg", "Sketch");
+    entry = ("rus", "Эскиз");
+};
+
+string_utf8 albl_Cross_section_on_other_list
+{
+    entry = ("enu", "Cross section on other list");
+    entry = ("chs", "Cross section on other list");
+    entry = ("cht", "Cross section on other list");
+    entry = ("csy", "Cross section on other list");
+    entry = ("deu", "Cross section on other list");
+    entry = ("esp", "Cross section on other list");
+    entry = ("fra", "Cross section on other list");
+    entry = ("hun", "Cross section on other list");
+    entry = ("ita", "Cross section on other list");
+    entry = ("jpn", "Cross section on other list");
+    entry = ("kor", "Cross section on other list");
+    entry = ("nld", "Cross section on other list");
+    entry = ("plk", "Cross section on other list");
+    entry = ("ptb", "Cross section on other list");
+    entry = ("ptg", "Cross section on other list");
+    entry = ("rus", "На др.листе");
+};
+
+string_utf8 albl_Is_complex_cross_section
+{
+    entry = ("enu", "Сomplex cross section");
+    entry = ("chs", "Сomplex cross section");
+    entry = ("cht", "Сomplex cross section");
+    entry = ("csy", "Сomplex cross section");
+    entry = ("deu", "Сomplex cross section");
+    entry = ("esp", "Сomplex cross section");
+    entry = ("fra", "Сomplex cross section");
+    entry = ("hun", "Сomplex cross section");
+    entry = ("ita", "Сomplex cross section");
+    entry = ("jpn", "Сomplex cross section");
+    entry = ("kor", "Сomplex cross section");
+    entry = ("nld", "Сomplex cross section");
+    entry = ("plk", "Сomplex cross section");
+    entry = ("ptb", "Сomplex cross section");
+    entry = ("ptg", "Сomplex cross section");
+    entry = ("rus", "Сечение сложное");
+};
+
+string_utf8 albl_Empty_rows_number
+{
+    entry = ("enu", "Empty rows number");
+    entry = ("chs", "Empty rows number");
+    entry = ("cht", "Empty rows number");
+    entry = ("csy", "Empty rows number");
+    entry = ("deu", "Empty rows number");
+    entry = ("esp", "Empty rows number");
+    entry = ("fra", "Empty rows number");
+    entry = ("hun", "Empty rows number");
+    entry = ("ita", "Empty rows number");
+    entry = ("jpn", "Empty rows number");
+    entry = ("kor", "Empty rows number");
+    entry = ("nld", "Empty rows number");
+    entry = ("plk", "Empty rows number");
+    entry = ("ptb", "Empty rows number");
+    entry = ("ptg", "Empty rows number");
+    entry = ("rus", "Пустых строк");
+};
+
+
+string_utf8 albl_Ref_list
+{
+    entry = ("enu", "Referenced list");
+    entry = ("chs", "Referenced list");
+    entry = ("cht", "Referenced list");
+    entry = ("csy", "Referenced list");
+    entry = ("deu", "Referenced list");
+    entry = ("esp", "Referenced list");
+    entry = ("fra", "Referenced list");
+    entry = ("hun", "Referenced list");
+    entry = ("ita", "Referenced list");
+    entry = ("jpn", "Referenced list");
+    entry = ("kor", "Referenced list");
+    entry = ("nld", "Referenced list");
+    entry = ("plk", "Referenced list");
+    entry = ("ptb", "Referenced list");
+    entry = ("ptg", "Referenced list");
+    entry = ("rus", "Ссылочный лист");
+};
+
+
+string_utf8 albl_Window_on_top
+{
+    entry = ("enu", "Keep on top");
+    entry = ("chs", "Keep on top");
+    entry = ("cht", "Keep on top");
+    entry = ("csy", "Keep on top");
+    entry = ("deu", "Keep on top");
+    entry = ("esp", "Keep on top");
+    entry = ("fra", "Keep on top");
+    entry = ("hun", "Keep on top");
+    entry = ("ita", "Keep on top");
+    entry = ("jpn", "Keep on top");
+    entry = ("kor", "Keep on top");
+    entry = ("nld", "Keep on top");
+    entry = ("plk", "Keep on top");
+    entry = ("ptb", "Keep on top");
+    entry = ("ptg", "Keep on top");
+    entry = ("rus", "Поверх окон");
+};

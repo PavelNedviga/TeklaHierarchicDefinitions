@@ -1,0 +1,560 @@
+﻿using System;
+using System.Collections.Generic;
+using Tekla.Structures.Model;
+using System.Collections;
+
+namespace TeklaHierarchicDefinitions.TeklaAPIUtils
+{
+    /// <summary>
+    /// Описывает объект, которым будем управлять в интерфейсе иерархического списка
+    /// </summary>
+    public class HierarchicObjectInTekla
+    {       
+        private HierarchicDefinition _hierarchicDefinition;
+        private HierarchicObject _hierarchicObject;
+
+        #region Cвойства
+        public string Name
+        {
+            get 
+            {
+                if (_hierarchicObject.Father != null)
+                {
+                    HierarchicObject hierarchicObject = new HierarchicObject();
+                    hierarchicObject.Identifier = _hierarchicObject.Father.Identifier;
+                    hierarchicObject.Select();
+                    return hierarchicObject.Name;
+                }
+                return _hierarchicObject.Name;
+            }
+            internal set 
+            {
+                if (_hierarchicObject.Father == null)
+                {
+                    _hierarchicObject.Name = value;
+                    _hierarchicObject.Modify();
+                }
+                else
+                {
+                    HierarchicObject fatherHierarchicObject = new HierarchicObject();
+                    fatherHierarchicObject.Identifier = _hierarchicObject.Father.Identifier;
+                    fatherHierarchicObject.Select();
+                    _hierarchicObject.Name = fatherHierarchicObject.Name;
+                    _hierarchicObject.Modify();
+                }
+                TeklaDB.model.CommitChanges("1");
+            }
+        }
+
+        internal void CommitChanges()
+        {
+            _hierarchicObject.Modify();
+            //TeklaDB.model.CommitChanges();
+        }
+
+        private HierarchicDefinition HierarchicDefinition
+        {
+            get { return _hierarchicDefinition; }
+            set { _hierarchicDefinition = value; }
+        }
+
+        public HierarchicObject HierarchicObject
+        {
+            get { return _hierarchicObject; }
+            set { _hierarchicObject = value; }
+        }
+
+        public string Father 
+        {
+            get 
+            {
+                if(_hierarchicObject.Father != null)
+                {
+                    return GetFather().Name;
+                }
+                    
+                return "";
+            }
+        }
+
+        public string FatherGUID 
+        {
+            get
+            {
+                if (_hierarchicObject.Father != null)
+                {
+                    var guid = GetFather().Identifier.GUID.ToString();
+                    return GetFather().Identifier.GUID.ToString();
+                }
+
+                return "";
+            } 
+        }
+
+
+        #endregion
+
+        #region Конструкторы
+        /// <summary>
+        /// Формирует иерархический объект
+        /// </summary>
+        /// <param name="hierarchicObject"></param>
+        internal HierarchicObjectInTekla(HierarchicObject hierarchicObject, HierarchicDefinition hierarchicDefinition)
+        {
+            _hierarchicDefinition = hierarchicDefinition;
+            _hierarchicObject = hierarchicObject;
+        }
+
+        public HierarchicObjectInTekla()
+        {
+            _hierarchicDefinition = TeklaDB.GetHierarchicDefinitionWithName(TeklaDB.hierarchicDefinitionName);
+            _hierarchicObject = TeklaDB.CreateHierarchicObject(_hierarchicDefinition);
+
+        }
+
+        public HierarchicObjectInTekla(HierarchicObjectInTekla hierarchicObjectInTekla)
+        {
+            _hierarchicDefinition = TeklaDB.GetHierarchicDefinitionWithName(TeklaDB.hierarchicDefinitionName);
+            _hierarchicObject = TeklaDB.CreateHierarchicObject(_hierarchicDefinition, hierarchicObjectInTekla.HierarchicObject);
+
+        }
+
+
+        #endregion
+
+        #region Методы HierarchicObjectInTekla
+        /// <summary>
+        /// Добавить атрибуты
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public bool HierarchicObjectSetAttributes(Dictionary<string,string> input)
+        {
+            throw new NotImplementedException();
+            //_hierarchicObject.SetUserProperty(name,val)
+            //    return true;
+        }
+        
+        /// <summary>
+        /// Вытащить атрибуты
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public Dictionary<string,string> HierarchicObjectGetAttributes(List<string> input)
+        {
+            throw new NotImplementedException();
+            //return new Dictionary<string, string>();
+
+        }
+
+        private HierarchicObject GetFather()
+        {
+            HierarchicObject fatherHierarchicObject = new HierarchicObject();
+            fatherHierarchicObject.Identifier = _hierarchicObject.Father.Identifier;
+            fatherHierarchicObject.Select();
+            return fatherHierarchicObject;
+        }
+
+        /// <summary>
+        /// Внести атрибут
+        /// </summary>
+        /// <param name="name">Имя атрибута</param>
+        /// <param name="input">Значение атрибута</param>
+        /// <returns>Значение внесено</returns>
+        public bool HierarchicObjectSetAttribute(string name, string input)
+        {            
+            bool res = this.HierarchicObject.SetUserProperty(name, input);
+
+            if (res)
+            {
+                TeklaDB.model.CommitChanges("2");
+            }
+            return res;
+        }
+
+        public string HierarchicObjectGetDependentStrAttribute(string name)
+        {
+            string res = string.Empty;
+            if (_hierarchicObject.Father != null)
+            {
+                HierarchicObject hierarchicObject = new HierarchicObject();
+                hierarchicObject.Identifier = _hierarchicObject.Father.Identifier;
+                hierarchicObject.Select();
+                
+                if (hierarchicObject.GetUserProperty(name, ref res))
+                    return res;
+                return "";
+            }
+            else
+            {
+                if (_hierarchicObject.GetUserProperty(name, ref res))
+                    return res;
+                return "";
+            }
+        }
+
+        public int HierarchicObjectGetDependentIntAttribute(string name)
+        {
+            int res = -100;
+            if (_hierarchicObject.Father != null)
+            {
+                HierarchicObject hierarchicObject = new HierarchicObject();
+                hierarchicObject.Identifier = _hierarchicObject.Father.Identifier;
+                hierarchicObject.Select();
+
+                if (hierarchicObject.GetUserProperty(name, ref res))
+                    return res;
+                return -10;
+            }
+            else
+            {
+                if (_hierarchicObject.GetUserProperty(name, ref res))
+                    return res;
+                return -10;
+            }
+        }
+
+        public bool HierarchicObjectSetDependentAttribute(string name, string input)
+        {
+            if (_hierarchicObject.Father == null)
+            {
+                _hierarchicObject.SetUserProperty(name, input);
+                _hierarchicObject.Modify();
+            }
+            else
+            {
+                HierarchicObject fatherHierarchicObject = new HierarchicObject();
+                fatherHierarchicObject.Identifier = _hierarchicObject.Father.Identifier;
+                fatherHierarchicObject.Select();
+                string res = string.Empty;
+                if (fatherHierarchicObject.GetUserProperty(name, ref res))
+                {
+                    _hierarchicObject.SetUserProperty(name, res);
+                    _hierarchicObject.Modify();
+                }
+            }
+            return TeklaDB.model.CommitChanges("4");
+        }
+
+        public bool HierarchicObjectSetDependentAttribute(string name, int input)
+        {
+            if (_hierarchicObject.Father == null)
+            {
+                _hierarchicObject.SetUserProperty(name, input);
+                _hierarchicObject.Modify();
+            }
+            else
+            {
+                HierarchicObject fatherHierarchicObject = new HierarchicObject();
+                fatherHierarchicObject.Identifier = _hierarchicObject.Father.Identifier;
+                fatherHierarchicObject.Select();
+                int res = -1;
+                if (fatherHierarchicObject.GetUserProperty(name, ref res))
+                {
+                    _hierarchicObject.SetUserProperty(name, res);
+                    _hierarchicObject.Modify();
+                }
+            }
+            return TeklaDB.model.CommitChanges("4");
+        }
+
+        public bool HierarchicObjectSetAttribute(string name, int input)
+        {
+            bool res = this.HierarchicObject.SetUserProperty(name, input);
+
+            if (res)
+            {
+                TeklaDB.model.CommitChanges("3");
+            }
+            return res;
+        }
+
+        public bool PartsSetAttr(string name, string input)
+        {
+
+            var moenum = _hierarchicObject.GetChildren();
+            foreach (ModelObject mo in moenum)
+            {
+                Part part = mo as Part;
+                if (!part.Equals(null))
+                {
+                    TeklaDB.SetPropertyStr(part, name, input);
+                }
+            }
+
+            bool res = TeklaDB.model.CommitChanges("5");
+            
+            return res;
+        }
+
+        public bool PartsSetAttr(string name, int input)
+        {
+
+            var moenum = _hierarchicObject.GetChildren();
+            foreach (ModelObject mo in moenum)
+            {
+                Part part = mo as Part;
+                if (!part.Equals(null))
+                {
+                    TeklaDB.SetPropertyInt(part, name, input);
+                }
+            }
+
+            bool res = TeklaDB.model.CommitChanges("6");
+
+            return res;
+        }
+
+        public bool PartSetProfile(string profile)
+        {
+            var children = HierarchicObject.GetChildren();
+            bool res = false;
+            
+            foreach (var ch in children)
+            {
+                var part = (Part)ch;
+                if (part != null)
+                {
+                    res = TeklaDB.SetProfile(part,profile);
+                }
+            }
+            
+            if (res)
+            {
+                res = TeklaDB.model.CommitChanges("7");
+            }
+            return res;
+        }
+
+        public bool PartSetMaterial(string material)
+        {
+            var children = HierarchicObject.GetChildren();
+            bool res = false;
+            foreach (var ch in children)
+            {
+                var part = ch as Part;
+                if (part != null)
+                {
+                    res = TeklaDB.SetMaterial(part, material);
+                }
+            }
+
+
+            if (res)
+            {
+                res = TeklaDB.model.CommitChanges("8");
+            }
+            return res;
+        }
+
+        internal bool PartSetClass(string classficator)
+        {
+            var children = HierarchicObject.GetChildren();
+            bool res = false;
+            foreach (var ch in children)
+            {
+                var part = (Part)ch;
+                if (part != null)
+                {
+                    res = TeklaDB.SetClass(part, classficator);
+                }
+            }
+
+            return res;
+        }
+
+
+        internal void DeleteHierarchicObject()
+        {
+            if(this._hierarchicObject.Father != null)
+            {
+                var fatherHO = GetFather();
+                fatherHO.HierarchicChildren.Remove(_hierarchicObject);
+                fatherHO.Modify();
+            }
+            TeklaDB.DeleteHierarchicObject(_hierarchicObject);
+            TeklaDB.model.CommitChanges("9");
+        }
+
+        public bool PartSetPrefix(string prefix)
+        {
+            var children = HierarchicObject.GetChildren();
+            bool res = false;
+            foreach (var ch in children)
+            {
+                var part = (Part)ch;
+                if (part != null)
+                {
+                    res = TeklaDB.SetPrefix(part, prefix);
+                }
+            }
+
+            if (res)
+            {
+                res = TeklaDB.model.CommitChanges("10");
+            }
+            return res;
+        }
+        /// <summary>
+        /// Вытащить атрибут
+        /// </summary>
+        /// <param name="name">имя атрибута</param>
+        /// <returns>Значение</returns>
+        public string HierarchicObjectGetAttr(string name)
+        {
+            string res = string.Empty;
+            if (_hierarchicObject.GetUserProperty(name, ref res))
+                return res;
+            return "";
+        }
+
+        public int HierarchicObjectGetIntAttr(string name)
+        {
+            int res = 0;
+            if (_hierarchicObject.GetUserProperty(name, ref res))
+                return res;
+            return 0;
+        }
+
+
+
+        /// <summary>
+        /// Выдает GUID иерархического объекта
+        /// </summary>
+        /// <returns></returns>
+        public Guid GetHierarchicObjectGUID()
+        {
+            return _hierarchicObject.Identifier.GUID;
+        }
+
+        public Tekla.Structures.Identifier GetHOID
+        {
+            get
+            {
+                return _hierarchicObject.Identifier;
+            }            
+        }
+        
+        public Tekla.Structures.Identifier GetFatherHOID
+        {
+            get
+            {
+                if (_hierarchicObject.Father != null)
+                    return _hierarchicObject.Father.Identifier;
+                return new Tekla.Structures.Identifier();
+            }
+        }
+
+        /// <summary>
+        /// Выделяет объекты в модели
+        /// </summary>
+        internal void GetSelectedModedlObjects()
+        {
+            var moenum = _hierarchicObject.GetChildren();
+            ArrayList partList = new ArrayList() {};
+            foreach (ModelObject mo in moenum)
+            {
+                partList.Add(mo);
+            }
+            TeklaDB.SelectObjectsInModelView(partList);
+        }
+
+        internal bool SetPropertiesForAttachingParts(
+            string mark, 
+            string profile, 
+            string position, 
+            string m, 
+            string n, 
+            string q, 
+            string material, 
+            string notes = "",
+            int isSimple = -1,
+            int emptyRowsNumber = 0,
+            int crossSectionOnOtherList = -1,
+            string classificator = "40000",
+            string album = "unset")
+        {
+            return TeklaDB.InheritPropsFromHierarchicObjectToSelectedParts(
+                _hierarchicObject, 
+                mark,
+                profile,
+                position,
+                m,
+                n,
+                q,
+                material,
+                notes,
+                isSimple,
+                emptyRowsNumber,
+                crossSectionOnOtherList,
+                classificator,
+                album);
+        }
+
+
+        internal bool SetPropertiesForAttachedParts(
+            string mark,
+            string profile,
+            string position,
+            string m,
+            string n,
+            string q,
+            string material,
+            string notes = "",
+            int isSimple = -1,
+            int emptyRowsNumber = 0,
+            int crossSectionOnOtherList = -1,
+            string classificator = "40000",
+            string album = "unset")
+        {
+            return TeklaDB.InheritPropsFromHierarchicObjectToAssociatedParts(
+                _hierarchicObject,
+                mark,
+                profile,
+                position,
+                m,
+                n,
+                q,
+                material,
+                notes,
+                isSimple,
+                emptyRowsNumber,
+                crossSectionOnOtherList,
+                classificator,
+                album);
+        }
+
+        internal bool AttachSelectedModedlObjects()
+        {
+            return TeklaDB.AttachSelectedModedlObjects(_hierarchicObject);
+        }
+
+        internal bool RemoveSelectedModedlObjectsFromHierarchicObject()
+        {
+            return TeklaDB.RemoveSelectedModedlObjects(_hierarchicObject);
+        }
+        #endregion
+
+        #region Информация о иерархических объектах
+        private bool HasFather()
+        {
+            bool res = false;
+            res = _hierarchicObject.Father != null;
+            return res;
+        }
+
+        private bool HasChildren()
+        {
+            bool res = false;
+            res = _hierarchicObject.HierarchicChildren.Count > 0;
+            var vvv = _hierarchicObject.GetHierarchicObjects().GetSize();
+            return res;
+        }
+
+        internal bool IsComplex()
+        {
+            return HasFather() || HasChildren();
+        }
+        #endregion
+    }
+}
