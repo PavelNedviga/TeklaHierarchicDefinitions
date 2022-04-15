@@ -258,9 +258,24 @@ namespace TeklaHierarchicDefinitions.Models
             set 
             { 
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M", value);
-                if (_instantUpdate) 
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_end", value);
+                if (_instantUpdate)
+                    if (_instantUpdate) 
                     _hierarchicObjectInTekla.PartsSetAttr("moment_M", value);
                 OnPropertyChanged("M");
+                OnPropertyChanged("M_end");
+            }
+        }
+
+        public string M_end
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("M_end"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_end", value);
+                if (_instantUpdate)
+                    _hierarchicObjectInTekla.PartsSetAttr("moment_M", M +"/"+ value);
+                OnPropertyChanged("M_end");
             }
         }
 
@@ -270,11 +285,56 @@ namespace TeklaHierarchicDefinitions.Models
             set 
             {
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_end", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_start_min", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_end_min", value);
                 if (_instantUpdate) 
                     _hierarchicObjectInTekla.PartsSetAttr("usilie_N", value);
                 OnPropertyChanged("N");
+                OnPropertyChanged("N_end");
+                OnPropertyChanged("N_start_min");
+                OnPropertyChanged("N_end_min");
             }
         }
+
+        public string N_end
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("N_end"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_end", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_end_min", value);
+                if (_instantUpdate)
+                    _hierarchicObjectInTekla.PartsSetAttr("usilie_N", N + "/" + value);
+                OnPropertyChanged("N_end");
+                OnPropertyChanged("N_end_min");
+            }
+        }
+
+        public string N_start_min
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("N_start_min"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_start_min", value);
+                if (_instantUpdate)
+                    _hierarchicObjectInTekla.PartsSetAttr("usilie_N", N + "/" + N_end + "," + value);
+                OnPropertyChanged("N_start_min");
+            }
+        }
+
+        public string N_end_min
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("N_end_min"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_end_min", value);
+                if (_instantUpdate)
+                    _hierarchicObjectInTekla.PartsSetAttr("usilie_N", N + "," + N_start_min + "/" + N_end + "," + value);
+                OnPropertyChanged("N_end_min");
+            }
+        }
+
 
         public string Q
         {
@@ -282,9 +342,23 @@ namespace TeklaHierarchicDefinitions.Models
             set 
             { 
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_end", value);
                 if (_instantUpdate) 
                     _hierarchicObjectInTekla.PartsSetAttr("reakciya_A", value);
                 OnPropertyChanged("Q");
+                OnPropertyChanged("Q_end");
+            }
+        }
+
+        public string Q_end
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("Q_end"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_end", value);
+                if (_instantUpdate)
+                    _hierarchicObjectInTekla.PartsSetAttr("reakciya_A", Q + "/" + value);
+                OnPropertyChanged("Q_end");
             }
         }
 
@@ -408,8 +482,13 @@ namespace TeklaHierarchicDefinitions.Models
                 Profile,
                 Position,
                 M,
+                M_end,
                 N,
+                N_end,
+                N_start_min,
+                N_end_min,
                 Q,
+                Q_end,
                 Material,
                 Notes,
                 BoolToInt(IsComplexCrossSection),
@@ -463,8 +542,13 @@ namespace TeklaHierarchicDefinitions.Models
                 Profile,
                 Position,
                 M,
+                M_end,
                 N,
+                N_end,
+                N_start_min,
+                N_end_min,
                 Q,
+                Q_end,
                 Material,
                 Notes,
                 _isComplexCrossSection,
@@ -474,7 +558,6 @@ namespace TeklaHierarchicDefinitions.Models
                 BOE); 
             return res;
         }
-
 
         private void UpdateChildrenMarks(string mark)
         {            

@@ -38,7 +38,7 @@
         </Grid.RowDefinitions>
         <DataGrid Name="HODataGrid"
                   Margin="10" ItemsSource="{Binding BillOfElements, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
-                  CanUserAddRows="False" RowHeight="20" CanUserResizeColumns="False" 
+                  CanUserAddRows="False" CanUserResizeColumns="False" 
                   CanUserResizeRows="False" HeadersVisibility="Column" 
                   CellEditEnding="HODataGrid_CellEditEnding"
                   SelectedItem="{Binding SelectedItem}" 
@@ -101,9 +101,82 @@
                 <DataGridTextColumn Header="{tsd:Loc albl_Material}" Binding="{Binding Material, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="{tsd:Loc albl_Profile}" Binding="{Binding Profile, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                 <DataGridTextColumn Header="{tsd:Loc albl_ProfileForSpec}" Binding="{Binding ProfileForSpec, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="M" Binding="{Binding M, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="N" Binding="{Binding N, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="Q" Binding="{Binding Q, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTemplateColumn Header="M"  >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <DockPanel Grid.Row="0">
+                                    <Label Content="S="/>
+                                    <TextBox Text="{Binding M, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1"/>
+                                    
+                                </DockPanel>
+                                <DockPanel Grid.Row="1">
+                                    <Label Content="E="/>
+                                    <TextBox Text="{Binding M_end, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0"/>
+                                </DockPanel>                                
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="N"  >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <DockPanel Grid.Row="0" Grid.Column="0">
+                                    <Label Content="Smax="/>
+                                    <TextBox Text="{Binding N, UpdateSourceTrigger=PropertyChanged}" />
+
+                                </DockPanel>
+                                <DockPanel Grid.Row="1" Grid.Column="0">
+                                    <Label Content="Emax="/>
+                                    <TextBox Text="{Binding N_end, UpdateSourceTrigger=PropertyChanged}" />
+                                </DockPanel>
+                                <DockPanel Grid.Row="0" Grid.Column="1">
+                                    <Label Content="Smin="/>
+                                    <TextBox Text="{Binding N_start_min, UpdateSourceTrigger=PropertyChanged}" />
+
+                                </DockPanel>
+                                <DockPanel Grid.Row="1" Grid.Column="1">
+                                    <Label Content="Emin="/>
+                                    <TextBox Text="{Binding N_end_min, UpdateSourceTrigger=PropertyChanged}" />
+                                </DockPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Q"  >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <DockPanel Grid.Row="0">
+                                    <Label Content="S="/>
+                                    <TextBox Text="{Binding Q, UpdateSourceTrigger=PropertyChanged}" />
+
+                                </DockPanel>
+                                <DockPanel Grid.Row="1">
+                                    <Label Content="E="/>
+                                    <TextBox Text="{Binding Q_end, UpdateSourceTrigger=PropertyChanged}" />
+                                </DockPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="{tsd:Loc albl_Notes}" Binding="{Binding Notes, UpdateSourceTrigger=PropertyChanged}"/>
                 
                 <DataGridTextColumn Header="{tsd:Loc albl_Sketch}" Binding="{Binding Sketch, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />

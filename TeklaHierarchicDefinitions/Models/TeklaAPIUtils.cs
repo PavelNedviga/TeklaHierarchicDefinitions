@@ -430,9 +430,20 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         }
 
         internal static bool InheritPropsFromHierarchicObjectToSelectedParts(
-            HierarchicObject hierarchicObject, string mark, string profile, string position,
-            string m, string n, string q,
-            string material, string notes,
+            HierarchicObject hierarchicObject, 
+            string mark, 
+            string profile, 
+            string position,
+            string m, 
+            string m_end,
+            string n, 
+            string n_end,
+            string n_start_min,
+            string n_end_min,
+            string q,
+            string q_end,
+            string material, 
+            string notes,
             int isSimple,
             int emptyRowsNumber, int crossSectionOnOtherList, string classificator, string album)
         {
@@ -470,11 +481,25 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         }
 
         internal static bool InheritPropsFromHierarchicObjectToAssociatedParts(
-            HierarchicObject hierarchicObject, string mark, string profile, string position,
-            string m, string n, string q,
-            string material, string notes,
+            HierarchicObject hierarchicObject, 
+            string mark, 
+            string profile, 
+            string position,
+            string m,
+            string m_end,
+            string n,
+            string n_end,
+            string n_start_min,
+            string n_end_min,
+            string q,
+            string q_end,
+            string material, 
+            string notes,
             int isSimple,
-            int emptyRowsNumber, int crossSectionOnOtherList, string classificator, string album)
+            int emptyRowsNumber, 
+            int crossSectionOnOtherList, 
+            string classificator, 
+            string album)
         {
             bool res = false;
 
@@ -490,9 +515,55 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     part.Class = classificator;
                     part.SetUserProperty("PRELIM_MARK", position);
 
-                    part.SetUserProperty("moment_M", m);
-                    part.SetUserProperty("usilie_N", n);
-                    part.SetUserProperty("reakciya_A", q);
+                    string moment;
+                    if (m == m_end)
+                        moment = m;
+                    else
+                        moment = m + "/" + m_end;
+                    part.SetUserProperty("moment_M", moment);
+                    double result;
+                    Double.TryParse(m,out result);
+                    part.SetUserProperty("momentY1", result * 1000);
+                    Double.TryParse(m_end, out result);
+                    part.SetUserProperty("momentY2", result * 1000);
+
+                    string tension;
+                    if (n == n_end)
+                    {
+                        if (n == n_start_min)
+                            tension = n;
+                        else
+                            tension = n + "," + n_start_min;
+                    }
+                    else
+                    {
+                        if (n_end == n_end_min)
+                            tension = n + "/" + n_end;
+                        else
+                            tension = n + "," + n_start_min + "/" + n_end + "," + n_end_min;
+                    }
+                    part.SetUserProperty("usilie_N", tension);
+                    Double.TryParse(n, out result);
+                    part.SetUserProperty("axial1", result * 1000);
+                    Double.TryParse(n_end, out result);
+                    part.SetUserProperty("axial2", result * 1000);
+                    Double.TryParse(n_start_min, out result);
+                    part.SetUserProperty("axialcomp1", result * 1000);
+                    Double.TryParse(n_end_min, out result);
+                    part.SetUserProperty("axialcomp2", result * 1000);
+
+
+                    string shear;
+                    if (q == q_end)
+                        shear = q;
+                    else
+                        shear = q + "/" + q_end;
+                    part.SetUserProperty("reakciya_A", shear);
+
+                    Double.TryParse(q, out result);
+                    part.SetUserProperty("shearZ1", result * 1000);
+                    Double.TryParse(q_end, out result);
+                    part.SetUserProperty("shearZ2", result * 1000);
 
                     part.Material.MaterialString = material;
                     part.SetUserProperty("prim_vedomost", notes);
@@ -575,7 +646,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     {
                         string pattern = @"@";
                         string[] substrings = Regex.Split(extractedValue.FirstOrDefault(), pattern);    // Split on hyphens
-                        var result = substrings[0] + ".sym@" + substrings[1];
+                        var result = substrings[0] + "@" + substrings[1]; //".sym@" + 
                         return result;
                     }
                     return "";
