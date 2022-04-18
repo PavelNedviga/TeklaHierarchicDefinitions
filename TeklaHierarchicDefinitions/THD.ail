@@ -318,6 +318,66 @@ string_utf8 albl_Classificator
     entry = ("rus", "Класс");
 };
 
+string_utf8 albl_NSummary
+{
+    entry = ("enu", "N field");
+    entry = ("chs", "N field");
+    entry = ("cht", "N field");
+    entry = ("csy", "N field");
+    entry = ("deu", "N field");
+    entry = ("esp", "N field");
+    entry = ("fra", "N field");
+    entry = ("hun", "N field");
+    entry = ("ita", "N field");
+    entry = ("jpn", "N field");
+    entry = ("kor", "N field");
+    entry = ("nld", "N field");
+    entry = ("plk", "N field");
+    entry = ("ptb", "N field");
+    entry = ("ptg", "N field");
+    entry = ("rus", "N поле");
+};
+
+string_utf8 albl_MomentConnections
+{
+    entry = ("enu", "Moment");
+    entry = ("chs", "Moment");
+    entry = ("cht", "Moment");
+    entry = ("csy", "Moment");
+    entry = ("deu", "Moment");
+    entry = ("esp", "Moment");
+    entry = ("fra", "Moment");
+    entry = ("hun", "Moment");
+    entry = ("ita", "Moment");
+    entry = ("jpn", "Moment");
+    entry = ("kor", "Moment");
+    entry = ("nld", "Moment");
+    entry = ("plk", "Moment");
+    entry = ("ptb", "Moment");
+    entry = ("ptg", "Moment");
+    entry = ("rus", "Жесткое");
+};
+
+string_utf8 albl_FrictionConnections
+{
+    entry = ("enu", "Friction");
+    entry = ("chs", "Friction");
+    entry = ("cht", "Friction");
+    entry = ("csy", "Friction");
+    entry = ("deu", "Friction");
+    entry = ("esp", "Friction");
+    entry = ("fra", "Friction");
+    entry = ("hun", "Friction");
+    entry = ("ita", "Friction");
+    entry = ("jpn", "Friction");
+    entry = ("kor", "Friction");
+    entry = ("nld", "Friction");
+    entry = ("plk", "Friction");
+    entry = ("ptb", "Friction");
+    entry = ("ptg", "Friction");
+    entry = ("rus", "Фрикционное");
+};
+
 string_utf8 albl_Father
 {
     entry = ("enu", "Father");

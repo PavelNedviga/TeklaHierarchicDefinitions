@@ -31,7 +31,6 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         internal static CatalogHandler ch = new CatalogHandler();
         #endregion
 
-
         #region Выведение списков иерархических объектов-определений
 
         private static ObservableCollection<HierarchicObject> GetAllHierarchicObjects()
@@ -399,7 +398,6 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             if (res)
             {
                 @object.Modify();
-                model.CommitChanges();
             }
 
             return res;
@@ -436,10 +434,15 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             string position,
             string m, 
             string m_end,
+            int startMomentConnection,
+            int endMomentConnection,
+            int startFrictionConnection,
+            int endFrictionConnection,
             string n, 
             string n_end,
             string n_start_min,
             string n_end_min,
+            string n_summary,
             string q,
             string q_end,
             string material, 
@@ -460,9 +463,43 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     part.Class = classificator;
                     part.SetUserProperty("PRELIM_MARK", position);
 
-                    part.SetUserProperty("moment_M", m);
-                    part.SetUserProperty("usilie_N", n);
-                    part.SetUserProperty("reakciya_A", q);
+                    string moment;
+                    if (m == m_end)
+                        moment = m;
+                    else
+                        moment = m + "/" + m_end;
+                    part.SetUserProperty("moment_M", moment);
+                    double result;
+                    Double.TryParse(m, out result);
+                    part.SetUserProperty("momentY1", result * 1000);
+                    Double.TryParse(m_end, out result);
+                    part.SetUserProperty("momentY2", result * 1000);
+
+                    part.SetUserProperty("START_MOMENT_CONN", startMomentConnection);
+                    part.SetUserProperty("END_MOMENT_CONN", endMomentConnection);
+                    part.SetUserProperty("START_FRICT_CONN", startFrictionConnection);
+                    part.SetUserProperty("END_FRICT_CONN", endFrictionConnection);
+
+                    part.SetUserProperty("usilie_N", n_summary);
+                    Double.TryParse(n, out result);
+                    part.SetUserProperty("axial1", result * 1000);
+                    Double.TryParse(n_end, out result);
+                    part.SetUserProperty("axial2", result * 1000);
+                    Double.TryParse(n_start_min, out result);
+                    part.SetUserProperty("axialcomp1", result * 1000);
+                    Double.TryParse(n_end_min, out result);
+                    part.SetUserProperty("axialcomp2", result * 1000);
+
+                    string shear;
+                    if (q == q_end)
+                        shear = q;
+                    else
+                        shear = q + "/" + q_end;
+                    part.SetUserProperty("reakciya_A", shear);
+                    Double.TryParse(q, out result);
+                    part.SetUserProperty("shearZ1", result * 1000);
+                    Double.TryParse(q_end, out result);
+                    part.SetUserProperty("shearZ2", result * 1000);
 
                     part.Material.MaterialString = material;
                     part.SetUserProperty("prim_vedomost", notes);
@@ -476,7 +513,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     res = part.Modify();
                 }
             }
-
+            model.CommitChanges("Parts updated");
             return res;
         }
 
@@ -487,10 +524,15 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             string position,
             string m,
             string m_end,
+            int startMomentConnection,
+            int endMomentConnection,
+            int startFrictionConnection,
+            int endFrictionConnection,
             string n,
             string n_end,
             string n_start_min,
             string n_end_min,
+            string n_summary,
             string q,
             string q_end,
             string material, 
@@ -527,22 +569,13 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     Double.TryParse(m_end, out result);
                     part.SetUserProperty("momentY2", result * 1000);
 
-                    string tension;
-                    if (n == n_end)
-                    {
-                        if (n == n_start_min)
-                            tension = n;
-                        else
-                            tension = n + "," + n_start_min;
-                    }
-                    else
-                    {
-                        if (n_end == n_end_min)
-                            tension = n + "/" + n_end;
-                        else
-                            tension = n + "," + n_start_min + "/" + n_end + "," + n_end_min;
-                    }
-                    part.SetUserProperty("usilie_N", tension);
+
+                    part.SetUserProperty("START_MOMENT_CONN", startMomentConnection);
+                    part.SetUserProperty("END_MOMENT_CONN", endMomentConnection);
+                    part.SetUserProperty("START_FRICT_CONN", startFrictionConnection);
+                    part.SetUserProperty("END_FRICT_CONN", endFrictionConnection);
+
+                    part.SetUserProperty("usilie_N", n_summary);
                     Double.TryParse(n, out result);
                     part.SetUserProperty("axial1", result * 1000);
                     Double.TryParse(n_end, out result);

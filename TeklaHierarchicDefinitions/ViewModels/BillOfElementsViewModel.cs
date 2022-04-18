@@ -35,6 +35,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         private bool _modificationBlocked = true;
         private bool _windowOnTop = true;
 
+
         private BillOfElements _selectedItem;
         #endregion
 
@@ -57,6 +58,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         #endregion
 
         #region Свойства
+
 
         public MyObservableCollection<BillOfElements> BillOfElements
         {
@@ -128,8 +130,6 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 OnPropertyChanged("ButtonIsEnabled");
             }
         }
-
-
 
         public bool WindowOnTop
         {
@@ -245,10 +245,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 }, (obj) => obj == null ? true : (TeklaDB.ModelHasSelectedObjects())); // && ((DataGrid)obj).SelectedIndex != -1
             }
         }
-
-
-        
-
+                   
         public ICommand SetOnTop
         {
             get
@@ -262,6 +259,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 }, (obj) => obj == null ? true : true);
             }
         }
+        
         public ICommand AddHierarchicObject_Click
         {
             get

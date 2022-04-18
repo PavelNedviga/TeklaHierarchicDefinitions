@@ -111,12 +111,12 @@
                                 </Grid.RowDefinitions>
                                 <DockPanel Grid.Row="0">
                                     <Label Content="S="/>
-                                    <TextBox Text="{Binding M, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1"/>
+                                    <TextBox Text="{Binding M,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="1"/>
                                     
                                 </DockPanel>
                                 <DockPanel Grid.Row="1">
                                     <Label Content="E="/>
-                                    <TextBox Text="{Binding M_end, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0"/>
+                                    <TextBox Text="{Binding M_end,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0"/>
                                 </DockPanel>                                
                             </Grid>
                         </DataTemplate>
@@ -177,6 +177,52 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <DataGridTextColumn Header="{tsd:Loc albl_NSummary}" Binding="{Binding N_summary, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTemplateColumn Header="{tsd:Loc albl_MomentConnections}"  >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <ComboBox Grid.Row="0" 
+                                    SelectedValue="{Binding StartMomentConnection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ItemsSource="{Binding MomentConnection, Mode=TwoWay}"
+                                    SelectedValuePath="Key"
+                                    DisplayMemberPath="Value" />
+                                <ComboBox Grid.Row="1" 
+                                    SelectedValue="{Binding EndMomentConnection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ItemsSource="{Binding MomentConnection, Mode=OneWay}"
+                                    SelectedValuePath="Key"
+                                    DisplayMemberPath="Value" />
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="{tsd:Loc albl_FrictionConnections}"  >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <ComboBox Grid.Row="0" 
+                                    SelectedValue="{Binding StartFrictionConnection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ItemsSource="{Binding FrictionConnection, Mode=TwoWay}"
+                                    SelectedValuePath="Key"
+                                    DisplayMemberPath="Value" />
+                                <ComboBox Grid.Row="1" 
+                                    SelectedValue="{Binding EndFrictionConnection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ItemsSource="{Binding FrictionConnection, Mode=OneWay}"
+                                    SelectedValuePath="Key"
+                                    DisplayMemberPath="Value" />
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
                 <DataGridTextColumn Header="{tsd:Loc albl_Notes}" Binding="{Binding Notes, UpdateSourceTrigger=PropertyChanged}"/>
                 
                 <DataGridTextColumn Header="{tsd:Loc albl_Sketch}" Binding="{Binding Sketch, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />

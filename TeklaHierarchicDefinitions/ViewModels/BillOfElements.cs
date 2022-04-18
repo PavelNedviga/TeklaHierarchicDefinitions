@@ -66,6 +66,10 @@ namespace TeklaHierarchicDefinitions.Models
             Q = "";
             N = "";
             M = "";
+            StartFrictionConnection = -1;
+            EndFrictionConnection = -1;
+            StartMomentConnection = 0;
+            EndMomentConnection = 0;
             Material = "C255";
             Notes = "";
             IsComplexCrossSection = true;
@@ -92,9 +96,38 @@ namespace TeklaHierarchicDefinitions.Models
 
         private bool _selection;
 
+        private static KeyValuePair<int, string>[] momentConnection = {
+                new KeyValuePair<int, string>(-1, "No"),
+                new KeyValuePair<int, string>(0, "Yes")
+            };
+        private static KeyValuePair<int, string>[] frictionConnection = {
+                new KeyValuePair<int, string>(-1, ""),
+                new KeyValuePair<int, string>(0, "No"),
+                new KeyValuePair<int, string>(1, "Yes")
+            };
+
+
         #endregion
 
         #region Открытые свойства
+        public KeyValuePair<int, string>[] MomentConnection
+        {
+            get
+            {
+                return momentConnection;
+            }
+            set { }
+        }
+
+        public KeyValuePair<int, string>[] FrictionConnection
+        {
+            get
+            {
+                return frictionConnection;
+            }
+            set { }
+        }
+
         public bool InstantUpdate
         {
             get { return _instantUpdate; }
@@ -259,11 +292,19 @@ namespace TeklaHierarchicDefinitions.Models
             { 
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M", value);
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_end", value);
-                if (_instantUpdate)
-                    if (_instantUpdate) 
+                if (_instantUpdate)                    
                     _hierarchicObjectInTekla.PartsSetAttr("moment_M", value);
+                double momentConn;
+                if (double.TryParse(value, out momentConn))
+                {
+                    if (momentConn != 0)
+                        StartMomentConnection = 1;
+                    else
+                        StartMomentConnection = 0;
+                }
                 OnPropertyChanged("M");
                 OnPropertyChanged("M_end");
+                OnPropertyChanged("StartMomentConnection");
             }
         }
 
@@ -275,7 +316,64 @@ namespace TeklaHierarchicDefinitions.Models
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_end", value);
                 if (_instantUpdate)
                     _hierarchicObjectInTekla.PartsSetAttr("moment_M", M +"/"+ value);
+                double momentConn;
+                if (double.TryParse(value, out momentConn))
+                {
+                    if (momentConn != 0)
+                        EndMomentConnection = 1;
+                    else
+                        EndMomentConnection = 0;
+                }                
                 OnPropertyChanged("M_end");
+                OnPropertyChanged("EndMomentConnection");
+            }
+        }
+
+        public int StartMomentConnection
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetIntAttr("StartMomentConn"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("StartMomentConn", value);
+                if (_instantUpdate)     
+                    _hierarchicObjectInTekla.PartsSetAttr("START_MOMENT_CONN", value);
+                OnPropertyChanged();
+            }
+        }
+
+        public int EndMomentConnection
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetIntAttr("EndMomentConn"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("EndMomentConn", value);
+                if (_instantUpdate)
+                    _hierarchicObjectInTekla.PartsSetAttr("END_MOMENT_CONN", value);
+                OnPropertyChanged();
+            }
+        }
+        
+        public int StartFrictionConnection
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetIntAttr("StartFrictionConn"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("StartFrictionConn", value);
+                if (_instantUpdate)
+                    _hierarchicObjectInTekla.PartsSetAttr("START_FRICT_CONN", value);
+                OnPropertyChanged();
+            }
+        }
+
+        public int EndFrictionConnection
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetIntAttr("EndFrictionConn"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("EndFrictionConn", value);
+                if (_instantUpdate)
+                    _hierarchicObjectInTekla.PartsSetAttr("END_FRICT_CONN", value);
+                OnPropertyChanged();
             }
         }
 
@@ -288,12 +386,14 @@ namespace TeklaHierarchicDefinitions.Models
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_end", value);
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_start_min", value);
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_end_min", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_summary", GetNSummary());
                 if (_instantUpdate) 
-                    _hierarchicObjectInTekla.PartsSetAttr("usilie_N", value);
+                    _hierarchicObjectInTekla.PartsSetAttr("usilie_N", N_summary);
                 OnPropertyChanged("N");
                 OnPropertyChanged("N_end");
                 OnPropertyChanged("N_start_min");
                 OnPropertyChanged("N_end_min");
+                OnPropertyChanged("N_summary");
             }
         }
 
@@ -304,10 +404,12 @@ namespace TeklaHierarchicDefinitions.Models
             {
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_end", value);
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_end_min", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_summary", GetNSummary());
                 if (_instantUpdate)
-                    _hierarchicObjectInTekla.PartsSetAttr("usilie_N", N + "/" + value);
+                    _hierarchicObjectInTekla.PartsSetAttr("usilie_N", N_summary);
                 OnPropertyChanged("N_end");
                 OnPropertyChanged("N_end_min");
+                OnPropertyChanged("N_summary");
             }
         }
 
@@ -317,9 +419,11 @@ namespace TeklaHierarchicDefinitions.Models
             set
             {
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_start_min", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_summary", GetNSummary());
                 if (_instantUpdate)
-                    _hierarchicObjectInTekla.PartsSetAttr("usilie_N", N + "/" + N_end + "," + value);
+                    _hierarchicObjectInTekla.PartsSetAttr("usilie_N", N_summary);
                 OnPropertyChanged("N_start_min");
+                OnPropertyChanged("N_summary");
             }
         }
 
@@ -329,12 +433,25 @@ namespace TeklaHierarchicDefinitions.Models
             set
             {
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_end_min", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_summary", GetNSummary()); 
                 if (_instantUpdate)
-                    _hierarchicObjectInTekla.PartsSetAttr("usilie_N", N + "," + N_start_min + "/" + N_end + "," + value);
+                    _hierarchicObjectInTekla.PartsSetAttr("usilie_N", N_summary);
                 OnPropertyChanged("N_end_min");
+                OnPropertyChanged("N_summary");
             }
         }
 
+        public string N_summary
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("N_summary"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_summary", value);
+                if (_instantUpdate)
+                    _hierarchicObjectInTekla.PartsSetAttr("usilie_N", value);
+                OnPropertyChanged("N_summary");
+            }
+        }
 
         public string Q
         {
@@ -473,6 +590,39 @@ namespace TeklaHierarchicDefinitions.Models
             _hierarchicObjectInTekla.GetSelectedModedlObjects();
         }
 
+        internal string GetNSummary()
+        {
+            string N_startF;
+            string N_endF;
+            if (N == N_start_min)
+            {
+                N_startF = N;
+            }
+            else
+            {
+                N_startF = "(" + N + "," + N_end + ")";
+            }
+            if (N_end == N_end_min)
+            {
+                N_endF = N_end;
+            }
+            else
+            {
+                N_endF = "(" + N_end + "," + N_end_min + ")";
+            }
+
+            string n_F;
+            if (N == N_end_min)
+            {
+                n_F = N_startF;
+            }
+            else
+            {
+                n_F = N_startF + "/" + N_endF;
+            }
+            return n_F;
+        }
+
         public bool AttachSelectedObjects()
         {
             bool b = _hierarchicObjectInTekla.AttachSelectedModedlObjects();
@@ -483,10 +633,15 @@ namespace TeklaHierarchicDefinitions.Models
                 Position,
                 M,
                 M_end,
+                StartMomentConnection,
+                EndMomentConnection,
+                StartFrictionConnection,
+                EndFrictionConnection,
                 N,
                 N_end,
                 N_start_min,
                 N_end_min,
+                N_summary,
                 Q,
                 Q_end,
                 Material,
@@ -543,10 +698,15 @@ namespace TeklaHierarchicDefinitions.Models
                 Position,
                 M,
                 M_end,
+                StartMomentConnection,
+                EndMomentConnection,
+                StartFrictionConnection,
+                EndFrictionConnection,
                 N,
                 N_end,
                 N_start_min,
                 N_end_min,
+                N_summary,
                 Q,
                 Q_end,
                 Material,

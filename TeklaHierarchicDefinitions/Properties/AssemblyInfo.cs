@@ -12,8 +12,8 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("TeklaHierarchicDefinitions")]
-[assembly: AssemblyCopyright("Copyright ©  2021")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Pavel.Nedviga@gmail.com Copyright ©  2022")]
+[assembly: AssemblyTrademark("Pavel.Nedviga@gmail.com")]
 [assembly: AssemblyCulture("")]
 
 // Установка значения False для параметра ComVisible делает типы в этой сборке невидимыми
@@ -51,5 +51,5 @@ using System.Windows;
 // Можно задать все значения или принять номера сборки и редакции по умолчанию 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.9.8.0")]
-[assembly: AssemblyFileVersion("0.9.8.0")]
+[assembly: AssemblyVersion("0.9.9.0")]
+[assembly: AssemblyFileVersion("0.9.9.0")]

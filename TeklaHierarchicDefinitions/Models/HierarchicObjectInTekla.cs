@@ -167,7 +167,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 
             if (res)
             {
-                TeklaDB.model.CommitChanges("2");
+                TeklaDB.model.CommitChanges(HierarchicObject.Name + ": property " + name + " is set to " + input);
             }
             return res;
         }
@@ -233,7 +233,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     _hierarchicObject.Modify();
                 }
             }
-            return TeklaDB.model.CommitChanges("4");
+            return TeklaDB.model.CommitChanges(HierarchicObject.Name + ": property " + name + " is set to " + input);
         }
 
         public bool HierarchicObjectSetDependentAttribute(string name, int input)
@@ -255,7 +255,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     _hierarchicObject.Modify();
                 }
             }
-            return TeklaDB.model.CommitChanges("4");
+            return TeklaDB.model.CommitChanges(HierarchicObject.Name + ": property " + name + " is set to " + input);
         }
 
         public bool HierarchicObjectSetAttribute(string name, int input)
@@ -264,7 +264,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 
             if (res)
             {
-                TeklaDB.model.CommitChanges("3");
+                TeklaDB.model.CommitChanges(HierarchicObject.Name + ": property "+ name + " is set to " + input);
             }
             return res;
         }
@@ -282,7 +282,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                 }
             }
 
-            bool res = TeklaDB.model.CommitChanges("5");
+            bool res = TeklaDB.model.CommitChanges(HierarchicObject.Name + ": property " + name + " is set to " + input);
             
             return res;
         }
@@ -300,7 +300,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                 }
             }
 
-            bool res = TeklaDB.model.CommitChanges("6");
+            bool res = TeklaDB.model.CommitChanges("Part property " + name + " is set to " + input);
 
             return res;
         }
@@ -465,10 +465,15 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             string position,
             string m, 
             string m_end,
+            int startMomentConnection,
+            int endMomentConnection,
+            int startFrictionConnection,
+            int endFrictionConnection,
             string n, 
             string n_end,
             string n_start_min,
             string n_end_min,
+            string n_summary,
             string q, 
             string q_end,
             string material, 
@@ -486,10 +491,15 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                 position,
                 m,
                 m_end,
+                startMomentConnection,
+                endMomentConnection,
+                startFrictionConnection,
+                endFrictionConnection,
                 n,
                 n_end,
                 n_start_min,
                 n_end_min,
+                n_summary,
                 q,
                 q_end,
                 material,
@@ -508,10 +518,15 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             string position,
             string m,
             string m_end,
+            int startMomentConnection,
+            int endMomentConnection,
+            int startFrictionConnection,
+            int endFrictionConnection,
             string n,
             string n_end,
             string n_start_min,
             string n_end_min,
+            string n_summary,
             string q,
             string q_end,
             string material,
@@ -529,10 +544,15 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                 position,
                 m,
                 m_end,
+                startMomentConnection,
+                endMomentConnection,
+                startFrictionConnection,
+                endFrictionConnection,
                 n,
                 n_end,
                 n_start_min,
                 n_end_min,
+                n_summary,
                 q,
                 q_end,
                 material,
