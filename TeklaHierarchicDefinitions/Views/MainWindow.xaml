@@ -110,13 +110,15 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
                                 <DockPanel Grid.Row="0">
-                                    <Label Content="S="/>
-                                    <TextBox Text="{Binding M,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="1"/>
+                                    <Label Content="Start="/>
+                                    <TextBox Text="{Binding M,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" 
+                                             IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
                                     
                                 </DockPanel>
                                 <DockPanel Grid.Row="1">
-                                    <Label Content="E="/>
-                                    <TextBox Text="{Binding M_end,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0"/>
+                                    <Label Content="End="/>
+                                    <TextBox Text="{Binding M_end,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" 
+                                             IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
                                 </DockPanel>                                
                             </Grid>
                         </DataTemplate>
@@ -136,21 +138,25 @@
                                 </Grid.ColumnDefinitions>
                                 <DockPanel Grid.Row="0" Grid.Column="0">
                                     <Label Content="Smax="/>
-                                    <TextBox Text="{Binding N, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox Text="{Binding N, UpdateSourceTrigger=PropertyChanged}" 
+                                             IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
 
                                 </DockPanel>
                                 <DockPanel Grid.Row="1" Grid.Column="0">
                                     <Label Content="Emax="/>
-                                    <TextBox Text="{Binding N_end, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox Text="{Binding N_end, UpdateSourceTrigger=PropertyChanged}" 
+                                             IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
                                 </DockPanel>
                                 <DockPanel Grid.Row="0" Grid.Column="1">
                                     <Label Content="Smin="/>
-                                    <TextBox Text="{Binding N_start_min, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox Text="{Binding N_start_min, UpdateSourceTrigger=PropertyChanged}" 
+                                             IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
 
                                 </DockPanel>
                                 <DockPanel Grid.Row="1" Grid.Column="1">
                                     <Label Content="Emin="/>
-                                    <TextBox Text="{Binding N_end_min, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox Text="{Binding N_end_min, UpdateSourceTrigger=PropertyChanged}" 
+                                             IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
                                 </DockPanel>
                             </Grid>
                         </DataTemplate>
@@ -166,12 +172,14 @@
                                 </Grid.RowDefinitions>
                                 <DockPanel Grid.Row="0">
                                     <Label Content="S="/>
-                                    <TextBox Text="{Binding Q, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox Text="{Binding Q, UpdateSourceTrigger=PropertyChanged}" 
+                                             IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
 
                                 </DockPanel>
                                 <DockPanel Grid.Row="1">
                                     <Label Content="E="/>
-                                    <TextBox Text="{Binding Q_end, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox Text="{Binding Q_end, UpdateSourceTrigger=PropertyChanged}" 
+                                             IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
                                 </DockPanel>
                             </Grid>
                         </DataTemplate>

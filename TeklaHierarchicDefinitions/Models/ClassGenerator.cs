@@ -13,7 +13,7 @@ namespace TeklaHierarchicDefinitions.Classifiers
     static class ClassGenerator
     {
         static Model model = TeklaDB.model;
-        public static string Generate(string partMark)
+        public static string Generate(string partMark, string position)
         {
             
             bool connected = model.GetConnectionStatus();
@@ -32,7 +32,8 @@ namespace TeklaHierarchicDefinitions.Classifiers
                     {
                         var encodedPrefix = dict[alpha];
                         var num = match.Groups["Numeric"].Value;
-                        string ext_class = encodedPrefix + num.ToString().PadLeft(2, '0');
+                        var matchPosition = numAlpha.Match(position).Groups["Numeric"].Value;
+                        string ext_class = encodedPrefix + num.ToString().PadLeft(2, '0') + matchPosition.PadLeft(1, '0');
                         return ext_class;
                     }
                     else

@@ -142,6 +142,7 @@
     <Compile Include="Models\BillOfElementsUtils.cs" />
     <Compile Include="ViewModels\MyObserverableCollection.cs" />
     <Compile Include="Models\TeklaAPIUtils.cs" />
+    <None Include="TSEP package input\#ClassConversion.csv" />
     <None Include="TSEP package input\Ведомость элементов.cs" />
     <Compile Include="Unused\BillOfElementsVM.cs" />
     <Compile Include="ViewModels\BillOfElementsViewModel.cs" />

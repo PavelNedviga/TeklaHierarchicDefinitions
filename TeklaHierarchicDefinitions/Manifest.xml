@@ -39,6 +39,7 @@
    
     <!--Остальные файлы и папки приложения-->     
     <File Id="InstallFiles" Source="%BinariesFolder%\*" Target="%BinariesTargetDirectory%"/>
+	<File Id="#ClassConversion.csv" Source="%ManFolderInput%\#ClassConversion.csv" Target="%BinariesTargetDirectory%"/>  
 
   </Component>
   <Component Id="Element list custom attributes" Guid="F13667FB-CD1F-49F4-9D9E-A46681672BC3">
