@@ -116,7 +116,6 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         {
             _hierarchicDefinition = TeklaDB.GetHierarchicDefinitionWithName(TeklaDB.hierarchicDefinitionName);
             _hierarchicObject = TeklaDB.CreateHierarchicObject(_hierarchicDefinition, hierarchicObjectInTekla.HierarchicObject);
-
         }
 
 

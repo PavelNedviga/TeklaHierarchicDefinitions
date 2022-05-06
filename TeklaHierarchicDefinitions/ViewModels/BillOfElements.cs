@@ -42,7 +42,7 @@ namespace TeklaHierarchicDefinitions.Models
             if (boe == null)
                 boe = "КМ";
             if (father != null)
-            {                
+            { 
                 _hierarchicObjectInTekla = new HierarchicObjectInTekla(father.FatherHierarchicObject);
                 BOE = father.BOE;
                 Collection = collection;
@@ -78,6 +78,7 @@ namespace TeklaHierarchicDefinitions.Models
             
             
             _hierarchicObjectInTekla.CommitChanges();
+            TeklaDB.model.CommitChanges();
         }
 
         #endregion

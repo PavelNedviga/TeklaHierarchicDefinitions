@@ -172,7 +172,8 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 
         public static HierarchicObject CreateHierarchicObject(HierarchicDefinition hierarchicDefinition)
         {
-            HierarchicObject hierarchicObject = new HierarchicObject();
+            HierarchicObject hierarchicObject = new HierarchicObject();            
+
             hierarchicObject.Name = "New_HO";
             hierarchicObject.Definition = hierarchicDefinition;
             hierarchicObject.Insert();
@@ -189,9 +190,22 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             hierarchicObject.Name = "New_HO";
             hierarchicObject.Definition = hierarchicDefinition;
             hierarchicObject.Father = receivedHierarchicObject;
-            receivedHierarchicObject.HierarchicChildren.Add(hierarchicObject);
-            receivedHierarchicObject.Modify();
             hierarchicObject.Insert();
+            //var arr = new ArrayList();
+            //arr.AddRange(receivedHierarchicObject.HierarchicChildren);
+            //arr.Add(hierarchicObject);
+            //receivedHierarchicObject.HierarchicChildren = arr;
+
+            //receivedHierarchicObject.HierarchicChildren.Add(hierarchicObject);
+            //receivedHierarchicObject.Modify();
+
+            //var rho = new HierarchicObject();
+            //rho.Identifier = receivedHierarchicObject.Identifier;
+            //rho.Select();
+            //rho.HierarchicChildren.Add(hierarchicObject);
+            //rho.Modify();
+            
+            model.CommitChanges();
             return hierarchicObject;
         }
 

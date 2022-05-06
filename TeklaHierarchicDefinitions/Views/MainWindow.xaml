@@ -36,7 +36,8 @@
             <RowDefinition/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <DataGrid Name="HODataGrid"
+        <DataGrid Name="HODataGrid" 
+                  CanUserDeleteRows="False"
                   Margin="10" ItemsSource="{Binding BillOfElements, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
                   CanUserAddRows="False" CanUserResizeColumns="False" 
                   CanUserResizeRows="False" HeadersVisibility="Column" 
