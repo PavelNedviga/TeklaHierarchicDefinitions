@@ -140,6 +140,8 @@
     <Compile Include="ViewModels\AppInfo.cs" />
     <Compile Include="ViewModels\BillOfElements.cs" />
     <Compile Include="Models\BillOfElementsUtils.cs" />
+    <Compile Include="Models\FoundationGroup.cs" />
+    <Compile Include="Models\BuildingFragment.cs" />
     <Compile Include="ViewModels\MyObserverableCollection.cs" />
     <Compile Include="Models\TeklaAPIUtils.cs" />
     <None Include="TSEP package input\#ClassConversion.csv" />

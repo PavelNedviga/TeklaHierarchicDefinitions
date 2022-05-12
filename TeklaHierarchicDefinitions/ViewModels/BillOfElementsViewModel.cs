@@ -26,6 +26,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         //internal WpfMaterialCatalog mc;
         #region Параметры
         private MyObservableCollection<BillOfElements> _billOfElements;
+
         private List<string> _billOfElementsList;
         private string _selectedBOE = "КМ";
 
@@ -37,6 +38,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
 
 
         private BillOfElements _selectedItem;
+
         #endregion
 
         #region Обработка событий
@@ -78,6 +80,8 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 OnPropertyChanged("BillOfElementsList");
             }
         }
+
+
 
         public List<string> BillOfElementsList
         {
@@ -175,7 +179,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         /// </summary>
         public BillOfElementsViewModel()
         {
-            List<HierarchicObjectInTekla> hierarchicObjectsInTeklas = TeklaDB.GetHierarchicObjectsWithHierarchicDefinitionName(TeklaDB.hierarchicDefinitionName); //TeklaDB.GetAllHierarchicObjectsInTekla();//
+            List<HierarchicObjectInTekla> hierarchicObjectsInTeklas = TeklaDB.GetHierarchicObjectsWithHierarchicDefinitionName(TeklaDB.hierarchicDefinitionElementListName); //TeklaDB.GetAllHierarchicObjectsInTekla();//
             _billOfElements = BillOfElementsUtils.GetHierarchicObjectsWithHierarchicDefinitionName(hierarchicObjectsInTeklas);
         }
         #endregion
@@ -390,6 +394,83 @@ namespace TeklaHierarchicDefinitions.ViewModels
         //    //(this.HODataGrid.SelectedItem as BillOfElements).Material = ((sender as Button) as Tekla.Structures.Dialog.UIControls.WpfMaterialCatalog).SelectedMaterial;
         //}
 
+        #region Задания на фудаменты
+        #region Параметры        
+        private MyObservableCollection<FoundationGroup> _foundationGroups;        
+        private MyObservableCollection<FoundationGroup> foundationGroups; // filtered from above row
+        private string newBuildingFragmentName = string.Empty;
+        private MyObservableCollection<BuildingFragment> buildingFragment;
+        private BuildingFragment _selectedBuildingFragment;
+
+        #endregion
+
+        #region Свойства
+        public string NewBuildingFragmentName
+        {
+            get
+            {
+                return newBuildingFragmentName;
+            }
+            set
+            {
+                newBuildingFragmentName = value;
+                OnPropertyChanged();
+            }
+        }
+        
+
+        public MyObservableCollection<FoundationGroup> FoundationGroups
+        {
+            get
+            {
+                MyObservableCollection<FoundationGroup> foundationGroups = new MyObservableCollection<FoundationGroup>();
+                foreach (FoundationGroup boe in _foundationGroups.Where(t => t.Equals(_selectedBuildingFragment)))
+                {
+                    foundationGroups.Add(boe);
+                }
+                return foundationGroups;
+            }
+            set
+            {
+                //_billOfElements = value;
+                OnPropertyChanged();
+
+            }
+        }
+
+
+        #endregion
+
+        #region Команды
+        public ICommand AddBuildingFragment
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    OnPropertyChanged("BillOfElementsList");
+                }, (obj) => 
+                {
+                    if(NewBuildingFragmentName.Length > 0)
+                        if NewBuildingFragmentName
+                    return obj == null ? true : true; 
+                }
+                );
+            }
+        }
+
+        public ICommand DeleteBuildingFragment
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    OnPropertyChanged("BillOfElementsList");
+                }, (obj) => obj == null ? true : true);
+            }
+        }
+        #endregion
+        #endregion
     }
 
 

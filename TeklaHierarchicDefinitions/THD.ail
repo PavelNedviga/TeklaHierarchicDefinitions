@@ -619,3 +619,64 @@ string_utf8 albl_Window_on_top
     entry = ("ptg", "Keep on top");
     entry = ("rus", "Поверх окон");
 };
+
+string_utf8 albl_ElementList
+{
+    entry = ("enu", "Element list");
+    entry = ("chs", "Element list");
+    entry = ("cht", "Element list");
+    entry = ("csy", "Element list");
+    entry = ("deu", "Element list");
+    entry = ("esp", "Element list");
+    entry = ("fra", "Element list");
+    entry = ("hun", "Element list");
+    entry = ("ita", "Element list");
+    entry = ("jpn", "Element list");
+    entry = ("kor", "Element list");
+    entry = ("nld", "Element list");
+    entry = ("plk", "Element list");
+    entry = ("ptb", "Element list");
+    entry = ("ptg", "Element list");
+    entry = ("rus", "Ведомость элементов");
+};
+
+string_utf8 albl_FoundationLoads
+{
+    entry = ("enu", "Element list");
+    entry = ("chs", "Element list");
+    entry = ("cht", "Element list");
+    entry = ("csy", "Element list");
+    entry = ("deu", "Element list");
+    entry = ("esp", "Element list");
+    entry = ("fra", "Element list");
+    entry = ("hun", "Element list");
+    entry = ("ita", "Element list");
+    entry = ("jpn", "Element list");
+    entry = ("kor", "Element list");
+    entry = ("nld", "Element list");
+    entry = ("plk", "Element list");
+    entry = ("ptb", "Element list");
+    entry = ("ptg", "Element list");
+    entry = ("rus", "Нагрузки на основание");
+};
+
+
+string_utf8 albl_
+{
+    entry = ("enu", "Temp");
+    entry = ("chs", "Temp");
+    entry = ("cht", "Temp");
+    entry = ("csy", "Temp");
+    entry = ("deu", "Temp");
+    entry = ("esp", "Temp");
+    entry = ("fra", "Temp");
+    entry = ("hun", "Temp");
+    entry = ("ita", "Temp");
+    entry = ("jpn", "Temp");
+    entry = ("kor", "Temp");
+    entry = ("nld", "Temp");
+    entry = ("plk", "Temp");
+    entry = ("ptb", "Temp");
+    entry = ("ptg", "Temp");
+    entry = ("rus", "");
+};

@@ -107,18 +107,18 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 
         public HierarchicObjectInTekla()
         {
-            _hierarchicDefinition = TeklaDB.GetHierarchicDefinitionWithName(TeklaDB.hierarchicDefinitionName);
+            _hierarchicDefinition = TeklaDB.GetHierarchicDefinitionWithName(TeklaDB.hierarchicDefinitionElementListName);
             _hierarchicObject = TeklaDB.CreateHierarchicObject(_hierarchicDefinition);
-
         }
 
-        public HierarchicObjectInTekla(HierarchicObjectInTekla hierarchicObjectInTekla)
+        public HierarchicObjectInTekla(HierarchicObjectInTekla hierarchicObjectInTekla, bool isFoundationList = false)
         {
-            _hierarchicDefinition = TeklaDB.GetHierarchicDefinitionWithName(TeklaDB.hierarchicDefinitionName);
+            if (isFoundationList)
+                _hierarchicDefinition = TeklaDB.GetHierarchicDefinitionWithName(TeklaDB.hierarchicDefinitionFoundationListName);
+            else
+                _hierarchicDefinition = TeklaDB.GetHierarchicDefinitionWithName(TeklaDB.hierarchicDefinitionElementListName);
             _hierarchicObject = TeklaDB.CreateHierarchicObject(_hierarchicDefinition, hierarchicObjectInTekla.HierarchicObject);
         }
-
-
         #endregion
 
         #region Методы HierarchicObjectInTekla
@@ -596,4 +596,6 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         }
         #endregion
     }
+
+
 }

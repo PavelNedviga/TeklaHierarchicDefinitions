@@ -24,7 +24,19 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
     {
         #region Статические поля
         public static Model model = new Model();
-        internal static string hierarchicDefinitionName = "Element_list";
+        internal static string hierarchicDefinitionElementListName = "Element_list";
+
+        internal static HierarchicDefinition CreateHierarchicDefinitionWithName(string hierarchicDefinitionName, HierarchicDefinition mainHD)
+        {
+            var hierarchicDefinition = new HierarchicDefinition();
+            hierarchicDefinition.Name = hierarchicDefinitionName;
+            hierarchicDefinition.HierarchyType = HierarchicDefinitionTypeEnum.DOT_HIERARCHIC_CUSTOM_TYPE;
+            hierarchicDefinition.Father = mainHD;
+            hierarchicDefinition.Insert();
+            return hierarchicDefinition;          
+        }
+
+        internal static string hierarchicDefinitionFoundationListName = "Foundation_List";
         internal static ModelObjectSelector objectSelector =  model.GetModelObjectSelector();
         public static Tekla.Structures.Model.UI.ModelObjectSelector modelObjectSelector = new Tekla.Structures.Model.UI.ModelObjectSelector();
         private static Logger logger = LogManager.GetCurrentClassLogger();
@@ -249,7 +261,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         internal static bool RemoveSelectedModedlObjectsFromHierarchicObject()
         {
             var selectedObjects = GetSelectedModelObjects();
-            var hierarchicObjectList = GetHierarchicObjectsWithHierarchicDefinitionName(hierarchicDefinitionName);
+            var hierarchicObjectList = GetHierarchicObjectsWithHierarchicDefinitionName(hierarchicDefinitionElementListName);
             bool res = false;
             foreach (var ho in hierarchicObjectList)
             {
@@ -673,6 +685,30 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             hierarchicDefinition.Insert();
             return hierarchicDefinition;
         }
+
+        //internal static HierarchicDefinition GetHierarchicDefinitionWithType(string hierarchicDefinitionName)
+        //{
+
+        //    List<HierarchicDefinition> hd = new List<HierarchicDefinition>();
+        //    ModelObjectEnumerator defHierarchy = model.GetModelObjectSelector().GetAllObjectsWithType(ModelObject.ModelObjectEnum.HIERARCHIC_DEFINITION);
+        //    foreach (ModelObject ne in defHierarchy)
+        //    {
+
+        //        if (ne is HierarchicDefinition)
+        //        {
+        //            hd.Add(ne as HierarchicDefinition);
+        //        }
+        //    }
+        //    HierarchicDefinition hierarchicDefinition = hd.Where(t => t.Name.Equals(hierarchicDefinitionName)).FirstOrDefault();            
+        //    if (hierarchicDefinition != null)
+        //        return hierarchicDefinition;
+
+        //    hierarchicDefinition = new HierarchicDefinition();
+        //    hierarchicDefinition.Name = hierarchicDefinitionName;
+        //    hierarchicDefinition.HierarchyType = HierarchicDefinitionTypeEnum.DOT_HIERARCHIC_CUSTOM_TYPE;
+        //    hierarchicDefinition.Insert();
+        //    return hierarchicDefinition;
+        //}
 
         internal static string GetSketch(string profileString)
         {
