@@ -1,23 +1,29 @@
 ﻿using NLog;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Tekla.Structures.Model;
 using TeklaHierarchicDefinitions.TeklaAPIUtils;
 
 namespace TeklaHierarchicDefinitions
 {
     public class FoundationGroup : INotifyPropertyChanged, IDataErrorInfo
     {
-        #region Внутренние параметры объекта
-
+        #region Внутренние параметры объекта        
         private HierarchicObjectInTekla _hierarchicObjectInTekla;        
         #endregion
 
         #region Конструктор
         internal FoundationGroup(string foundationGroupName)
         {
-            _hierarchicObjectInTekla = new HierarchicObjectInTekla();
-            
+            _hierarchicObjectInTekla = new HierarchicObjectInTekla();    
+            _hierarchicObjectInTekla.Name = foundationGroupName;
         }
+
+        internal FoundationGroup(HierarchicObjectInTekla hierarchicObjectInTekla)
+        {
+            _hierarchicObjectInTekla = hierarchicObjectInTekla;            
+        }
+
         #endregion
 
         private static Logger logger = LogManager.GetCurrentClassLogger();

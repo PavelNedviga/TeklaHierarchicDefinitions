@@ -181,6 +181,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         {
             List<HierarchicObjectInTekla> hierarchicObjectsInTeklas = TeklaDB.GetHierarchicObjectsWithHierarchicDefinitionName(TeklaDB.hierarchicDefinitionElementListName); //TeklaDB.GetAllHierarchicObjectsInTekla();//
             _billOfElements = BillOfElementsUtils.GetHierarchicObjectsWithHierarchicDefinitionName(hierarchicObjectsInTeklas);
+            buildingFragments = BuildingFragmentUtils.GetBuildingFragmentsWithHierarchicDefinitionFatherName(TeklaDB.hierarchicDefinitionFoundationListName);
         }
         #endregion
 
@@ -396,10 +397,10 @@ namespace TeklaHierarchicDefinitions.ViewModels
 
         #region Задания на фудаменты
         #region Параметры        
-        private MyObservableCollection<FoundationGroup> _foundationGroups;        
+        private MyObservableCollection<FoundationGroup> _foundationGroups = new MyObservableCollection<FoundationGroup>();        
         private MyObservableCollection<FoundationGroup> foundationGroups; // filtered from above row
         private string newBuildingFragmentName = string.Empty;
-        private MyObservableCollection<BuildingFragment> buildingFragment;
+        private MyObservableCollection<BuildingFragment> buildingFragments;
         private BuildingFragment _selectedBuildingFragment;
 
         #endregion
@@ -418,6 +419,18 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
         
+        public MyObservableCollection<BuildingFragment> BuildingFragments
+        {
+            get
+            {
+                return buildingFragments;
+            }
+            set
+            {
+                buildingFragments = value;
+                OnPropertyChanged();
+            }
+        }
 
         public MyObservableCollection<FoundationGroup> FoundationGroups
         {
@@ -439,6 +452,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         }
 
 
+
         #endregion
 
         #region Команды
@@ -446,15 +460,20 @@ namespace TeklaHierarchicDefinitions.ViewModels
         {
             get
             {
-                return new DelegateCommand((obj) =>
-                {
-                    OnPropertyChanged("BillOfElementsList");
-                }, (obj) => 
-                {
-                    if(NewBuildingFragmentName.Length > 0)
-                        if NewBuildingFragmentName
-                    return obj == null ? true : true; 
-                }
+                return new DelegateCommand(
+                    (obj) =>
+                    {
+                        BuildingFragments.Add(new BuildingFragment(NewBuildingFragmentName));
+                        OnPropertyChanged("FoundationGroups");
+                        OnPropertyChanged("BuildingFragments");
+                    }, 
+                    (obj) => 
+                    {
+                        if (NewBuildingFragmentName.Length > 0)
+                            if (!BuildingFragments.Select(t => t.BuildingFragmentMark).Contains(NewBuildingFragmentName))
+                                return true;
+                        return false; 
+                    }
                 );
             }
         }

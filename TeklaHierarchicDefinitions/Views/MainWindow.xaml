@@ -477,9 +477,12 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel>
                     <TextBox Margin="10" Text="{Binding NewBuildingFragmentName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Button Grid.Column="0" Height="30" Margin="10" Content="Создать" />
+                    <Button Grid.Column="0" Height="30" Margin="10" Content="Создать" 
+                            Command="{Binding AddBuildingFragment}"/>
                     <Button Grid.Column="0" Height="30" Margin="10" Content="Удалить" />
-                    <ListBox Height="160" Margin="10"/>
+                    <ListBox Height="160" Margin="10" 
+                             ItemsSource="{Binding BuildingFragments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                             DisplayMemberPath="BuildingFragmentMark"/>
                     <!--ItemsSource="{d:SampleData ItemCount=5}"-->
                     <Button Grid.Column="0" Height="30" Margin="10" Content="Импорт" />
                 </StackPanel>
@@ -494,13 +497,13 @@
                   SelectedItem="{Binding SelectedItem}" 
                   SelectionChanged="HODataGrid_SelectionChanged"
                   AutoGenerateColumns="False" Grid.ColumnSpan="1" Grid.RowSpan="6"
-                  IsReadOnly="True">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="{tsd:Loc albl_BOE}" Binding="{Binding BOE, UpdateSourceTrigger=PropertyChanged}" />
-                        <DataGridTextColumn Header="Номер узла" 
+                  IsReadOnly="True"
+                    >
+                    <DataGrid.Columns>                        
+                        <DataGridTextColumn Header="Номер базы" 
                                     Binding="{Binding Error, UpdateSourceTrigger=PropertyChanged}" 
                                     FontWeight="Bold"/>
-                        <DataGridTextColumn Header="Номер узла" 
+                        <DataGridTextColumn Header="Номер узла эРСУ" 
                                     Binding="{Binding Error, UpdateSourceTrigger=PropertyChanged}" 
                                     FontWeight="Bold"/>
                         <DataGridTextColumn Header="Кр." 

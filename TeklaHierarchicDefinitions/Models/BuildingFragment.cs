@@ -2,15 +2,17 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Tekla.Structures.Model;
+using TeklaHierarchicDefinitions.Models;
 using TeklaHierarchicDefinitions.TeklaAPIUtils;
 
 namespace TeklaHierarchicDefinitions.ViewModels
 {
-    internal class BuildingFragment : INotifyPropertyChanged, IDataErrorInfo
+    public class BuildingFragment : INotifyPropertyChanged, IDataErrorInfo
     {
         #region Внутренние параметры объекта
 
         private HierarchicDefinition _hierarchicDefinitionInTekla;
+        private MyObservableCollection<FoundationGroup> _foundationGroups;
         #endregion
 
         #region Конструктор
@@ -18,6 +20,21 @@ namespace TeklaHierarchicDefinitions.ViewModels
         {
             var mainHDForFragments = TeklaDB.GetHierarchicDefinitionWithName(TeklaDB.hierarchicDefinitionFoundationListName);
             _hierarchicDefinitionInTekla = TeklaDB.CreateHierarchicDefinitionWithName(buildingFragmentMark, mainHDForFragments);
+        }
+
+        internal BuildingFragment(HierarchicDefinition buildingFragmentDefinition)
+        {            
+            _hierarchicDefinitionInTekla = buildingFragmentDefinition;
+            foreach(var mo in _hierarchicDefinitionInTekla.GetChildren())
+            {
+                if (mo is HierarchicObject)
+                {
+                    var ho = mo as HierarchicObject;
+                    HierarchicObjectInTekla hierarchicObjectInTekla = new HierarchicObjectInTekla();
+                    var fg = new FoundationGroup(hierarchicObjectInTekla);
+                    _foundationGroups.Add(fg);
+                }
+            }
         }
         #endregion
 
@@ -43,7 +60,9 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 OnPropertyChanged();
             }
         }
+        #endregion
 
+        #region Методы
         #endregion
 
         #region Обработка изменения свойств

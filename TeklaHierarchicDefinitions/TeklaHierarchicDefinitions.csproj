@@ -134,6 +134,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\BuildingFragmentUtils.cs" />
     <Compile Include="Models\ClassGenerator.cs" />
     <Compile Include="Models\HierarchicObjectInTekla.cs" />
     <Compile Include="Unused\ToDataTableConverter.cs" />

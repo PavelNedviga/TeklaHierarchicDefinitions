@@ -61,7 +61,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             return hierarchicObjects;
         }
 
-        private static ObservableCollection<HierarchicDefinition> GetAllHierarchicDefinitions()
+        public static ObservableCollection<HierarchicDefinition> GetAllHierarchicDefinitions()
         {
             ModelObjectEnumerator modelObjectEnumerator = model.GetModelObjectSelector().GetAllObjectsWithType(new Type[] { typeof(HierarchicDefinition) });
 
@@ -278,12 +278,12 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 
 
         /// <summary>
-        /// Создает новое определение
+        /// Находит или создает новое определение
         /// </summary>
         /// <returns></returns>
-        public static bool CreateHierarchicDefinition(string name)
+        public static HierarchicDefinition GetHierarchicDefinitionWithName(string name, HierarchicDefinition hierarchicDefinition)
         {
-            throw new NotImplementedException();
+               throw new NotImplementedException();
         }
 
         /// <summary>
