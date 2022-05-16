@@ -16,7 +16,7 @@ namespace TeklaHierarchicDefinitions.Models
         /// </summary>
         public static MyObservableCollection<BuildingFragment> GetBuildingFragmentsWithHierarchicDefinitionFatherName(string fatherName)
         {
-            MyObservableCollection<BuildingFragment> billOfElements = new MyObservableCollection<BuildingFragment>();
+            MyObservableCollection<BuildingFragment> buildingFragments = new MyObservableCollection<BuildingFragment>();
             var aHD = TeklaDB.GetAllHierarchicDefinitions();
             var allBuildingFragments = aHD.Where(t => t.Name.Equals(TeklaDB.hierarchicDefinitionFoundationListName)).FirstOrDefault();
             if (allBuildingFragments != null)
@@ -26,11 +26,11 @@ namespace TeklaHierarchicDefinitions.Models
                     if (hdit is HierarchicDefinition)
                     {
                         BuildingFragment rowInBuildingFragments = new BuildingFragment(hdit);
-                        billOfElements.Add(rowInBuildingFragments);
+                        buildingFragments.Add(rowInBuildingFragments);
                     }
                 }
             }
-            return billOfElements;
+            return buildingFragments;
         }
     }
 }

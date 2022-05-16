@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TeklaHierarchicDefinitions.ViewsModels
+namespace TeklaHierarchicDefinitions.ViewModels
 {
     /// <summary>
     /// Базовая реализация View model

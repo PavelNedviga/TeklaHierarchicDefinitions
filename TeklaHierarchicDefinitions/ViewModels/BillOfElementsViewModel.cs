@@ -12,7 +12,6 @@ using System.Windows.Input;
 using Tekla.Structures.Model;
 using TeklaHierarchicDefinitions.Models;
 using TeklaHierarchicDefinitions.TeklaAPIUtils;
-using TeklaHierarchicDefinitions.ViewsModels;
 using Tekla.Structures.Dialog;
 using Tekla.Structures.Dialog.UIControls;
 using DataGrid = System.Windows.Controls.DataGrid;
@@ -397,8 +396,6 @@ namespace TeklaHierarchicDefinitions.ViewModels
 
         #region Задания на фудаменты
         #region Параметры        
-        private MyObservableCollection<FoundationGroup> _foundationGroups = new MyObservableCollection<FoundationGroup>();        
-        private MyObservableCollection<FoundationGroup> foundationGroups; // filtered from above row
         private string newBuildingFragmentName = string.Empty;
         private MyObservableCollection<BuildingFragment> buildingFragments;
         private BuildingFragment _selectedBuildingFragment;
@@ -418,7 +415,14 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
+        public BuildingFragment SelectedBuildingFragment { get => _selectedBuildingFragment; 
+            set 
+            { 
+                _selectedBuildingFragment = value;
+                OnPropertyChanged();
+            } }
+
         public MyObservableCollection<BuildingFragment> BuildingFragments
         {
             get
@@ -436,26 +440,29 @@ namespace TeklaHierarchicDefinitions.ViewModels
         {
             get
             {
-                MyObservableCollection<FoundationGroup> foundationGroups = new MyObservableCollection<FoundationGroup>();
-                foreach (FoundationGroup boe in _foundationGroups.Where(t => t.Equals(_selectedBuildingFragment)))
-                {
-                    foundationGroups.Add(boe);
-                }
-                return foundationGroups;
+                if(_selectedBuildingFragment == null) return null;
+                return _selectedBuildingFragment.FoundationGroups;
             }
             set
             {
-                //_billOfElements = value;
+                //foundationGroups = value;
                 OnPropertyChanged();
 
             }
         }
 
-
+        public ObservableCollection<string> FoundationMarksList
+        {
+            get
+            {
+                if (FoundationGroups == null) return null;
+                return new ObservableCollection<string>(FoundationGroups.Select(t => t.BasementMark).ToList());
+            }
+        }
 
         #endregion
 
-        #region Команды
+            #region Команды
         public ICommand AddBuildingFragment
         {
             get
@@ -484,8 +491,24 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
-                    OnPropertyChanged("BillOfElementsList");
-                }, (obj) => obj == null ? true : true);
+                    SelectedBuildingFragment.RemoveBuildingFragment();
+                    buildingFragments.Clear();
+                    BuildingFragments = BuildingFragmentUtils.GetBuildingFragmentsWithHierarchicDefinitionFatherName(TeklaDB.hierarchicDefinitionFoundationListName);
+                }, (obj) => SelectedBuildingFragment == null ? false : true);
+            }
+        }
+
+        public ICommand ImportBuildingFragment
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    SelectedBuildingFragment.ImportFoundationGroups();
+                    OnPropertyChanged("FoundationMarksList");
+                    OnPropertyChanged("FoundationGroups");
+
+                }, (obj) => SelectedBuildingFragment == null ? false : true);
             }
         }
         #endregion

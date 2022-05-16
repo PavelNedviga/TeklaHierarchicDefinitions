@@ -275,6 +275,17 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         #endregion
 
         #region Операции с иерархическими определениями
+        public static bool DeleteHierarchicDefinition(HierarchicDefinition hierarchicDefinition)
+        {
+            string name = hierarchicDefinition.Name;
+            if (hierarchicDefinition.Delete())
+            {
+                model.CommitChanges("removed " + name);
+                return true;
+            }
+            return false;
+
+        }
 
 
         /// <summary>

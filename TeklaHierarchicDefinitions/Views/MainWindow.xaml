@@ -21,7 +21,7 @@
     <Window.DataContext>
         <vm:BillOfElementsViewModel/>
     </Window.DataContext>
-    
+
     <TabControl>
         <TabItem Header="{tsd:Loc albl_ElementList}">
             <Grid Background="#FFE5E5E5">
@@ -470,71 +470,84 @@
 
         </TabItem>
         <TabItem Header="{tsd:Loc albl_FoundationLoads}">
-            <Grid Background="#FFE5E5E5">
+            <Grid Background="#FFE5E5E5" Name="gr" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="100"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <StackPanel>
-                    <TextBox Margin="10" Text="{Binding NewBuildingFragmentName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Button Grid.Column="0" Height="30" Margin="10" Content="Создать" 
-                            Command="{Binding AddBuildingFragment}"/>
-                    <Button Grid.Column="0" Height="30" Margin="10" Content="Удалить" />
-                    <ListBox Height="160" Margin="10" 
-                             ItemsSource="{Binding BuildingFragments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                             DisplayMemberPath="BuildingFragmentMark"/>
-                    <!--ItemsSource="{d:SampleData ItemCount=5}"-->
-                    <Button Grid.Column="0" Height="30" Margin="10" Content="Импорт" />
-                </StackPanel>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
+                <StackPanel Grid.Row="0" VerticalAlignment="Stretch" Margin="0">
+                    <TextBox Margin="10" Text="{Binding NewBuildingFragmentName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Height="30" Margin="10" Content="Создать" 
+                            Command="{Binding AddBuildingFragment}"/>
+                    <Button Height="30" Margin="10" Content="Удалить" 
+                            Command="{Binding DeleteBuildingFragment}"/>
+                    <ListBox MinHeight="120" Margin="10" VerticalAlignment="Stretch" Height="170"
+                             ItemsSource="{Binding BuildingFragments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                             SelectedItem="{Binding SelectedBuildingFragment, Mode=OneWayToSource, UpdateSourceTrigger=Default}"
+                             DisplayMemberPath="BuildingFragmentMark"/>
+                    <Button Grid.Column="0" Height="30" Margin="10" Content="Импорт" 
+                            Command="{Binding ImportBuildingFragment}"/>
+                </StackPanel>
+                <ListBox Margin="10" Grid.Column="1" Height="Auto"
+                             ItemsSource="{Binding FoundationMarksList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                             />
+
+                <!--ItemsSource="{d:SampleData ItemCount=5}"-->                    
+
+                
                 <DataGrid  
-                    Grid.Column="1"
+                  Grid.Column="2"
                   CanUserDeleteRows="False"
-                  Margin="10" ItemsSource="{Binding FoundationGroups, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
+                  Margin="10,10,10,10" ItemsSource="{Binding FoundationGroups, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
                   CanUserAddRows="False" CanUserResizeColumns="False" 
                   CanUserResizeRows="False" HeadersVisibility="Column" 
                   CellEditEnding="HODataGrid_CellEditEnding"
                   SelectedItem="{Binding SelectedItem}" 
                   SelectionChanged="HODataGrid_SelectionChanged"
-                  AutoGenerateColumns="False" Grid.ColumnSpan="1" Grid.RowSpan="6"
+                  AutoGenerateColumns="False" Grid.ColumnSpan="1" Grid.RowSpan="3"
                   IsReadOnly="True"
                     >
-                    <DataGrid.Columns>                        
+                    <DataGrid.Columns>
                         <DataGridTextColumn Header="Номер базы" 
-                                    Binding="{Binding Error, UpdateSourceTrigger=PropertyChanged}" 
+                                    Binding="{Binding BasementMark, UpdateSourceTrigger=PropertyChanged}" 
                                     FontWeight="Bold"/>
                         <DataGridTextColumn Header="Номер узла эРСУ" 
-                                    Binding="{Binding Error, UpdateSourceTrigger=PropertyChanged}" 
+                                    Binding="{Binding Joint, UpdateSourceTrigger=PropertyChanged}" 
                                     FontWeight="Bold"/>
                         <DataGridTextColumn Header="Кр." 
-                                    Binding="{Binding Error, UpdateSourceTrigger=PropertyChanged}" 
+                                    Binding="{Binding Cr, UpdateSourceTrigger=PropertyChanged}" 
                                     FontWeight="Bold"/>
                         <DataGridTextColumn Header="О." 
-                                    Binding="{Binding Error, UpdateSourceTrigger=PropertyChanged}" 
+                                    Binding="{Binding Sp, UpdateSourceTrigger=PropertyChanged}" 
                                     FontWeight="Bold"/>
                         <DataGridTextColumn Header="Гр." 
-                                    Binding="{Binding Error, UpdateSourceTrigger=PropertyChanged}" 
+                                    Binding="{Binding Gr, UpdateSourceTrigger=PropertyChanged}" 
                                     FontWeight="Bold"/>
                         <DataGridTextColumn Header="Rx(кН)" 
-                                    Binding="{Binding Error, UpdateSourceTrigger=PropertyChanged}" 
+                                    Binding="{Binding Rx, UpdateSourceTrigger=PropertyChanged}" 
                                     FontWeight="Bold"/>
                         <DataGridTextColumn Header="Ry(кН)" 
-                                    Binding="{Binding Error, UpdateSourceTrigger=PropertyChanged}" 
+                                    Binding="{Binding Ry, UpdateSourceTrigger=PropertyChanged}" 
                                     FontWeight="Bold"/>
                         <DataGridTextColumn Header="Rz(кН)" 
-                                    Binding="{Binding Error, UpdateSourceTrigger=PropertyChanged}" 
+                                    Binding="{Binding Rz, UpdateSourceTrigger=PropertyChanged}" 
                                     FontWeight="Bold"/>
                         <DataGridTextColumn Header="Rux(кНм)" 
-                                    Binding="{Binding Error, UpdateSourceTrigger=PropertyChanged}" 
+                                    Binding="{Binding Rux, UpdateSourceTrigger=PropertyChanged}" 
                                     FontWeight="Bold"/>
                         <DataGridTextColumn Header="Ruy(кНм)" 
-                                    Binding="{Binding Error, UpdateSourceTrigger=PropertyChanged}" 
+                                    Binding="{Binding Ruy, UpdateSourceTrigger=PropertyChanged}" 
                                     FontWeight="Bold"/>
                         <DataGridTextColumn Header="Ruz(кНм)" 
-                                    Binding="{Binding Error, UpdateSourceTrigger=PropertyChanged}" 
+                                    Binding="{Binding Ruz, UpdateSourceTrigger=PropertyChanged}" 
                                     FontWeight="Bold"/>
                         <DataGridTextColumn Header="№ загружения" 
-                                    Binding="{Binding Error, UpdateSourceTrigger=PropertyChanged}" 
+                                    Binding="{Binding ForceMark, UpdateSourceTrigger=PropertyChanged}" 
                                     FontWeight="Bold"/>
 
                     </DataGrid.Columns>

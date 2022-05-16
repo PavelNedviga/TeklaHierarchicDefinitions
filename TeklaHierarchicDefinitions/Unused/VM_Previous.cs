@@ -12,7 +12,7 @@ using TeklaHierarchicDefinitions.TeklaAPIUtils;
 using TeklaHierarchicDefinitions;
 using System.Windows;
 
-namespace TeklaHierarchicDefinitions.ViewsModels
+namespace TeklaHierarchicDefinitions.ViewModels
 {
     class VM
     {

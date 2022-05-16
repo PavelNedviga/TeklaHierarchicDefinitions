@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace TeklaHierarchicDefinitions.ViewsModels
+namespace TeklaHierarchicDefinitions.ViewModels
 {
     /// <summary>
     /// Класс реализации кнопок в примере (ИЗУЧИТЬ ПОДРОБНЕЕ ИНТЕРФЕЙС ICOMMAND)

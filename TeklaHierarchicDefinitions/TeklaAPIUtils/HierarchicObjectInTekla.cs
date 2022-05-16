@@ -133,7 +133,33 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             //_hierarchicObject.SetUserProperty(name,val)
             //    return true;
         }
-        
+
+        public bool HierarchicObjectSetAttributes(ArrayList input)
+        {
+            foreach(var obj in input)
+            {                
+                var pair = (KeyValuePair<string, string>)obj;
+                string strValue = pair.Value;
+                double doubleValue;
+                if (double.TryParse(pair.Value as string, out doubleValue))
+                {
+                    HierarchicObject.SetUserProperty(pair.Key, doubleValue);
+                    continue;
+                }
+                int intValue;
+                if (Int32.TryParse(pair.Value as string, out intValue))
+                {
+                    HierarchicObject.SetUserProperty(pair.Key, intValue);
+                    continue;
+                }                  
+                if (!strValue.Equals(null))
+                    HierarchicObject.SetUserProperty(pair.Key, strValue);
+            }
+            return HierarchicObject.Modify();    
+            
+        }
+
+
         /// <summary>
         /// Вытащить атрибуты
         /// </summary>
@@ -267,6 +293,8 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             }
             return res;
         }
+
+
 
         public bool PartsSetAttr(string name, string input)
         {
@@ -596,6 +624,5 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         }
         #endregion
     }
-
 
 }
