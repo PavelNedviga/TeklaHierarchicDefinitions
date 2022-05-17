@@ -657,7 +657,7 @@ string_utf8 albl_FoundationLoads
     entry = ("plk", "Element list");
     entry = ("ptb", "Element list");
     entry = ("ptg", "Element list");
-    entry = ("rus", "Нагрузки на основание");
+    entry = ("rus", "Нагрузки на фундаменты");
 };
 
 

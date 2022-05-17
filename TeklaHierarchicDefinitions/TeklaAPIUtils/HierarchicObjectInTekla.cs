@@ -105,6 +105,12 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             _hierarchicObject = hierarchicObject;
         }
 
+        internal HierarchicObjectInTekla(string name, HierarchicDefinition hierarchicDefinition)
+        {
+            _hierarchicDefinition = hierarchicDefinition;
+            _hierarchicObject = TeklaDB.CreateHierarchicObject(name , _hierarchicDefinition);
+        }
+
         public HierarchicObjectInTekla()
         {
             _hierarchicDefinition = TeklaDB.GetHierarchicDefinitionWithName(TeklaDB.hierarchicDefinitionElementListName);
@@ -294,7 +300,16 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             return res;
         }
 
+        public bool HierarchicObjectSetAttribute(string name, double input)
+        {
+            bool res = this.HierarchicObject.SetUserProperty(name, input);
 
+            if (res)
+            {
+                TeklaDB.model.CommitChanges(HierarchicObject.Name + ": property " + name + " is set to " + input);
+            }
+            return res;
+        }
 
         public bool PartsSetAttr(string name, string input)
         {
@@ -443,7 +458,16 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             return 0;
         }
 
+        public double HierarchicObjectGetDouble(string name)
+        {
+            double res = 0;
+            if (_hierarchicObject.GetUserProperty(name, ref res))
+                return res;
+            return 0;
+        }
 
+
+        
 
         /// <summary>
         /// Выдает GUID иерархического объекта
@@ -596,9 +620,19 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             return TeklaDB.AttachSelectedModedlObjects(_hierarchicObject);
         }
 
+        internal bool AttachSelectedDetails()
+        {
+            return TeklaDB.AttachSelectedDetails(_hierarchicObject);
+        }
+
         internal bool RemoveSelectedModedlObjectsFromHierarchicObject()
         {
             return TeklaDB.RemoveSelectedModedlObjects(_hierarchicObject);
+        }
+
+        internal bool RemoveSelectedDetailsFromHierarchicObject()
+        {
+            return TeklaDB.RemoveSelectedDetails(_hierarchicObject);
         }
         #endregion
 

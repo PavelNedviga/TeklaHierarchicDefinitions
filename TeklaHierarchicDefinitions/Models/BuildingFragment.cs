@@ -32,7 +32,8 @@ namespace TeklaHierarchicDefinitions.Models
 
         internal BuildingFragment(HierarchicDefinition buildingFragmentDefinition)
         {            
-            _hierarchicDefinition = buildingFragmentDefinition;
+
+            _hierarchicDefinition = TeklaDB.GetHierarchicDefinition(buildingFragmentDefinition.Identifier) as HierarchicDefinition;
             foreach(var mo in _hierarchicDefinition.GetChildren())
             {
                 if (mo is HierarchicObject)
@@ -66,6 +67,7 @@ namespace TeklaHierarchicDefinitions.Models
             set 
             {
                 _foundationGroups = value;
+
                 OnPropertyChanged();
             }
         }
@@ -130,8 +132,8 @@ namespace TeklaHierarchicDefinitions.Models
                         {
                             if (sheet.GetRow(row) != null) //null is when the row only contains empty cells 
                             {
-                                FoundationGroup foundationGroupLoad = new FoundationGroup(ExcelCellValue(sheet.GetRow(row).GetCell(0)));
-                                foundationGroupLoad.Joint = ExcelCellValue(sheet.GetRow(row).GetCell(1));
+                                FoundationGroup foundationGroupLoad = new FoundationGroup(ExcelCellValue(sheet.GetRow(row).GetCell(0)), _hierarchicDefinition);
+                                foundationGroupLoad.JointNumber = ExcelCellValue(sheet.GetRow(row).GetCell(1));
                                 foundationGroupLoad.St = ExcelCellValue(sheet.GetRow(row).GetCell(2));
                                 foundationGroupLoad.Cr = ExcelCellValue(sheet.GetRow(row).GetCell(3));
                                 foundationGroupLoad.Sp = ExcelCellValue(sheet.GetRow(row).GetCell(4));

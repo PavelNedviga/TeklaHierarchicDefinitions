@@ -77,6 +77,12 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             return hierarchicDefinitions;
         }
 
+        public static ModelObject GetHierarchicDefinition(Identifier realObjectID)
+        {
+            var realObject = model.SelectModelObject(realObjectID);
+            return realObject;
+        }
+
         public static List<HierarchicObjectInTekla> GetHierarchicObjectsWithHierarchicDefinitionName(string hierarchicDefinitionName)
         {
             
@@ -194,6 +200,20 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 
             return hierarchicObject;
         }
+
+        public static HierarchicObject CreateHierarchicObject(string name, HierarchicDefinition hierarchicDefinition)
+        {
+            HierarchicObject hierarchicObject = new HierarchicObject();
+
+            hierarchicObject.Name = name;
+            hierarchicObject.Definition = hierarchicDefinition;
+            hierarchicObject.Insert();
+
+            model.CommitChanges();
+
+            return hierarchicObject;
+        }
+
 
         internal static HierarchicObject CreateHierarchicObject(HierarchicDefinition hierarchicDefinition, HierarchicObject receivedHierarchicObject)
         {
@@ -316,6 +336,19 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             return result;
         }
 
+        public static ArrayList ModelGetSelectedComponents()
+        {
+            ArrayList components = new ArrayList();
+            foreach (var mo in modelObjectSelector.GetSelectedObjects())
+            {                
+                if (mo is Detail)
+                {
+                    components.Add(mo as Detail);
+                }
+            }            
+            return components;
+        }
+
         public static ArrayList GetSelectedModelObjects()
         {
             Tekla.Structures.Model.UI.ModelObjectSelector modelObjectSelector = new Tekla.Structures.Model.UI.ModelObjectSelector();
@@ -385,6 +418,39 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             bool res = hierarchicObject.AddObjects(GetSelectedModelObjects());
             return hierarchicObject.Modify();
         }
+
+        internal static bool AttachSelectedDetails(HierarchicObject hierarchicObject)
+        {
+            RemoveSelectedModedlObjectsFromHierarchicObject();
+            var modelObjects = ModelGetSelectedComponents();
+            bool res = hierarchicObject.AddObjects(modelObjects);
+            foreach (var modelObject in modelObjects)
+            {
+                Detail detail = modelObject as Detail;
+                if (detail != null)
+                {
+                    detail.Code = hierarchicObject.Name;
+                    detail.Modify();
+                }
+            }
+            return hierarchicObject.Modify();
+        }
+
+        internal static bool RemoveSelectedDetails(HierarchicObject hierarchicObject)
+        {
+            var modelObjects = ModelGetSelectedComponents();
+            foreach (var modelObject in modelObjects)
+            {
+                Detail detail = modelObject as Detail;
+                if (detail != null)
+                {
+                    detail.Code = "";
+                    detail.Modify();
+                }
+            }
+            return hierarchicObject.RemoveObjects(modelObjects);
+        }
+
 
         internal static bool RemoveSelectedModedlObjects(HierarchicObject hierarchicObject)
         {

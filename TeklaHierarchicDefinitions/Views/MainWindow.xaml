@@ -14,7 +14,7 @@
                             xmlns:vm="clr-namespace:TeklaHierarchicDefinitions.ViewModels"
                             mc:Ignorable="d"
                             Title="{tsd:Loc albl_WindowName}"
-                            Height="450" Width="1000" MinWidth="1050" MinHeight="450" Topmost="True">
+                            Height="550" Width="1000" MinWidth="1050" MinHeight="510" Topmost="True">
     <Window.Resources>
         <Convertors:LevelToIndentConverter x:Key="LevelToIndentConverter"/>
     </Window.Resources>
@@ -486,15 +486,31 @@
                             Command="{Binding AddBuildingFragment}"/>
                     <Button Height="30" Margin="10" Content="Удалить" 
                             Command="{Binding DeleteBuildingFragment}"/>
-                    <ListBox MinHeight="120" Margin="10" VerticalAlignment="Stretch" Height="170"
+                    <ListBox MinHeight="120" Margin="10" VerticalAlignment="Stretch" Height="150"
                              ItemsSource="{Binding BuildingFragments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                              SelectedItem="{Binding SelectedBuildingFragment, Mode=OneWayToSource, UpdateSourceTrigger=Default}"
                              DisplayMemberPath="BuildingFragmentMark"/>
                     <Button Grid.Column="0" Height="30" Margin="10" Content="Импорт" 
                             Command="{Binding ImportBuildingFragment}"/>
+                    <DockPanel HorizontalAlignment="Stretch">
+                        <Button Grid.Column="0" Height="40" Width="40" Margin="30,10" 
+                                Content="+" FontSize="20" 
+                                DockPanel.Dock="Left" HorizontalAlignment="Right"
+                                Command="{Binding AddObjectsToFoundationGroup}"
+                                CommandParameter="{Binding ElementName=FoundationList}"
+                                Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}"/>
+                        <Button Grid.Column="0" Height="40" Width="40" Margin="30,10" 
+                                Content="-" FontSize="20" 
+                                DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                CommandParameter="{Binding ElementName=FoundationList}"
+                                Command="{Binding RemoveObjectsFromFoundationGroup}"
+                                Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}"/>
+                    </DockPanel>
+
                 </StackPanel>
-                <ListBox Margin="10" Grid.Column="1" Height="Auto"
-                             ItemsSource="{Binding FoundationMarksList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                <ListBox Margin="10" Grid.Column="1" Height="Auto" Name="FoundationList"
+                         ItemsSource="{Binding FoundationMarksList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                         SelectedItem="{Binding SelectedFoundationMark, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                              />
 
                 <!--ItemsSource="{d:SampleData ItemCount=5}"-->                    
@@ -514,20 +530,20 @@
                     >
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Номер базы" 
-                                    Binding="{Binding BasementMark, UpdateSourceTrigger=PropertyChanged}" 
+                                    Binding="{Binding BasementMark, Mode =OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                     FontWeight="Bold"/>
                         <DataGridTextColumn Header="Номер узла эРСУ" 
-                                    Binding="{Binding Joint, UpdateSourceTrigger=PropertyChanged}" 
+                                    Binding="{Binding JointNumber, UpdateSourceTrigger=PropertyChanged}" 
                                     FontWeight="Bold"/>
-                        <DataGridTextColumn Header="Кр." 
+                        <!--DataGridTextColumn Header="Кр." 
                                     Binding="{Binding Cr, UpdateSourceTrigger=PropertyChanged}" 
-                                    FontWeight="Bold"/>
-                        <DataGridTextColumn Header="О." 
+                                    FontWeight="Bold"/-->
+                        <!--DataGridTextColumn Header="О." 
                                     Binding="{Binding Sp, UpdateSourceTrigger=PropertyChanged}" 
-                                    FontWeight="Bold"/>
-                        <DataGridTextColumn Header="Гр." 
+                                    FontWeight="Bold"/-->
+                        <!--DataGridTextColumn Header="Гр." 
                                     Binding="{Binding Gr, UpdateSourceTrigger=PropertyChanged}" 
-                                    FontWeight="Bold"/>
+                                    FontWeight="Bold"/-->
                         <DataGridTextColumn Header="Rx(кН)" 
                                     Binding="{Binding Rx, UpdateSourceTrigger=PropertyChanged}" 
                                     FontWeight="Bold"/>

@@ -30,9 +30,9 @@ namespace TeklaHierarchicDefinitions.Models
         #endregion
 
         #region Конструктор
-        internal FoundationGroup(string foundationGroupName)
+        internal FoundationGroup(string foundationGroupName, HierarchicDefinition hierarchicDefinition)
         {
-            _hierarchicObjectInTekla = new HierarchicObjectInTekla();    
+            _hierarchicObjectInTekla = new HierarchicObjectInTekla(foundationGroupName, hierarchicDefinition);    
             _hierarchicObjectInTekla.Name = foundationGroupName;
         }
 
@@ -55,6 +55,22 @@ namespace TeklaHierarchicDefinitions.Models
         {
             _hierarchicObjectInTekla.DeleteHierarchicObject();
         }
+
+        internal void GetSelectedObjects()
+        {
+            _hierarchicObjectInTekla.GetSelectedModedlObjects();
+        }
+
+        internal bool AddBasements()
+        {
+            return _hierarchicObjectInTekla.AttachSelectedDetails();
+        }
+
+        internal bool RemoveBasements()
+        {
+            return _hierarchicObjectInTekla.RemoveSelectedDetailsFromHierarchicObject();
+        }
+        
         #endregion
 
         #region Свойства
@@ -67,120 +83,120 @@ namespace TeklaHierarchicDefinitions.Models
                 OnPropertyChanged();
             }
         }
-        public string Joint
+        public string JointNumber
         {
-            get => joint;
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("JointNumber"); }
             internal set
             {
-                joint = value;
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("JointNumber", value);
                 OnPropertyChanged();
             }
         }
         public string St 
-        { 
-            get=>st; 
-            internal set 
-            { 
-                st = value;
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("St"); }
+            internal set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("St", value);
                 OnPropertyChanged();
-            } 
+            }
         }
         public string Cr
         {
-            get => cr;
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("Cr"); }
             internal set
             {
-                cr = value;
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Cr", value);
                 OnPropertyChanged();
             }
         }
         public string Gr
         {
-            get => gr;
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("Gr"); }
             internal set
             {
-                gr = value;
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Gr", value);
                 OnPropertyChanged();
             }
         }
         public string Sp
         {
-            get => sp;
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("Sp"); }
             internal set
             {
-                sp = value;
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Sp", value);
                 OnPropertyChanged();
             }
         }
         public string Crit
         {
-            get => crit;
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("Crit"); }
             internal set
             {
-                crit = value;
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Crit", value);
                 OnPropertyChanged();
             }
         }
         public double Rx
         {
-            get => rx;
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetDouble("Rx"); }
             internal set
             {
-                rx = value;
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Rx", value);
                 OnPropertyChanged();
             }
         }
         public double Ry
         {
-            get => ry;
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetDouble("Ry"); }
             internal set
             {
-                ry = value;
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Ry", value);
                 OnPropertyChanged();
             }
         }
         public double Rz
         {
-            get => rz;
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetDouble("Rz"); }
             internal set
             {
-                rz = value;
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Rz", value);
                 OnPropertyChanged();
             }
         }
         public double Rux
         {
-            get => rux;
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetDouble("Rux"); }
             internal set
             {
-                rux = value;
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Rux", value);
                 OnPropertyChanged();
             }
         }
         public double Ruy
         {
-            get => ruy;
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetDouble("Ruy"); }
             internal set
             {
-                ruy = value;
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Ruy", value);
                 OnPropertyChanged();
             }
         }
         public double Ruz
         {
-            get => ruz;
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetDouble("Ruz"); }
             internal set
             {
-                ruz = value;
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Ruz", value);
                 OnPropertyChanged();
             }
         }
         public string ForceMark
         {
-            get { return loadName; }
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("ForceMark"); }
             set
             {
-                loadName = value;
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("ForceMark", value);
                 OnPropertyChanged();
             }
         }
@@ -192,22 +208,22 @@ namespace TeklaHierarchicDefinitions.Models
         {
             try
             {
-            ArrayList input = new ArrayList();
-            input.Add(new KeyValuePair<string, string>("BasementMark", BasementMark));
-            input.Add(new KeyValuePair<string, string>("Joint", Joint));
-            input.Add(new KeyValuePair<string, string>("St", St));
-            input.Add(new KeyValuePair<string, string>("Cr", Cr));
-            input.Add(new KeyValuePair<string, string>("Gr", Gr));
-            input.Add(new KeyValuePair<string, string>("Sp", Sp));
-            input.Add(new KeyValuePair<string, string>("Crit", Crit));
-            input.Add(new KeyValuePair<string, string>("Rx", Rx.ToString()));
-            input.Add(new KeyValuePair<string, string>("Ry", Ry.ToString()));
-            input.Add(new KeyValuePair<string, string>("Rz", Rz.ToString()));
-            input.Add(new KeyValuePair<string, string>("Rux", Rux.ToString()));
-            input.Add(new KeyValuePair<string, string>("Ruy", Ruy.ToString()));
-            input.Add(new KeyValuePair<string, string>("Ruz", Ruz.ToString()));
-            input.Add(new KeyValuePair<string, string>("ForceMark", ForceMark));
-            _hierarchicObjectInTekla.HierarchicObjectSetAttributes(input);
+                ArrayList input = new ArrayList();
+                input.Add(new KeyValuePair<string, string>("BasementMark", BasementMark));
+                input.Add(new KeyValuePair<string, string>("Joint", JointNumber));
+                input.Add(new KeyValuePair<string, string>("St", St));
+                input.Add(new KeyValuePair<string, string>("Cr", Cr));
+                input.Add(new KeyValuePair<string, string>("Gr", Gr));
+                input.Add(new KeyValuePair<string, string>("Sp", Sp));
+                input.Add(new KeyValuePair<string, string>("Crit", Crit));
+                input.Add(new KeyValuePair<string, string>("Rx", Rx.ToString()));
+                input.Add(new KeyValuePair<string, string>("Ry", Ry.ToString()));
+                input.Add(new KeyValuePair<string, string>("Rz", Rz.ToString()));
+                input.Add(new KeyValuePair<string, string>("Rux", Rux.ToString()));
+                input.Add(new KeyValuePair<string, string>("Ruy", Ruy.ToString()));
+                input.Add(new KeyValuePair<string, string>("Ruz", Ruz.ToString()));
+                input.Add(new KeyValuePair<string, string>("ForceMark", ForceMark));
+                _hierarchicObjectInTekla.HierarchicObjectSetAttributes(input);
             }
             catch (Exception ex)
             {
@@ -259,6 +275,7 @@ namespace TeklaHierarchicDefinitions.Models
                 return result;
             }
         }
+
 
 
 

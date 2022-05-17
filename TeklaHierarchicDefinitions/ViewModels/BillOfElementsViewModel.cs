@@ -399,6 +399,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         private string newBuildingFragmentName = string.Empty;
         private MyObservableCollection<BuildingFragment> buildingFragments;
         private BuildingFragment _selectedBuildingFragment;
+        private string _selectedFoundationMark;
 
         #endregion
 
@@ -421,6 +422,8 @@ namespace TeklaHierarchicDefinitions.ViewModels
             { 
                 _selectedBuildingFragment = value;
                 OnPropertyChanged();
+                OnPropertyChanged("FoundationGroups");
+                OnPropertyChanged("FoundationMarksList");
             } }
 
         public MyObservableCollection<BuildingFragment> BuildingFragments
@@ -436,18 +439,33 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
-        public MyObservableCollection<FoundationGroup> FoundationGroups
+        public string SelectedFoundationMark
+        {
+            get
+            {
+                return _selectedFoundationMark;
+            }
+            set
+            {
+                _selectedFoundationMark = value;                
+                if (_selectedBuildingFragment != null && _selectedBuildingFragment.FoundationGroups.Count > 0)
+                    _selectedBuildingFragment.FoundationGroups.Where(t => t.BasementMark.Equals(_selectedFoundationMark)).FirstOrDefault().GetSelectedObjects();
+                OnPropertyChanged();
+                OnPropertyChanged("FoundationGroups");
+            }
+        }
+
+        public ObservableCollection<FoundationGroup> FoundationGroups
         {
             get
             {
                 if(_selectedBuildingFragment == null) return null;
-                return _selectedBuildingFragment.FoundationGroups;
-            }
-            set
-            {
-                //foundationGroups = value;
-                OnPropertyChanged();
-
+                if (_selectedFoundationMark == null) return _selectedBuildingFragment.FoundationGroups;
+                else
+                {
+                    return new ObservableCollection<FoundationGroup>(_selectedBuildingFragment.FoundationGroups.Where(t => t.BasementMark.Equals(_selectedFoundationMark)).ToArray());
+                }
+                    
             }
         }
 
@@ -456,7 +474,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             get
             {
                 if (FoundationGroups == null) return null;
-                return new ObservableCollection<string>(FoundationGroups.Select(t => t.BasementMark).ToList());
+                return new ObservableCollection<string>(FoundationGroups.Select(t => t.BasementMark).Distinct().ToList());
             }
         }
 
@@ -473,6 +491,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                         BuildingFragments.Add(new BuildingFragment(NewBuildingFragmentName));
                         OnPropertyChanged("FoundationGroups");
                         OnPropertyChanged("BuildingFragments");
+                        OnPropertyChanged("FoundationMarksList");
                     }, 
                     (obj) => 
                     {
@@ -511,6 +530,37 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 }, (obj) => SelectedBuildingFragment == null ? false : true);
             }
         }
+
+        public ICommand AddObjectsToFoundationGroup
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    var selectedComponents = TeklaDB.ModelGetSelectedComponents();
+                    foreach (var currentFoundationGroup in FoundationGroups)
+                    {
+                        currentFoundationGroup.AddBasements();
+                    }
+                    TeklaDB.model.CommitChanges();
+                }, (obj) => obj == null ? false : (TeklaDB.ModelGetSelectedComponents().Count>0 && ((ListBox)obj).SelectedIndex != -1));
+            }
+        }
+
+        public ICommand RemoveObjectsFromFoundationGroup
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    foreach (var currentFoundationGroup in FoundationGroups)
+                    {
+                        currentFoundationGroup.RemoveBasements();
+                    }
+                }, (obj) => obj == null ? false : (TeklaDB.ModelGetSelectedComponents().Count>0 && ((ListBox)obj).SelectedIndex != -1));
+            }
+        }
+
         #endregion
         #endregion
     }
