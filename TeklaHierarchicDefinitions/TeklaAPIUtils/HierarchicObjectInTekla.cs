@@ -142,18 +142,19 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 
         public bool HierarchicObjectSetAttributes(ArrayList input)
         {
-            foreach(var obj in input)
+            HierarchicObject.Insert();
+            foreach (var obj in input)
             {                
                 var pair = (KeyValuePair<string, string>)obj;
                 string strValue = pair.Value;
                 double doubleValue;
-                if (double.TryParse(pair.Value as string, out doubleValue))
+                if (double.TryParse(pair.Value, out doubleValue))
                 {
                     HierarchicObject.SetUserProperty(pair.Key, doubleValue);
                     continue;
                 }
                 int intValue;
-                if (Int32.TryParse(pair.Value as string, out intValue))
+                if (Int32.TryParse(pair.Value, out intValue))
                 {
                     HierarchicObject.SetUserProperty(pair.Key, intValue);
                     continue;
@@ -161,8 +162,8 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                 if (!strValue.Equals(null))
                     HierarchicObject.SetUserProperty(pair.Key, strValue);
             }
-            return HierarchicObject.Modify();    
-            
+            var c = HierarchicObject.Modify();
+            return c;
         }
 
 
@@ -503,6 +504,17 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         {
             var moenum = _hierarchicObject.GetChildren();
             ArrayList partList = new ArrayList() {};
+            foreach (ModelObject mo in moenum)
+            {
+                partList.Add(mo);
+            }
+            TeklaDB.SelectObjectsInModelView(partList);
+        }
+
+        internal void GetRuledModedlObjects()
+        {
+            var moenum = _hierarchicObject.GetChildren();
+            ArrayList partList = new ArrayList() { };
             foreach (ModelObject mo in moenum)
             {
                 partList.Add(mo);

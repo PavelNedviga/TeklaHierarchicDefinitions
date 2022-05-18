@@ -202,6 +202,44 @@ namespace CustomPropertyHierarchicObject
         }
     }
 
+    /// <summary>The test if part is attached to element list</summary>
+    [Export(typeof(ICustomPropertyPlugin))]
+    [ExportMetadata("CustomProperty", "CUSTOM.HO.IS_IN_FOUNDATION_LIST")]
+    public class CUSTOM_PART_IS_IN_FOUNDATION_LIST : ICustomPropertyPlugin
+    {
+
+        /// <summary>Returns custom property int value for object.</summary>
+        /// <param name="objectId">The object id.</param>
+        /// <returns>The <see cref="int"/>.</returns>
+        public int GetIntegerProperty(int objectId)
+        {
+            if (TeklaHierarchicObject.GetHORootHierarchicDefinition(objectId) != null)
+                return 1;
+            else
+                return 0;
+        }
+
+        /// <summary>Returns custom property string value for object.</summary>
+        /// <param name="objectId">The object id.</param>
+        /// <returns>The <see cref="string"/>.</returns>
+        public string GetStringProperty(int objectId)
+        {
+            if (TeklaHierarchicObject.GetHORootHierarchicDefinition(objectId) != null)
+                return "1";
+            else
+                return "0";
+        }
+
+        /// <summary>Returns custom property double value for object.</summary>
+        /// <param name="objectId">The object id.</param>
+        /// <returns>The <see cref="double"/>.</returns>
+        public double GetDoubleProperty(int objectId)
+        {
+            return GetIntegerProperty(objectId);
+        }
+    }
+
+
     static class TeklaHierarchicObject
     {
         private static Model model = new Model();
@@ -255,6 +293,34 @@ namespace CustomPropertyHierarchicObject
         {
             ModelObject modelObject = TeklaHierarchicObject.model.SelectModelObject(new Tekla.Structures.Identifier(id));
             return modelObject;
+        }
+
+        internal static HierarchicDefinition GetHORootHierarchicDefinition(int id)
+        {
+            ModelObject modelObject = model.SelectModelObject(new Tekla.Structures.Identifier(id));
+            if (modelObject is HierarchicObject)
+            {
+                var ho = (modelObject as HierarchicObject);
+                HierarchicDefinition fatherHierarchicDefinition = new HierarchicDefinition();
+                if (ho.Definition != null)
+                {
+                    fatherHierarchicDefinition.Identifier = ho.Definition.Identifier;
+                    if (fatherHierarchicDefinition.Select())
+                    {
+                        HierarchicDefinition rootFatherHierarchicDefinition = new HierarchicDefinition();
+                        if (fatherHierarchicDefinition.Father != null)
+                        {
+                            rootFatherHierarchicDefinition.Identifier = fatherHierarchicDefinition.Father.Identifier;
+                            if (rootFatherHierarchicDefinition.Select())
+                            {
+                                if (rootFatherHierarchicDefinition.Name == "Foundation_List")
+                                    return rootFatherHierarchicDefinition;
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
         }
     }
 }

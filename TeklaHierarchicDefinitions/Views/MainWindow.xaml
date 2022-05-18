@@ -513,9 +513,9 @@
                          SelectedItem="{Binding SelectedFoundationMark, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                              />
 
-                <!--ItemsSource="{d:SampleData ItemCount=5}"-->                    
+                <!--ItemsSource="{d:SampleData ItemCount=5}"-->
 
-                
+
                 <DataGrid  
                   Grid.Column="2"
                   CanUserDeleteRows="False"
@@ -570,6 +570,7 @@
 
 
                 </DataGrid>
+                <mah:ProgressRing Margin="0,375,0,0" IsActive="{Binding Attaching, UpdateSourceTrigger=Explicit}" Visibility="Visible" VerticalAlignment="Top" Width="40" Height="40"/>
 
             </Grid>
         </TabItem>

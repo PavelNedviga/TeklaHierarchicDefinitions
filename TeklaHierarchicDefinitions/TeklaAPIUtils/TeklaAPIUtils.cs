@@ -207,10 +207,6 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 
             hierarchicObject.Name = name;
             hierarchicObject.Definition = hierarchicDefinition;
-            hierarchicObject.Insert();
-
-            model.CommitChanges();
-
             return hierarchicObject;
         }
 
@@ -430,6 +426,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                 if (detail != null)
                 {
                     detail.Code = hierarchicObject.Name;
+                    hierarchicObject.AddObjects(new ArrayList() { detail.GetPrimaryObject() });
                     detail.Modify();
                 }
             }
@@ -439,6 +436,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         internal static bool RemoveSelectedDetails(HierarchicObject hierarchicObject)
         {
             var modelObjects = ModelGetSelectedComponents();
+            var mo = new ArrayList();
             foreach (var modelObject in modelObjects)
             {
                 Detail detail = modelObject as Detail;
@@ -447,7 +445,9 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     detail.Code = "";
                     detail.Modify();
                 }
+                mo.Add(detail.GetPrimaryObject());
             }
+            hierarchicObject.RemoveObjects(mo);
             return hierarchicObject.RemoveObjects(modelObjects);
         }
 

@@ -12,6 +12,7 @@ using System.IO;
 using System.Windows;
 using NPOI.XSSF.UserModel;
 using NPOI.SS.UserModel;
+using System.Collections;
 
 namespace TeklaHierarchicDefinitions.Models
 {
@@ -21,6 +22,7 @@ namespace TeklaHierarchicDefinitions.Models
 
         private HierarchicDefinition _hierarchicDefinition;
         private MyObservableCollection<FoundationGroup> _foundationGroups = new MyObservableCollection<FoundationGroup>();
+        private MyObservableCollection<FoundationGroup> summaryFoundationGroups = new MyObservableCollection<FoundationGroup>();
         #endregion
 
         #region Конструктор
@@ -93,6 +95,13 @@ namespace TeklaHierarchicDefinitions.Models
 
         internal bool ImportFoundationGroups()
         {
+            Dictionary<string, ArrayList> foundationGroups = new Dictionary<string, ArrayList>();
+            FoundationGroups.ToDictionary(t => t.BasementMark, t =>
+            {
+                var mObjects = new ArrayList();
+                t._hierarchicObjectInTekla.GetRuledModedlObjects();
+                return mObjects;
+            });
             try
             {
                 OpenFileDialog openFileDialog1 = new OpenFileDialog();
@@ -146,11 +155,59 @@ namespace TeklaHierarchicDefinitions.Models
                                 foundationGroupLoad.Ruy = double.Parse(ExcelCellValue(sheet.GetRow(row).GetCell(11)));
                                 foundationGroupLoad.Ruz = double.Parse(ExcelCellValue(sheet.GetRow(row).GetCell(12)));
                                 foundationGroupLoad.ForceMark = ExcelCellValue(sheet.GetRow(row).GetCell(13));
-                                foundationGroupLoad.UpdateAndInsert();
-                                FoundationGroups.Add(foundationGroupLoad);
+                                //foundationGroupLoad.UpdateAndInsert();
+                                summaryFoundationGroups.Add(foundationGroupLoad);
                             }
                         }
-                        TeklaDB.model.CommitChanges(this.BuildingFragmentMark + ": added load");
+                        foreach (var mark in summaryFoundationGroups.Select(t=>t.BasementMark).Distinct())
+                        {
+                            var filtered = summaryFoundationGroups.Where(t => t.BasementMark.Equals(mark));
+                            MyObservableCollection<FoundationGroup> ff = new MyObservableCollection<FoundationGroup>();
+                            if (filtered.Select(t=>t.Rx).Distinct().Count()>1)
+                            {
+                                FoundationGroups.Add(filtered.Where(t => t.Rx.Equals(filtered.Select(z => z.Rx).Max())).FirstOrDefault());
+                                FoundationGroups.Add(filtered.Where(t => t.Rx.Equals(filtered.Select(z => z.Rx).Min())).FirstOrDefault());
+                            }
+                            if (filtered.Select(t => t.Ry).Distinct().Count() > 1)
+                            {
+                                FoundationGroups.Add(filtered.Where(t => t.Ry.Equals(filtered.Select(z => z.Ry).Max())).FirstOrDefault());
+                                FoundationGroups.Add(filtered.Where(t => t.Ry.Equals(filtered.Select(z => z.Ry).Min())).FirstOrDefault());
+                            }
+                            if (filtered.Select(t => t.Rz).Distinct().Count() > 1)
+                            {
+                                FoundationGroups.Add(filtered.Where(t => t.Rz.Equals(filtered.Select(z => z.Rz).Max())).FirstOrDefault());
+                                FoundationGroups.Add(filtered.Where(t => t.Rz.Equals(filtered.Select(z => z.Rz).Min())).FirstOrDefault());
+                            
+                            }
+                            if (filtered.Select(t => t.Rux).Distinct().Count() > 1)
+                            {
+                                FoundationGroups.Add(filtered.Where(t => t.Rux.Equals(filtered.Select(z => z.Rux).Max())).FirstOrDefault()); 
+                                FoundationGroups.Add(filtered.Where(t => t.Rux.Equals(filtered.Select(z => z.Rux).Min())).Where(c => c.Rux != 0).FirstOrDefault());
+
+                            }
+                            if (filtered.Select(t => t.Ruy).Distinct().Count() > 1)
+                            {
+                                FoundationGroups.Add(filtered.Where(t => t.Ruy.Equals(filtered.Select(z => z.Ruy).Max())).Where(c => c.Ruy != 0).FirstOrDefault());
+                                FoundationGroups.Add(filtered.Where(t => t.Ruy.Equals(filtered.Select(z => z.Ruy).Min())).Where(c => c.Ruy != 0).FirstOrDefault());
+
+                            }
+                            if (filtered.Select(t => t.Ruz).Distinct().Count() > 1)
+                            {
+                                FoundationGroups.Add(filtered.Where(t => t.Ruz.Equals(filtered.Select(z => z.Ruz).Max())).Where(c => c.Ruz != 0).FirstOrDefault());
+                                FoundationGroups.Add(filtered.Where(t => t.Ruz.Equals(filtered.Select(z => z.Ruz).Min())).Where(c => c.Ruz != 0).FirstOrDefault());
+                            }
+                        }
+                        foreach (var fg in FoundationGroups)
+                        {
+                            fg.UpdateAndInsert();
+                            double ht = -500000;
+                            fg._hierarchicObjectInTekla.HierarchicObject.GetUserProperty("Rx", ref ht);
+                            var tt = ht;
+                        }
+                            
+
+                        TeklaDB.model.CommitChanges(BuildingFragmentMark + ": added "+ FoundationGroups.Count + " loads");
+
                     }
                     catch (Exception ex)
                     {
@@ -236,6 +293,14 @@ namespace TeklaHierarchicDefinitions.Models
 
                 default:
                     throw new ArgumentException(message: "invalid value", paramName: nameof(cell));
+            }
+        }
+
+        internal void RemoveAllBasements()
+        {
+            foreach(var fg in FoundationGroups)
+            {
+                fg.RemoveBasements();
             }
         }
         #endregion

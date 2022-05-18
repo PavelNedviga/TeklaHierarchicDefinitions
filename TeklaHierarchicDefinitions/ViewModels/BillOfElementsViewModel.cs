@@ -16,6 +16,7 @@ using Tekla.Structures.Dialog;
 using Tekla.Structures.Dialog.UIControls;
 using DataGrid = System.Windows.Controls.DataGrid;
 using System.Collections;
+using System.Threading;
 
 namespace TeklaHierarchicDefinitions.ViewModels
 {
@@ -192,6 +193,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 boe.InstantUpdate = instantUpdateFlag;
             }
         }
+        
         #endregion
 
         #region Команды
@@ -400,6 +402,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         private MyObservableCollection<BuildingFragment> buildingFragments;
         private BuildingFragment _selectedBuildingFragment;
         private string _selectedFoundationMark;
+        private bool _attaching = false;
 
         #endregion
 
@@ -449,7 +452,8 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 _selectedFoundationMark = value;                
                 if (_selectedBuildingFragment != null && _selectedBuildingFragment.FoundationGroups.Count > 0)
-                    _selectedBuildingFragment.FoundationGroups.Where(t => t.BasementMark.Equals(_selectedFoundationMark)).FirstOrDefault().GetSelectedObjects();
+                    if (_selectedFoundationMark != null)
+                        _selectedBuildingFragment.FoundationGroups.Where(t => t.BasementMark.Equals(_selectedFoundationMark)).FirstOrDefault().GetSelectedObjects();
                 OnPropertyChanged();
                 OnPropertyChanged("FoundationGroups");
             }
@@ -478,9 +482,22 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        public bool Attaching
+        {
+            get
+            {
+                return _attaching;
+            }
+            set
+            {
+                _attaching = value;
+                OnPropertyChanged("Attaching");                
+            }
+
+        }
         #endregion
 
-            #region Команды
+        #region Команды
         public ICommand AddBuildingFragment
         {
             get
@@ -537,13 +554,27 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
-                    var selectedComponents = TeklaDB.ModelGetSelectedComponents();
-                    foreach (var currentFoundationGroup in FoundationGroups)
+                    
+                    Thread thread = new Thread(() =>
                     {
-                        currentFoundationGroup.AddBasements();
-                    }
-                    TeklaDB.model.CommitChanges();
-                }, (obj) => obj == null ? false : (TeklaDB.ModelGetSelectedComponents().Count>0 && ((ListBox)obj).SelectedIndex != -1));
+                        try
+                        {
+                            Attaching = true;
+                            var selectedComponents = TeklaDB.ModelGetSelectedComponents();
+                            SelectedBuildingFragment.RemoveAllBasements();
+                            foreach (var currentFoundationGroup in FoundationGroups)
+                            {                                
+                                currentFoundationGroup.AddBasements();
+                            }
+                            TeklaDB.model.CommitChanges();
+                            Attaching = false;
+                        }
+                        catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+
+                    });
+                    thread.IsBackground = true;
+                    thread.Start(); 
+                }, (obj) => obj == null ? false : (TeklaDB.ModelGetSelectedComponents().Count>0 && ((ListBox)obj).SelectedIndex != -1) && !Attaching);
             }
         }
 
@@ -553,14 +584,20 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
-                    foreach (var currentFoundationGroup in FoundationGroups)
+                    Thread thread = new Thread(() =>
                     {
-                        currentFoundationGroup.RemoveBasements();
-                    }
-                }, (obj) => obj == null ? false : (TeklaDB.ModelGetSelectedComponents().Count>0 && ((ListBox)obj).SelectedIndex != -1));
+                        Attaching = true;
+                        foreach (var currentFoundationGroup in FoundationGroups)
+                        {
+                            currentFoundationGroup.RemoveBasements();
+                        }
+                        Attaching = false;
+                    });
+                    thread.IsBackground = true;
+                    thread.Start();
+                }, (obj) => obj == null ? false : (TeklaDB.ModelGetSelectedComponents().Count>0 && ((ListBox)obj).SelectedIndex != -1 && !Attaching));
             }
         }
-
         #endregion
         #endregion
     }
