@@ -510,10 +510,10 @@
                 </StackPanel>
                 <ListBox Margin="10" Grid.Column="1" Height="Auto" Name="FoundationList"
                          ItemsSource="{Binding FoundationMarksList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                         SelectedItem="{Binding SelectedFoundationMark, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
-                             />
+                         SelectedItem="{Binding SelectedFoundationMark, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"                             >
+                </ListBox>
 
-                <!--ItemsSource="{d:SampleData ItemCount=5}"-->
+                    <!--ItemsSource="{d:SampleData ItemCount=5}"-->
 
 
                 <DataGrid  

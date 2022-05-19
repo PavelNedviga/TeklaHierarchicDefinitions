@@ -332,6 +332,12 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             return result;
         }
 
+
+        public static bool SelectObjectsInModelView(ArrayList partList)
+        {
+            return modelObjectSelector.Select(partList);
+        }
+
         public static ArrayList ModelGetSelectedComponents()
         {
             ArrayList components = new ArrayList();
@@ -397,12 +403,6 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             return arrayList;
         }
 
-        public static bool SelectObjectsInModelView(ArrayList partList)
-        {
-            Tekla.Structures.Model.UI.ModelObjectSelector modelObjectSelector = new Tekla.Structures.Model.UI.ModelObjectSelector();
-            return modelObjectSelector.Select(partList);
-        }
-
         /// <summary>
         /// Прикрепляет детали к иерархическому объекту, попутно удаляя их из уже имеющихся прикреплений
         /// </summary>
@@ -413,6 +413,16 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             RemoveSelectedModedlObjectsFromHierarchicObject();
             bool res = hierarchicObject.AddObjects(GetSelectedModelObjects());
             return hierarchicObject.Modify();
+        }
+
+        internal static bool AttachModedlObjects(HierarchicObject hierarchicObject, List<ModelObject> modelObjects)
+        {
+            var mol = new ArrayList(modelObjects);
+            bool res = hierarchicObject.AddObjects( mol);
+            bool ggg = hierarchicObject.Modify();
+            var gg = hierarchicObject.GetChildren();
+            return ggg;
+
         }
 
         internal static bool AttachSelectedDetails(HierarchicObject hierarchicObject)

@@ -71,7 +71,7 @@ namespace TeklaHierarchicDefinitions.Models
             return _hierarchicObjectInTekla.RemoveSelectedDetailsFromHierarchicObject();
         }
 
-        internal void UpdateAndInsert()
+        internal void UpdateAndInsert(Dictionary<string, List<ModelObject>> existingGroups)
         {
 
             ArrayList input = new ArrayList();
@@ -89,6 +89,10 @@ namespace TeklaHierarchicDefinitions.Models
             input.Add(new KeyValuePair<string, string>("Ruz", ruz.ToString()));
             input.Add(new KeyValuePair<string, string>("ForceMark", forceMark));
             _hierarchicObjectInTekla.HierarchicObjectSetAttributes(input);
+            if (existingGroups.ContainsKey(BasementMark))
+            {
+                TeklaDB.AttachModedlObjects(_hierarchicObjectInTekla.HierarchicObject, existingGroups[BasementMark]);
+            }
             OnPropertyChanged("BasementMark");
             OnPropertyChanged("Joint");
             OnPropertyChanged("St");

@@ -33,10 +33,10 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         internal BuildingFragment(HierarchicDefinition buildingFragmentDefinition)
-        {            
+        {
 
             _hierarchicDefinition = TeklaDB.GetHierarchicDefinition(buildingFragmentDefinition.Identifier) as HierarchicDefinition;
-            foreach(var mo in _hierarchicDefinition.GetChildren())
+            foreach (var mo in _hierarchicDefinition.GetChildren())
             {
                 if (mo is HierarchicObject)
                 {
@@ -63,10 +63,10 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
 
-        public MyObservableCollection<FoundationGroup> FoundationGroups 
-        { 
+        public MyObservableCollection<FoundationGroup> FoundationGroups
+        {
             get => _foundationGroups;
-            set 
+            set
             {
                 _foundationGroups = value;
 
@@ -76,9 +76,9 @@ namespace TeklaHierarchicDefinitions.Models
 
         public List<string> FoundationMarks
         {
-            get 
-            {                
-                return FoundationGroups.Select(t => t.BasementMark).ToList(); 
+            get
+            {
+                return FoundationGroups.Select(t => t.BasementMark).ToList();
             }
         }
         #endregion
@@ -88,22 +88,20 @@ namespace TeklaHierarchicDefinitions.Models
         {
             foreach (var fg in FoundationGroups)
             {
-                fg.Delete();                
+                fg.Delete();
             }
             TeklaDB.DeleteHierarchicDefinition(_hierarchicDefinition);
         }
 
         internal bool ImportFoundationGroups()
         {
-            Dictionary<string, ArrayList> foundationGroups = new Dictionary<string, ArrayList>();
-            FoundationGroups.ToDictionary(t => t.BasementMark, t =>
-            {
-                var mObjects = new ArrayList();
-                t._hierarchicObjectInTekla.GetRuledModedlObjects();
-                return mObjects;
-            });
-            try
-            {
+            //try
+            //{
+                Dictionary<string, List<ModelObject>> existingGroups = new Dictionary<string, List<ModelObject>>();
+                if (FoundationGroups != null)
+                {
+                    existingGroups = FoundationGroups.GroupBy(t => t.BasementMark).ToDictionary(t => t.Key, t => t.FirstOrDefault()._hierarchicObjectInTekla.GetRuledModedlObjects());
+                }
                 OpenFileDialog openFileDialog1 = new OpenFileDialog();
 
                 openFileDialog1.InitialDirectory = TeklaDB.model.GetInfo().ModelPath;
@@ -120,8 +118,7 @@ namespace TeklaHierarchicDefinitions.Models
                 if (File.Exists(path)) //& !IsFileLocked(new FileInfo(path))
 
                 {
-                    try
-                    {
+                  
                         XSSFWorkbook hssfwb;
                         using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
                         {
@@ -163,43 +160,52 @@ namespace TeklaHierarchicDefinitions.Models
                         {
                             var filtered = summaryFoundationGroups.Where(t => t.BasementMark.Equals(mark));
                             MyObservableCollection<FoundationGroup> ff = new MyObservableCollection<FoundationGroup>();
-                            if (filtered.Select(t=>t.Rx).Distinct().Count()>1)
+                            if (filtered.Select(t => t.Rx).Distinct().Count()>1)
                             {
-                                FoundationGroups.Add(filtered.Where(t => t.Rx.Equals(filtered.Select(z => z.Rx).Max())).FirstOrDefault());
-                                FoundationGroups.Add(filtered.Where(t => t.Rx.Equals(filtered.Select(z => z.Rx).Min())).FirstOrDefault());
+                                var max = filtered.Where(t => t.Rx.Equals(filtered.Select(z => z.Rx).Max())).FirstOrDefault();
+                                var min = filtered.Where(t => t.Rx.Equals(filtered.Select(z => z.Rx).Min())).FirstOrDefault();
+                                FoundationGroups.Add(max);
+                                FoundationGroups.Add(min);
                             }
                             if (filtered.Select(t => t.Ry).Distinct().Count() > 1)
                             {
-                                FoundationGroups.Add(filtered.Where(t => t.Ry.Equals(filtered.Select(z => z.Ry).Max())).FirstOrDefault());
-                                FoundationGroups.Add(filtered.Where(t => t.Ry.Equals(filtered.Select(z => z.Ry).Min())).FirstOrDefault());
+                                var max = filtered.Where(t => t.Ry.Equals(filtered.Select(z => z.Ry).Max())).FirstOrDefault();
+                                var min = filtered.Where(t => t.Ry.Equals(filtered.Select(z => z.Ry).Min())).FirstOrDefault();
+                                FoundationGroups.Add(max);
+                                FoundationGroups.Add(min);
                             }
                             if (filtered.Select(t => t.Rz).Distinct().Count() > 1)
                             {
-                                FoundationGroups.Add(filtered.Where(t => t.Rz.Equals(filtered.Select(z => z.Rz).Max())).FirstOrDefault());
-                                FoundationGroups.Add(filtered.Where(t => t.Rz.Equals(filtered.Select(z => z.Rz).Min())).FirstOrDefault());
-                            
+                                var max = filtered.Where(t => t.Rz.Equals(filtered.Select(z => z.Rz).Max())).FirstOrDefault();
+                                var min = filtered.Where(t => t.Rz.Equals(filtered.Select(z => z.Rz).Min())).FirstOrDefault();
+                                FoundationGroups.Add(max);
+                                FoundationGroups.Add(min);
                             }
                             if (filtered.Select(t => t.Rux).Distinct().Count() > 1)
                             {
-                                FoundationGroups.Add(filtered.Where(t => t.Rux.Equals(filtered.Select(z => z.Rux).Max())).FirstOrDefault()); 
-                                FoundationGroups.Add(filtered.Where(t => t.Rux.Equals(filtered.Select(z => z.Rux).Min())).Where(c => c.Rux != 0).FirstOrDefault());
-
+                                var max =filtered.Where(t => t.Rux.Equals(filtered.Select(z => z.Rux).Max())).FirstOrDefault();
+                                var min =filtered.Where(t => t.Rux.Equals(filtered.Select(z => z.Rux).Min())).Where(c => c.Rux != 0).FirstOrDefault();
+                                FoundationGroups.Add(min); 
+                                FoundationGroups.Add(max);
                             }
                             if (filtered.Select(t => t.Ruy).Distinct().Count() > 1)
                             {
-                                FoundationGroups.Add(filtered.Where(t => t.Ruy.Equals(filtered.Select(z => z.Ruy).Max())).Where(c => c.Ruy != 0).FirstOrDefault());
-                                FoundationGroups.Add(filtered.Where(t => t.Ruy.Equals(filtered.Select(z => z.Ruy).Min())).Where(c => c.Ruy != 0).FirstOrDefault());
-
+                                var max =filtered.Where(t => t.Ruy.Equals(filtered.Select(z => z.Ruy).Max())).Where(c => c.Ruy != 0).FirstOrDefault();
+                                var min =filtered.Where(t => t.Ruy.Equals(filtered.Select(z => z.Ruy).Min())).Where(c => c.Ruy != 0).FirstOrDefault();
+                                FoundationGroups.Add(max);
+                                FoundationGroups.Add(min);
                             }
                             if (filtered.Select(t => t.Ruz).Distinct().Count() > 1)
                             {
-                                FoundationGroups.Add(filtered.Where(t => t.Ruz.Equals(filtered.Select(z => z.Ruz).Max())).Where(c => c.Ruz != 0).FirstOrDefault());
-                                FoundationGroups.Add(filtered.Where(t => t.Ruz.Equals(filtered.Select(z => z.Ruz).Min())).Where(c => c.Ruz != 0).FirstOrDefault());
+                                var max =filtered.Where(t => t.Ruz.Equals(filtered.Select(z => z.Ruz).Max())).Where(c => c.Ruz != 0).FirstOrDefault();
+                                var min =filtered.Where(t => t.Ruz.Equals(filtered.Select(z => z.Ruz).Min())).Where(c => c.Ruz != 0).FirstOrDefault();
+                                FoundationGroups.Add(max);
+                                FoundationGroups.Add(min);
                             }
                         }
                         foreach (var fg in FoundationGroups)
                         {
-                            fg.UpdateAndInsert();
+                            fg.UpdateAndInsert(existingGroups);
                             double ht = -500000;
                             fg._hierarchicObjectInTekla.HierarchicObject.GetUserProperty("Rx", ref ht);
                             var tt = ht;
@@ -208,23 +214,20 @@ namespace TeklaHierarchicDefinitions.Models
 
                         TeklaDB.model.CommitChanges(BuildingFragmentMark + ": added "+ FoundationGroups.Count + " loads");
 
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Ошибка: проверьте качество заполнения шаблона Excel");
-                        return false;
-                    }
                 }
                 else
                 {
                     MessageBox.Show("Файл Excel либо отсутствует, либо используется");
                     return false;
                 }
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+
+        //}
+        //catch (Exception ex)
+        //{
+        //    MessageBox.Show("Ошибка: проверьте качество заполнения шаблона Excel");
+        //    return false;
+        //}
+
             return true;
         }
         #endregion

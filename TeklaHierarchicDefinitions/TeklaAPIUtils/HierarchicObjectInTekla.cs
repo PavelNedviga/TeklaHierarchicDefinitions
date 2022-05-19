@@ -504,22 +504,30 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         {
             var moenum = _hierarchicObject.GetChildren();
             ArrayList partList = new ArrayList() {};
-            foreach (ModelObject mo in moenum)
+
+            if (moenum != null)
             {
-                partList.Add(mo);
+                foreach (ModelObject mo in moenum)
+                {
+                    partList.Add(mo);
+                }
             }
+
             TeklaDB.SelectObjectsInModelView(partList);
         }
 
-        internal void GetRuledModedlObjects()
+        internal List<ModelObject> GetRuledModedlObjects()
         {
             var moenum = _hierarchicObject.GetChildren();
-            ArrayList partList = new ArrayList() { };
-            foreach (ModelObject mo in moenum)
+            List<ModelObject> partList = new List<ModelObject>();
+            if (moenum != null)
             {
-                partList.Add(mo);
+                foreach (ModelObject mo in moenum)
+                {
+                    partList.Add(mo);
+                }
             }
-            TeklaDB.SelectObjectsInModelView(partList);
+            return partList;
         }
 
         internal bool SetPropertiesForAttachingParts(

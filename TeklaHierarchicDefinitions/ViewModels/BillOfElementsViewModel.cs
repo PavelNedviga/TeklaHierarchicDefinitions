@@ -540,9 +540,15 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
-                    SelectedBuildingFragment.ImportFoundationGroups();
-                    OnPropertyChanged("FoundationMarksList");
-                    OnPropertyChanged("FoundationGroups");
+                        try
+                        {
+                            Attaching = true;
+                            SelectedBuildingFragment.ImportFoundationGroups();
+                            OnPropertyChanged("FoundationMarksList");
+                            OnPropertyChanged("FoundationGroups");
+                            Attaching = false;
+                        }
+                        catch (Exception ex) { MessageBox.Show(ex.ToString()); }
 
                 }, (obj) => SelectedBuildingFragment == null ? false : true);
             }
