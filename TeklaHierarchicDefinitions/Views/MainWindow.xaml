@@ -105,6 +105,16 @@
                         <DataGridTextColumn Header="{tsd:Loc albl_Material}" Binding="{Binding Material, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="{tsd:Loc albl_Profile}" Binding="{Binding Profile, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <DataGridTextColumn Header="{tsd:Loc albl_ProfileForSpec}" Binding="{Binding ProfileForSpec, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <Label Content="Start="/>
+                                        <Label Content="End="/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="M"  >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -114,13 +124,13 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <DockPanel Grid.Row="0">
-                                            <Label Content="Start="/>
+                                            
                                             <TextBox Text="{Binding M,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" 
                                              IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
 
                                         </DockPanel>
                                         <DockPanel Grid.Row="1">
-                                            <Label Content="End="/>
+                                            
                                             <TextBox Text="{Binding M_end,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" 
                                              IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
                                         </DockPanel>
@@ -128,7 +138,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="N"  >
+                        <DataGridTemplateColumn Header="N раст"  >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -140,25 +150,35 @@
                                             <ColumnDefinition/>
                                             <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
-                                        <DockPanel Grid.Row="0" Grid.Column="0">
-                                            <Label Content="Smax="/>
+                                        <DockPanel Grid.Row="0" Grid.Column="0">                                            
                                             <TextBox Text="{Binding N, UpdateSourceTrigger=PropertyChanged}" 
                                              IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
 
                                         </DockPanel>
-                                        <DockPanel Grid.Row="1" Grid.Column="0">
-                                            <Label Content="Emax="/>
+                                        <DockPanel Grid.Row="1" Grid.Column="0">                                            
                                             <TextBox Text="{Binding N_end, UpdateSourceTrigger=PropertyChanged}" 
                                              IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
                                         </DockPanel>
-                                        <DockPanel Grid.Row="0" Grid.Column="1">
-                                            <Label Content="Smin="/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="N сж"  >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>                                            
+                                        </Grid.ColumnDefinitions>
+                                        <DockPanel Grid.Row="0" >                                            
                                             <TextBox Text="{Binding N_start_min, UpdateSourceTrigger=PropertyChanged}" 
                                              IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
-
                                         </DockPanel>
-                                        <DockPanel Grid.Row="1" Grid.Column="1">
-                                            <Label Content="Emin="/>
+                                        <DockPanel Grid.Row="1" >                                            
                                             <TextBox Text="{Binding N_end_min, UpdateSourceTrigger=PropertyChanged}" 
                                              IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
                                         </DockPanel>
@@ -175,13 +195,11 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <DockPanel Grid.Row="0">
-                                            <Label Content="S="/>
                                             <TextBox Text="{Binding Q, UpdateSourceTrigger=PropertyChanged}" 
                                              IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
 
                                         </DockPanel>
                                         <DockPanel Grid.Row="1">
-                                            <Label Content="E="/>
                                             <TextBox Text="{Binding Q_end, UpdateSourceTrigger=PropertyChanged}" 
                                              IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
                                         </DockPanel>
@@ -190,7 +208,8 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTextColumn Header="{tsd:Loc albl_NSummary}" Binding="{Binding N_summary, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTemplateColumn Header="{tsd:Loc albl_MomentConnections}"  >
+
+                        <!--DataGridTemplateColumn Header="{tsd:Loc albl_MomentConnections}"  >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -211,7 +230,7 @@
                                     </Grid>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                        </DataGridTemplateColumn-->
                         <DataGridTemplateColumn Header="{tsd:Loc albl_FrictionConnections}"  >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -234,7 +253,17 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-
+                        <DataGridTemplateColumn Header="{tsd:Loc albl_RotationNotAllowed}"  >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox Grid.Row="0" 
+                                            SelectedValue="{Binding RotNotAllowed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            ItemsSource="{Binding RotationOptions, Mode=TwoWay}"
+                                            SelectedValuePath="Key"
+                                            DisplayMemberPath="Value" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                         <DataGridTextColumn Header="{tsd:Loc albl_Notes}" Binding="{Binding Notes, UpdateSourceTrigger=PropertyChanged}"/>
 
                         <DataGridTextColumn Header="{tsd:Loc albl_Sketch}" Binding="{Binding Sketch, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
@@ -489,7 +518,13 @@
                     <ListBox MinHeight="120" Margin="10" VerticalAlignment="Stretch" Height="150"
                              ItemsSource="{Binding BuildingFragments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                              SelectedItem="{Binding SelectedBuildingFragment, Mode=OneWayToSource, UpdateSourceTrigger=Default}"
-                             DisplayMemberPath="BuildingFragmentMark"/>
+                             >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding BuildingFragmentMark, Mode=TwoWay, UpdateSourceTrigger=Default}" Style="{DynamicResource MahApps.Styles.TextBox}" HorizontalAlignment="Left" Margin="20,0"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                     <Button Grid.Column="0" Height="30" Margin="10" Content="Импорт" 
                             Command="{Binding ImportBuildingFragment}"/>
                     <DockPanel HorizontalAlignment="Stretch">
@@ -510,10 +545,9 @@
                 </StackPanel>
                 <ListBox Margin="10" Grid.Column="1" Height="Auto" Name="FoundationList"
                          ItemsSource="{Binding FoundationMarksList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                         SelectedItem="{Binding SelectedFoundationMark, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"                             >
-                </ListBox>
+                         SelectedItem="{Binding SelectedFoundationMark, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <!--ItemsSource="{d:SampleData ItemCount=5}"-->
+                <!--ItemsSource="{d:SampleData ItemCount=5}"-->
 
 
                 <DataGrid  

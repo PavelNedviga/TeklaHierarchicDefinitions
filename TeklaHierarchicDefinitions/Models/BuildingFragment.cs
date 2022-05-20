@@ -55,7 +55,7 @@ namespace TeklaHierarchicDefinitions.Models
         public string BuildingFragmentMark
         {
             get { return _hierarchicDefinition.Name; }
-            private set
+            set
             {
                 _hierarchicDefinition.Name = value;
                 OnPropertyChanged();

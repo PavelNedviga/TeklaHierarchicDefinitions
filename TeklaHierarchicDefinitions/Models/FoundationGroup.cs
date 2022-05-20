@@ -127,7 +127,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get 
             {
-                var res = _hierarchicObjectInTekla.HierarchicObjectGetAttr("Joint");
+                var res = _hierarchicObjectInTekla.HierarchicObjectGetIntAttr("Joint").ToString();
                 if (res.Length > 0)
                     return res;
                 return joint; 

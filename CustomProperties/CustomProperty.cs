@@ -202,7 +202,7 @@ namespace CustomPropertyHierarchicObject
         }
     }
 
-    /// <summary>The test if part is attached to element list</summary>
+    /// <summary>The test if part is attached to foundation list</summary>
     [Export(typeof(ICustomPropertyPlugin))]
     [ExportMetadata("CustomProperty", "CUSTOM.HO.IS_IN_FOUNDATION_LIST")]
     public class CUSTOM_PART_IS_IN_FOUNDATION_LIST : ICustomPropertyPlugin
@@ -228,6 +228,43 @@ namespace CustomPropertyHierarchicObject
                 return "1";
             else
                 return "0";
+        }
+
+        /// <summary>Returns custom property double value for object.</summary>
+        /// <param name="objectId">The object id.</param>
+        /// <returns>The <see cref="double"/>.</returns>
+        public double GetDoubleProperty(int objectId)
+        {
+            return GetIntegerProperty(objectId);
+        }
+    }
+
+    /// <summary>The test if part is attached to element list</summary>
+    [Export(typeof(ICustomPropertyPlugin))]
+    [ExportMetadata("CustomProperty", "CUSTOM.PART.BASE_MARK")]
+    public class CUSTOM_PART_BASE_MARK : ICustomPropertyPlugin
+    {
+
+        /// <summary>Returns custom property int value for object.</summary>
+        /// <param name="objectId">The object id.</param>
+        /// <returns>The <see cref="int"/>.</returns>
+        public int GetIntegerProperty(int objectId)
+        {
+            string baseMark = string.Empty;
+            if (TeklaHierarchicObject.GetBaseMark(objectId, ref baseMark))
+                return 1;
+            else
+                return 0;
+        }
+
+        /// <summary>Returns custom property string value for object.</summary>
+        /// <param name="objectId">The object id.</param>
+        /// <returns>The <see cref="string"/>.</returns>
+        public string GetStringProperty(int objectId)
+        {
+            string baseMark = string.Empty;
+            TeklaHierarchicObject.GetBaseMark(objectId, ref baseMark);
+            return baseMark;
         }
 
         /// <summary>Returns custom property double value for object.</summary>
@@ -321,6 +358,25 @@ namespace CustomPropertyHierarchicObject
                 }
             }
             return null;
+        }
+
+        internal static bool GetBaseMark(int objectId, ref string baseMark)
+        {
+            ModelObject modelObject = model.SelectModelObject(new Tekla.Structures.Identifier(objectId));
+            if (modelObject is Part)
+            {
+                var part = (modelObject as Part);
+                foreach (var mo in part.GetHierarchicObjects())
+                {
+                    var ho = (mo as HierarchicObject);
+                    if (TeklaHierarchicObject.GetHORootHierarchicDefinition(ho.Identifier.ID) != null)
+                    {
+                        baseMark = ho.Name;
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }

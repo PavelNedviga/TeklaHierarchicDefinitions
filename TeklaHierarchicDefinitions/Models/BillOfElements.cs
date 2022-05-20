@@ -68,6 +68,7 @@ namespace TeklaHierarchicDefinitions.Models
             M = "";
             StartFrictionConnection = -1;
             EndFrictionConnection = -1;
+            RotNotAllowed = -1;
             StartMomentConnection = 0;
             EndMomentConnection = 0;
             Material = "C255";
@@ -101,6 +102,10 @@ namespace TeklaHierarchicDefinitions.Models
                 new KeyValuePair<int, string>(-1, "No"),
                 new KeyValuePair<int, string>(0, "Yes")
             };
+        private static KeyValuePair<int, string>[] rotNotAllowed = {
+                new KeyValuePair<int, string>(-1, "Yes"),
+                new KeyValuePair<int, string>(0, "No")
+            };
         private static KeyValuePair<int, string>[] frictionConnection = {
                 new KeyValuePair<int, string>(-1, ""),
                 new KeyValuePair<int, string>(0, "No"),
@@ -116,6 +121,15 @@ namespace TeklaHierarchicDefinitions.Models
             get
             {
                 return momentConnection;
+            }
+            set { }
+        }
+
+        public KeyValuePair<int, string>[] RotationOptions
+        {
+            get
+            {
+                return rotNotAllowed;
             }
             set { }
         }
@@ -301,14 +315,12 @@ namespace TeklaHierarchicDefinitions.Models
                 if (double.TryParse(value, out momentConn))
                 {
                     if (momentConn != 0)
-                        StartMomentConnection = 1;
-                    else
                         StartMomentConnection = 0;
+                    else
+                        StartMomentConnection = -1;
                 }
                 OnPropertyChanged("M");
                 OnPropertyChanged("M_end");
-                OnPropertyChanged("StartMomentConnection");
-                OnPropertyChanged("EndMomentConnection");
                 OnPropertyChanged("M_summary");
             }
         }
@@ -326,12 +338,11 @@ namespace TeklaHierarchicDefinitions.Models
                 if (double.TryParse(value, out momentConn))
                 {
                     if (momentConn != 0)
-                        EndMomentConnection = 1;
-                    else
                         EndMomentConnection = 0;
+                    else
+                        EndMomentConnection = -1;
                 }                
                 OnPropertyChanged("M_end");
-                OnPropertyChanged("EndMomentConnection");
                 OnPropertyChanged("M_summary");
             }
         }
@@ -372,7 +383,19 @@ namespace TeklaHierarchicDefinitions.Models
                 OnPropertyChanged();
             }
         }
-        
+
+        public int RotNotAllowed
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetIntAttr("RotNotAllowed"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("RotNotAllowed", value);
+                if (_instantUpdate)
+                    _hierarchicObjectInTekla.PartsSetAttr("ROT_NOT_ALLOWED", value);
+                OnPropertyChanged();
+            }
+        }
+
         public int StartFrictionConnection
         {
             get { return _hierarchicObjectInTekla.HierarchicObjectGetIntAttr("StartFrictionConn"); }

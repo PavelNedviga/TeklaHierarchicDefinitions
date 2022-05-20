@@ -661,6 +661,26 @@ string_utf8 albl_FoundationLoads
 };
 
 
+string_utf8 albl_RotationNotAllowed
+{
+    entry = ("enu", "Consider rotation");
+    entry = ("chs", "Consider rotation");
+    entry = ("cht", "Consider rotation");
+    entry = ("csy", "Consider rotation");
+    entry = ("deu", "Consider rotation");
+    entry = ("esp", "Consider rotation");
+    entry = ("fra", "Consider rotation");
+    entry = ("hun", "Consider rotation");
+    entry = ("ita", "Consider rotation");
+    entry = ("jpn", "Consider rotation");
+    entry = ("kor", "Consider rotation");
+    entry = ("nld", "Consider rotation");
+    entry = ("plk", "Consider rotation");
+    entry = ("ptb", "Consider rotation");
+    entry = ("ptg", "Consider rotation");
+    entry = ("rus", "Учит.поворот");
+};
+
 string_utf8 albl_
 {
     entry = ("enu", "Temp");
