@@ -7,10 +7,11 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using Tekla.Structures.Model;
 using TeklaHierarchicDefinitions.TeklaAPIUtils;
+using Object = System.Object;
 
 namespace TeklaHierarchicDefinitions.Models
 {
-    public class FoundationGroup : INotifyPropertyChanged, IDataErrorInfo
+    public class FoundationGroup : INotifyPropertyChanged, IDataErrorInfo, IEquatable<FoundationGroup>
     {
         #region Внутренние параметры объекта        
         public HierarchicObjectInTekla _hierarchicObjectInTekla;
@@ -110,6 +111,23 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
 
+        public bool Equals(FoundationGroup other)
+        {
+            //Check whether the compared object is null.
+            if (Object.ReferenceEquals(other, null)) return false;
+
+            //Check whether the compared object references the same data.
+            if (Object.ReferenceEquals(this, other)) return true;
+
+            //Check whether the products' properties are equal.
+            return BasementMark.Equals(other.BasementMark) 
+                && Rx.Equals(other.Rx)
+                && Ry.Equals(other.Ry)
+                && Rz.Equals(other.Rz)
+                && Rux.Equals(other.Rux)
+                && Ruy.Equals(other.Ruy)
+                && Ruz.Equals(other.Ruz);
+        }
 
         #endregion
 
@@ -320,6 +338,7 @@ namespace TeklaHierarchicDefinitions.Models
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
+
 
         #endregion
 

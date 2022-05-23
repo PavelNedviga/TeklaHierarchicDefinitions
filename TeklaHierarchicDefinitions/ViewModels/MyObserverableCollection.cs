@@ -11,17 +11,18 @@ namespace TeklaHierarchicDefinitions.Models
 {
     public class MyObservableCollection<T> : ObservableCollection<T> where T : INotifyPropertyChanged
     {
-        private IEnumerable<BillOfElements> enumerable;
+        private IEnumerable<T> enumerable;
 
         public MyObservableCollection() : base()
         {
             CollectionChanged += new NotifyCollectionChangedEventHandler(MyObservableCollection_CollectionChanged);
         }
 
-        public MyObservableCollection(IEnumerable<BillOfElements> enumerable)
+        public MyObservableCollection(IEnumerable<T> enumerable)
         {
             this.enumerable = enumerable;
         }
+
 
         void MyObservableCollection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
