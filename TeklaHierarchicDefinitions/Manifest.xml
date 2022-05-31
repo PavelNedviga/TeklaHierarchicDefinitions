@@ -15,7 +15,8 @@
     <SourcePathVariable Id="ManFolderInput" Value="%TEPDEFINITIONFILEFOLDER%\TSEP Package input" Comment="This provides the location where the package files are located."/>
     <SourcePathVariable Id="ManFolder" Value="%TEPDEFINITIONFILEFOLDER%\bin\Release" Comment="Fresh release location."/>
     <SourcePathVariable Id="CustomProperties" Value="%TEPDEFINITIONFILEFOLDER%\..\CustomProperties\bin\Release" Comment="Custom atributes folder"/>
-    <SourcePathVariable Id="BinariesFolder" Value="%TEPDEFINITIONFILEFOLDER%\bin\Release"/>
+	  <SourcePathVariable Id="StatsMacro" Value="%TEPDEFINITIONFILEFOLDER%\..\StatsForTeklaProject" Comment="Macro folder"/>
+	  <SourcePathVariable Id="BinariesFolder" Value="%TEPDEFINITIONFILEFOLDER%\bin\Release"/>
   </SourcePathVariables>
 
   <TargetPathVariables>
@@ -36,6 +37,8 @@
     <!--Макрос для запуска приложения и его картинка-->
     <File Id="Ведомость элементов.cs" Source="%ManFolderInput%\Ведомость элементов.cs" Target="%CommonMacroDirectory%"/>
     <File Id="Ведомость элементов.png" Source="%ManFolderInput%\Ведомость элементов.png" Target="%CommonMacroDirectory%"/>
+	  <File Id="SMPluginOldToNewCategories.cs" Source="%StatsMacro%\SMPluginOldToNewCategories.cs" Target="%CommonMacroDirectory%"/>
+	  <File Id="SMPluginStats.cs" Source="%StatsMacro%\SMPluginStats.cs" Target="%CommonMacroDirectory%"/>
    
     <!--Остальные файлы и папки приложения-->     
     <File Id="InstallFiles" Source="%BinariesFolder%\*" Target="%BinariesTargetDirectory%"/>
