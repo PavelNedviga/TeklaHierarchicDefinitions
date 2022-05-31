@@ -561,7 +561,10 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             string material, 
             string notes,
             int isSimple,
-            int emptyRowsNumber, int crossSectionOnOtherList, string classificator, string album)
+            int emptyRowsNumber, 
+            int crossSectionOnOtherList, 
+            string classificator, 
+            string album)
         {
             bool res = false;
             ArrayList arrayList = GetSelectedModelObjects();

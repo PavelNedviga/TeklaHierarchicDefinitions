@@ -191,10 +191,25 @@ namespace TeklaHierarchicDefinitions.Models
                 if (_instantUpdate)
                     _hierarchicObjectInTekla.PartSetPrefix(value);
                 Classificator = ClassGenerator.Generate(value, Position);
-
+                Category = ClassGenerator.GenerateCategory(value);                
                 OnPropertyChanged("Mark");
                 OnPropertyChanged("Father");
+                OnPropertyChanged("Category");
                 UpdateChildrenMarks(value);
+            }
+        }
+
+        public string Category
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetDependentStrAttribute("RU_BOM_CTG"); }
+            set
+            {
+                bool res = false;
+                _hierarchicObjectInTekla.HierarchicObjectSetDependentAttribute("RU_BOM_CTG", value);
+                if (_instantUpdate)
+                    res = _hierarchicObjectInTekla.AllAssemblyPartsSetAttr("RU_BOM_CTG", value);
+
+                OnPropertyChanged();
             }
         }
 
@@ -232,6 +247,8 @@ namespace TeklaHierarchicDefinitions.Models
                 return _hierarchicObjectInTekla;
             }
         }
+
+
 
         public string Classificator
         {
@@ -709,7 +726,8 @@ namespace TeklaHierarchicDefinitions.Models
                 EmptyRowsNumber,
                 _crossSectionOnOtherList,
                 Classificator, 
-                BOE);
+                BOE,
+                Category);
             
             return a && b;
         }
@@ -774,7 +792,8 @@ namespace TeklaHierarchicDefinitions.Models
                 EmptyRowsNumber,
                 _crossSectionOnOtherList, 
                 Classificator,
-                BOE); 
+                BOE,
+                Category); 
             return res;
         }
 

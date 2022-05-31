@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30804.86
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeklaHierarchicDefinitions", "TeklaHierarchicDefinitions\TeklaHierarchicDefinitions.csproj", "{8E2CF858-5412-4FB0-86D0-0C7698EF47A4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPropertyHierarchicObject", "CustomProperties\CustomPropertyHierarchicObject.csproj", "{565F2725-9AF3-435B-B095-CCAACEF29406}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatsForTeklaProject", "..\..\StatsForTeklaProject\StatsForTeklaProject\StatsForTeklaProject.csproj", "{CA8F78ED-5836-42A9-A549-42B22EA08EAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{565F2725-9AF3-435B-B095-CCAACEF29406}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{565F2725-9AF3-435B-B095-CCAACEF29406}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{565F2725-9AF3-435B-B095-CCAACEF29406}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA8F78ED-5836-42A9-A549-42B22EA08EAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA8F78ED-5836-42A9-A549-42B22EA08EAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA8F78ED-5836-42A9-A549-42B22EA08EAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA8F78ED-5836-42A9-A549-42B22EA08EAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

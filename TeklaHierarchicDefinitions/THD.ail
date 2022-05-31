@@ -642,21 +642,21 @@ string_utf8 albl_ElementList
 
 string_utf8 albl_FoundationLoads
 {
-    entry = ("enu", "Element list");
-    entry = ("chs", "Element list");
-    entry = ("cht", "Element list");
-    entry = ("csy", "Element list");
-    entry = ("deu", "Element list");
-    entry = ("esp", "Element list");
-    entry = ("fra", "Element list");
-    entry = ("hun", "Element list");
-    entry = ("ita", "Element list");
-    entry = ("jpn", "Element list");
-    entry = ("kor", "Element list");
-    entry = ("nld", "Element list");
-    entry = ("plk", "Element list");
-    entry = ("ptb", "Element list");
-    entry = ("ptg", "Element list");
+    entry = ("enu", "Foundation loads");
+    entry = ("chs", "Foundation loads");
+    entry = ("cht", "Foundation loads");
+    entry = ("csy", "Foundation loads");
+    entry = ("deu", "Foundation loads");
+    entry = ("esp", "Foundation loads");
+    entry = ("fra", "Foundation loads");
+    entry = ("hun", "Foundation loads");
+    entry = ("ita", "Foundation loads");
+    entry = ("jpn", "Foundation loads");
+    entry = ("kor", "Foundation loads");
+    entry = ("nld", "Foundation loads");
+    entry = ("plk", "Foundation loads");
+    entry = ("ptb", "Foundation loads");
+    entry = ("ptg", "Foundation loads");
     entry = ("rus", "Нагрузки на фундаменты");
 };
 
@@ -679,6 +679,26 @@ string_utf8 albl_RotationNotAllowed
     entry = ("ptb", "Consider rotation");
     entry = ("ptg", "Consider rotation");
     entry = ("rus", "Учит.поворот");
+};
+
+string_utf8 albl_Categories
+{
+    entry = ("enu", "Categories");
+    entry = ("chs", "Categories");
+    entry = ("cht", "Categories");
+    entry = ("csy", "Categories");
+    entry = ("deu", "Categories");
+    entry = ("esp", "Categories");
+    entry = ("fra", "Categories");
+    entry = ("hun", "Categories");
+    entry = ("ita", "Categories");
+    entry = ("jpn", "Categories");
+    entry = ("kor", "Categories");
+    entry = ("nld", "Categories");
+    entry = ("plk", "Categories");
+    entry = ("ptb", "Categories");
+    entry = ("ptg", "Categories");
+    entry = ("rus", "Категории");
 };
 
 string_utf8 albl_

@@ -314,7 +314,6 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 
         public bool PartsSetAttr(string name, string input)
         {
-
             var moenum = _hierarchicObject.GetChildren();
             foreach (ModelObject mo in moenum)
             {
@@ -328,6 +327,53 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             bool res = TeklaDB.model.CommitChanges(HierarchicObject.Name + ": property " + name + " is set to " + input);
             
             return res;
+        }
+
+        public bool AllAssemblyPartsSetAttr(string name, string input)
+        {
+            var moenum = _hierarchicObject.GetChildren();
+            HashSet<Assembly> hs = new HashSet<Assembly>();
+            foreach (ModelObject mo in moenum)
+            {
+                Part part = mo as Part;
+                if (!part.Equals(null))
+                {
+                    hs.Add(part.GetAssembly());
+                }
+            }
+            HashSet<Part> hsParts = new HashSet<Part>();
+            foreach (Assembly assembly in hs)
+            {
+                if (!assembly.Equals(null))
+                {
+                    GetAllAssemblyParts(assembly, ref hsParts);
+                }
+            }            
+            foreach (Part part in hsParts)
+            {
+                if (!part.Equals(null))
+                    TeklaDB.SetPropertyStr(part, name, input);
+            }
+            bool res = TeklaDB.model.CommitChanges(HierarchicObject.Name + ": property " + name + " is set to " + input);
+            return res;
+        }
+
+        void GetAllAssemblyParts(Assembly assembly, ref HashSet<Part> hs)
+        {
+            var assEnum = assembly.GetSecondaries();
+            assEnum.Add(assembly.GetMainPart());
+            foreach (ModelObject mo in assEnum)
+            {
+                if (mo is Part)
+                {
+                    hs.Add(mo as Part);
+                }
+                else if (mo is Assembly)
+                {
+                    GetAllAssemblyParts(mo as Assembly, ref hs);
+                }
+            }
+            
         }
 
         public bool PartsSetAttr(string name, int input)
@@ -553,8 +599,10 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             int emptyRowsNumber = 0,
             int crossSectionOnOtherList = -1,
             string classificator = "40000",
-            string album = "unset")
+            string album = "unset",
+            string category = "")
         {
+            AllAssemblyPartsSetAttr("RU_BOM_CTG", category);
             return TeklaDB.InheritPropsFromHierarchicObjectToSelectedParts(
                 _hierarchicObject, 
                 mark,
@@ -606,8 +654,10 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             int emptyRowsNumber = 0,
             int crossSectionOnOtherList = -1,
             string classificator = "40000",
-            string album = "unset")
+            string album = "unset",
+            string category = "")
         {
+            AllAssemblyPartsSetAttr("RU_BOM_CTG", category);
             return TeklaDB.InheritPropsFromHierarchicObjectToAssociatedParts(
                 _hierarchicObject,
                 mark,

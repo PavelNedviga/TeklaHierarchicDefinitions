@@ -205,7 +205,7 @@ namespace CustomPropertyHierarchicObject
     /// <summary>The test if part is attached to foundation list</summary>
     [Export(typeof(ICustomPropertyPlugin))]
     [ExportMetadata("CustomProperty", "CUSTOM.HO.IS_IN_FOUNDATION_LIST")]
-    public class CUSTOM_PART_IS_IN_FOUNDATION_LIST : ICustomPropertyPlugin
+    public class CUSTOM_HO_IS_IN_FOUNDATION_LIST : ICustomPropertyPlugin
     {
 
         /// <summary>Returns custom property int value for object.</summary>

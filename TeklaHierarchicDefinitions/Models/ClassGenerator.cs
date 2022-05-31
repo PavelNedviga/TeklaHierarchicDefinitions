@@ -50,6 +50,40 @@ namespace TeklaHierarchicDefinitions.Classifiers
             return "30000";
         }
 
+        public static string GenerateCategory(string partMark)
+        {
+
+            bool connected = model.GetConnectionStatus();
+            if (connected)
+            {
+                string path = GetClassTablePath();
+                if (System.IO.File.Exists(path))
+                {
+                    var dict = System.IO.File.ReadLines(path).Select(line => line.Split('\t')).ToDictionary(line => line[0], line => line[2]);// GetConversionList(path);
+
+                    var numAlpha = new Regex("(?<Alpha>[a-zA-Zа-яА-ЯёЁ]*)(?<Numeric>[0-9]*)");
+                    var match = numAlpha.Match(partMark);
+
+                    var alpha = match.Groups["Alpha"].Value;
+                    if (dict.Keys.Contains(alpha))
+                    {
+                        var encodedPrefix = dict[alpha];
+                        return encodedPrefix;
+                    }
+                    else
+                    {
+                        return "";
+                    }
+                }
+                else
+                {
+                    return "";
+                }
+
+            }
+            return "<нс>";
+        }
+
         internal static string GetClassTablePath()
         {
             string path = model.GetInfo().ModelPath + "\\#ClassConversion.csv"; 

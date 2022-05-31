@@ -95,13 +95,15 @@
                         <DataGridTextColumn Header="{tsd:Loc albl_Mark}" 
                                     Binding="{Binding Mark, UpdateSourceTrigger=PropertyChanged}" 
                                     FontWeight="Bold"/>
+                        <DataGridTextColumn Header="{tsd:Loc albl_Father}" IsReadOnly="True" Binding="{Binding Father}"/>
+                        <DataGridTextColumn Header="{tsd:Loc albl_Position}" Binding="{Binding Position, UpdateSourceTrigger=PropertyChanged}" />
                         <DataGridTextColumn Header="{tsd:Loc albl_Classificator}" 
                                     Binding="{Binding Classificator, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
                                     FontWeight="Bold"/>
+                        <DataGridTextColumn Header="{tsd:Loc albl_Categories}" 
+                                            Binding="{Binding Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                            FontWeight="Bold"/>
 
-                        <DataGridTextColumn Header="{tsd:Loc albl_Father}" IsReadOnly="True" Binding="{Binding Father}"/>
-                        <DataGridTextColumn Header="{tsd:Loc albl_Position}"                                     
-                                    Binding="{Binding Position, UpdateSourceTrigger=PropertyChanged}" />
                         <DataGridTextColumn Header="{tsd:Loc albl_Material}" Binding="{Binding Material, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="{tsd:Loc albl_Profile}" Binding="{Binding Profile, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <DataGridTextColumn Header="{tsd:Loc albl_ProfileForSpec}" Binding="{Binding ProfileForSpec, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
@@ -148,14 +150,13 @@
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition/>
-                                            <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
-                                        <DockPanel Grid.Row="0" Grid.Column="0">                                            
+                                        <DockPanel Grid.Row="0">                                            
                                             <TextBox Text="{Binding N, UpdateSourceTrigger=PropertyChanged}" 
                                              IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
 
                                         </DockPanel>
-                                        <DockPanel Grid.Row="1" Grid.Column="0">                                            
+                                        <DockPanel Grid.Row="1">                                            
                                             <TextBox Text="{Binding N_end, UpdateSourceTrigger=PropertyChanged}" 
                                              IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
                                         </DockPanel>
