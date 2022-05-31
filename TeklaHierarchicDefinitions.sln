@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeklaHierarchicDefinitions"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPropertyHierarchicObject", "CustomProperties\CustomPropertyHierarchicObject.csproj", "{565F2725-9AF3-435B-B095-CCAACEF29406}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatsForTeklaProject", "..\..\StatsForTeklaProject\StatsForTeklaProject\StatsForTeklaProject.csproj", "{CA8F78ED-5836-42A9-A549-42B22EA08EAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatsForTeklaProject", "StatsForTeklaProject\StatsForTeklaProject.csproj", "{CA8F78ED-5836-42A9-A549-42B22EA08EAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
