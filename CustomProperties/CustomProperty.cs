@@ -202,6 +202,59 @@ namespace CustomPropertyHierarchicObject
         }
     }
 
+    /// <summary>The test if part is attached to element list</summary>
+    [Export(typeof(ICustomPropertyPlugin))]
+    [ExportMetadata("CustomProperty", "CUSTOM.PART.EL_MARK")]
+    public class CUSTOM_PART_EL_MARK : ICustomPropertyPlugin
+    {
+
+        /// <summary>Returns custom property int value for object.</summary>
+        /// <param name="objectId">The object id.</param>
+        /// <returns>The <see cref="int"/>.</returns>
+        public int GetIntegerProperty(int objectId)
+        {
+            var mo = TeklaHierarchicObject.GetModelObject(objectId);
+            if (mo.GetHierarchicObjects().GetSize() > 0)
+                return 1;
+            else
+                return 0;
+        }
+
+        /// <summary>Returns custom property string value for object.</summary>
+        /// <param name="objectId">The object id.</param>
+        /// <returns>The <see cref="string"/>.</returns>
+        public string GetStringProperty(int objectId)
+        {
+            var mo = TeklaHierarchicObject.GetModelObject(objectId);
+            if (mo.GetHierarchicObjects().GetSize() > 0)
+            {
+                string res = string.Empty;
+                var mobjenum = mo.GetHierarchicObjects();
+                while (mobjenum.MoveNext())
+                {
+                    var mobj = mobjenum.Current as HierarchicObject;
+                    if (mobj != null)
+                    {
+                        return mobj.Name;
+                    }
+
+                }
+                return res;
+            }
+            else
+                return "";
+        }
+
+        /// <summary>Returns custom property double value for object.</summary>
+        /// <param name="objectId">The object id.</param>
+        /// <returns>The <see cref="double"/>.</returns>
+        public double GetDoubleProperty(int objectId)
+        {
+            return GetIntegerProperty(objectId);
+        }
+    }
+
+
     /// <summary>The test if part is attached to foundation list</summary>
     [Export(typeof(ICustomPropertyPlugin))]
     [ExportMetadata("CustomProperty", "CUSTOM.HO.IS_IN_FOUNDATION_LIST")]
