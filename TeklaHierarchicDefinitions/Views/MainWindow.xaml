@@ -61,6 +61,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="{tsd:Loc albl_Num}" Binding="{Binding ObjectsCount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="{tsd:Loc albl_BOE}" Binding="{Binding BOE, UpdateSourceTrigger=PropertyChanged}" />
                         <!--<DataGridTemplateColumn Header="ВЭ" >
                     <DataGridTemplateColumn.CellTemplate>
@@ -93,10 +94,10 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>-->
                         <DataGridTextColumn Header="{tsd:Loc albl_Mark}" 
-                                    Binding="{Binding Mark, UpdateSourceTrigger=PropertyChanged}" 
+                                    Binding="{Binding Mark,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" 
                                     FontWeight="Bold"/>
-                        <DataGridTextColumn Header="{tsd:Loc albl_Father}" IsReadOnly="True" Binding="{Binding Father}"/>
-                        <DataGridTextColumn Header="{tsd:Loc albl_Position}" Binding="{Binding Position, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="{tsd:Loc albl_Father}" IsReadOnly="True" Binding="{Binding Father, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="{tsd:Loc albl_Position}" Binding="{Binding Position, UpdateSourceTrigger=LostFocus}" />
                         <DataGridTextColumn Header="{tsd:Loc albl_Classificator}" 
                                     Binding="{Binding Classificator, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
                                     FontWeight="Bold"/>
@@ -288,8 +289,12 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>-->
                     </DataGrid.Columns>
-
-
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="{tsd:Loc albl_AttachHOposition}" Command="{Binding AddToHO_Click}" />
+                            <MenuItem Header="{tsd:Loc albl_RemoveFromHO}" Command="{Binding RemoveFromHO_Click}" />
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
                 </DataGrid>
 
                 <Button x:Name="AddModelObjectToHierarchicObject" Content="{tsd:Loc albl_Attach_parts}" HorizontalAlignment="Left" Margin="10,10,0,0" 

@@ -61,7 +61,7 @@ namespace TeklaHierarchicDefinitions.Models
             }
             Selection = false;
             logger.Debug("Collection присвоено");
-            Profile = "I20K1_57837_2017";
+            Profile = "D100";
             Position = "";
             Q = "";
             N = "";
@@ -71,7 +71,7 @@ namespace TeklaHierarchicDefinitions.Models
             RotNotAllowed = -1;
             StartMomentConnection = 0;
             EndMomentConnection = 0;
-            Material = "C255";
+            Material = "C100";
             Notes = "";
             IsComplexCrossSection = true;
             EmptyRowsNumber = 0;
@@ -169,6 +169,11 @@ namespace TeklaHierarchicDefinitions.Models
             }
         }      
 
+        public int ObjectsCount
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObject.GetChildren().GetSize(); }
+        }
+
         public string BOE
         {
             get { return _hierarchicObjectInTekla.HierarchicObjectGetDependentStrAttribute("BOE"); }
@@ -184,17 +189,20 @@ namespace TeklaHierarchicDefinitions.Models
 
         public string Mark
         {
-            get { return _hierarchicObjectInTekla.Name; }
+            get 
+            { 
+                return _hierarchicObjectInTekla.Name; 
+            }
             set 
             { 
+                
                 _hierarchicObjectInTekla.Name = value;
                 if (_instantUpdate)
                     _hierarchicObjectInTekla.PartSetPrefix(value);
-                Classificator = ClassGenerator.Generate(value, Position);
-                Category = ClassGenerator.GenerateCategory(value);                
+                Classificator = ClassGenerator.Generate(_hierarchicObjectInTekla.Name, Position);
+                Category = ClassGenerator.GenerateCategory(_hierarchicObjectInTekla.Name);                
                 OnPropertyChanged("Mark");
                 OnPropertyChanged("Father");
-                OnPropertyChanged("Category");
                 UpdateChildrenMarks(value);
             }
         }
@@ -247,8 +255,6 @@ namespace TeklaHierarchicDefinitions.Models
                 return _hierarchicObjectInTekla;
             }
         }
-
-
 
         public string Classificator
         {
@@ -362,6 +368,27 @@ namespace TeklaHierarchicDefinitions.Models
                 OnPropertyChanged("M_end");
                 OnPropertyChanged("M_summary");
             }
+        }
+
+        internal void AddAsChildHO(List<BillOfElements> fatherItem)
+        {
+            foreach (var i in fatherItem)
+            {
+                if(i != this)
+                    i.HierarchicObjectInTekla.AddFather(this.HierarchicObjectInTekla);
+            }
+
+            OnPropertyChanged("Father");
+            OnPropertyChanged("Mark");
+            Classificator = ClassGenerator.Generate(Mark, Position);
+            Category = ClassGenerator.GenerateCategory(Mark);
+        }
+
+        internal void RemoveFather()
+        {
+            this.HierarchicObjectInTekla.RemoveFather();
+            OnPropertyChanged("Father");
+            OnPropertyChanged("Mark");
         }
 
         public string M_summary
@@ -728,7 +755,8 @@ namespace TeklaHierarchicDefinitions.Models
                 Classificator, 
                 BOE,
                 Category);
-            
+            OnPropertyChanged("ObjectsCount");
+
             return a && b;
         }
 

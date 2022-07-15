@@ -238,6 +238,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                             if (boe.HierarchicObjectInTekla.RemoveSelectedModedlObjectsFromHierarchicObject())
                             {
                                 MessageBox.Show("Objects were successfully removed from " + boe.Mark);
+                                boe.OnPropertyChanged("ObjectsCount");
                             }
                         }
                         TeklaDB.model.CommitChanges();
@@ -348,6 +349,44 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        public ICommand AddToHO_Click
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    //var boe = ((DataGrid)obj).SelectedItem as BillOfElements;
+                    //_billOfElements.Add(new BillOfElements(boe, _billOfElements, _selectedBOE));
+                    var attachedHierarchicObjects = this.BillOfElements.Where(t => t.Selection).ToList();
+                    var attachTo = SelectedItem;
+                    attachTo.AddAsChildHO(attachedHierarchicObjects);
+                    OnPropertyChanged("BillOfElements");
+                    OnPropertyChanged("BillOfElementsList");
+                }, (obj) => (ModificationBlocked == false & SelectedItem != null & BillOfElements.Where(t=>t.Selection).Any(k=>k != SelectedItem)));
+            }
+        }
+
+        public ICommand RemoveFromHO_Click
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    var RemoveFromHOChildren = BillOfElements.Where(t=>t.Selection).ToList();
+                    foreach(var removingHO in RemoveFromHOChildren)
+                    {
+                        removingHO.RemoveFather();
+                        removingHO.OnPropertyChanged("Father");
+                    }
+
+                    OnPropertyChanged("BillOfElements");
+                    OnPropertyChanged("BillOfElementsList");
+                }, (obj) => (ModificationBlocked == false & BillOfElements.Any(t => (t.Selection & t.FatherHierarchicObject.HierarchicObject.Father !=null))));
+            }
+        }
+
+
+        
 
         //public ICommand SelectMaterialForHierarchicObject_Click
         //{

@@ -2,14 +2,34 @@
 using System.Collections.Generic;
 using Tekla.Structures.Model;
 using System.Collections;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 {
     /// <summary>
     /// Описывает объект, которым будем управлять в интерфейсе иерархического списка
     /// </summary>
-    public class HierarchicObjectInTekla
-    {       
+    public class HierarchicObjectInTekla : INotifyPropertyChanged
+    {
+        #region Обработка событий
+        /// <summary>
+        /// Отслеживает изменения свойств
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Захватывает изменения параметров
+        /// </summary>
+        /// <param name="prop"></param>
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+
+        }
+        #endregion
+
         private HierarchicDefinition _hierarchicDefinition;
         private HierarchicObject _hierarchicObject;
 
@@ -73,7 +93,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     return GetFather().Name;
                 }
                     
-                return "";
+                return null;
             }
         }
 
@@ -541,6 +561,29 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     return _hierarchicObject.Father.Identifier;
                 return new Tekla.Structures.Identifier();
             }
+        }
+
+        internal bool AddFather(HierarchicObjectInTekla newFatherItem)
+        {
+            var thisHierarchicObject = this.HierarchicObject;
+            var fatherHierarchicObject = newFatherItem.HierarchicObject;
+            thisHierarchicObject.Father = fatherHierarchicObject;
+            var success = thisHierarchicObject.Modify();
+                        
+            bool res = TeklaDB.model.CommitChanges($"{thisHierarchicObject.Name} was added to {fatherHierarchicObject.Name}");
+            Name = Father;
+            OnPropertyChanged("Father");
+            OnPropertyChanged("Name");
+            return res;
+        }
+
+        internal bool RemoveFather()
+        {
+            var thisHierarchicObject = this.HierarchicObject;
+            thisHierarchicObject.Father = null;
+            var success = thisHierarchicObject.Modify();
+            bool res = TeklaDB.model.CommitChanges($"{thisHierarchicObject.Name} was simplified");
+            return res;
         }
 
         /// <summary>

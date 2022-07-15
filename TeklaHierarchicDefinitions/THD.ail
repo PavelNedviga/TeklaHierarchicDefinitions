@@ -701,6 +701,48 @@ string_utf8 albl_Categories
     entry = ("rus", "Категории");
 };
 
+
+string_utf8 albl_AttachHOposition
+{
+    entry = ("enu", "Add as subposition");
+    entry = ("chs", "Add as subposition");
+    entry = ("cht", "Add as subposition");
+    entry = ("csy", "Add as subposition");
+    entry = ("deu", "Add as subposition");
+    entry = ("esp", "Add as subposition");
+    entry = ("fra", "Add as subposition");
+    entry = ("hun", "Add as subposition");
+    entry = ("ita", "Add as subposition");
+    entry = ("jpn", "Add as subposition");
+    entry = ("kor", "Add as subposition");
+    entry = ("nld", "Add as subposition");
+    entry = ("plk", "Add as subposition");
+    entry = ("ptb", "Add as subposition");
+    entry = ("ptg", "Add as subposition");
+    entry = ("rus", "Добавить подчиненную позицию");
+};
+
+
+string_utf8 albl_RemoveFromHO
+{
+    entry = ("enu", "Deattach subpositions");
+    entry = ("chs", "Deattach subpositions");
+    entry = ("cht", "Deattach subpositions");
+    entry = ("csy", "Deattach subpositions");
+    entry = ("deu", "Deattach subpositions");
+    entry = ("esp", "Deattach subpositions");
+    entry = ("fra", "Deattach subpositions");
+    entry = ("hun", "Deattach subpositions");
+    entry = ("ita", "Deattach subpositions");
+    entry = ("jpn", "Deattach subpositions");
+    entry = ("kor", "Deattach subpositions");
+    entry = ("nld", "Deattach subpositions");
+    entry = ("plk", "Deattach subpositions");
+    entry = ("ptb", "Deattach subpositions");
+    entry = ("ptg", "Deattach subpositions");
+    entry = ("rus", "Открепить позиции");
+};
+
 string_utf8 albl_
 {
     entry = ("enu", "Temp");
