@@ -385,8 +385,8 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        SelectSimilarParts_Click
 
-        
 
         //public ICommand SelectMaterialForHierarchicObject_Click
         //{
