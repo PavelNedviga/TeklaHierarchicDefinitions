@@ -743,6 +743,46 @@ string_utf8 albl_RemoveFromHO
     entry = ("rus", "Открепить позиции");
 };
 
+string_utf8 albl_SelectSimilarParts
+{
+    entry = ("enu", "Select similar");
+    entry = ("chs", "Select similar");
+    entry = ("cht", "Select similar");
+    entry = ("csy", "Select similar");
+    entry = ("deu", "Select similar");
+    entry = ("esp", "Select similar");
+    entry = ("fra", "Select similar");
+    entry = ("hun", "Select similar");
+    entry = ("ita", "Select similar");
+    entry = ("jpn", "Select similar");
+    entry = ("kor", "Select similar");
+    entry = ("nld", "Select similar");
+    entry = ("plk", "Select similar");
+    entry = ("ptb", "Select similar");
+    entry = ("ptg", "Select similar");
+    entry = ("rus", "Выбрать похожие");
+};
+
+string_utf8 albl_Num
+{
+    entry = ("enu", "Count");
+    entry = ("chs", "Count");
+    entry = ("cht", "Count");
+    entry = ("csy", "Count");
+    entry = ("deu", "Count");
+    entry = ("esp", "Count");
+    entry = ("fra", "Count");
+    entry = ("hun", "Count");
+    entry = ("ita", "Count");
+    entry = ("jpn", "Count");
+    entry = ("kor", "Count");
+    entry = ("nld", "Count");
+    entry = ("plk", "Count");
+    entry = ("ptb", "Count");
+    entry = ("ptg", "Count");
+    entry = ("rus", "Кол.");
+};
+
 string_utf8 albl_
 {
     entry = ("enu", "Temp");

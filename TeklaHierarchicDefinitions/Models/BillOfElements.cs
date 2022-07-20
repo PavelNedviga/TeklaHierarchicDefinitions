@@ -6,6 +6,8 @@ using System.Runtime.CompilerServices;
 using TeklaHierarchicDefinitions.TeklaAPIUtils;
 using TeklaHierarchicDefinitions.Classifiers;
 using System;
+using Tekla.Structures.Model;
+using System.Collections;
 
 namespace TeklaHierarchicDefinitions.Models
 {
@@ -403,7 +405,6 @@ namespace TeklaHierarchicDefinitions.Models
             }
         }
 
-
         public int StartMomentConnection
         {
             get { return _hierarchicObjectInTekla.HierarchicObjectGetIntAttr("StartMomentConn"); }
@@ -691,6 +692,17 @@ namespace TeklaHierarchicDefinitions.Models
         public void GetSelectedObjects()
         {
             _hierarchicObjectInTekla.GetSelectedModedlObjects();
+        }
+
+        internal void BorrowPropertiesFromModelObject()
+        {
+            Hashtable ht = TeklaDB.GetInterestedPropertiesFromSelectedObjects();
+        }
+
+        internal void GetSimilardObjects(List<HierarchicObjectInTekla> hoit)
+        {
+            List<HierarchicObject> HOinTS = hoit.Select(o => o.HierarchicObject).ToList();
+            TeklaDB.SelectSimilarModelObjects(Mark, Position, Profile, Material, HOinTS);
         }
 
         internal string GetNSummary()

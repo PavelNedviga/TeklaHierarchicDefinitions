@@ -757,6 +757,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             return res;
         }
 
+
         private bool HasChildren()
         {
             bool res = false;

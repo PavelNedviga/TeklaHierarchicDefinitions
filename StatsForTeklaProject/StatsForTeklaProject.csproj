@@ -54,28 +54,8 @@
       <HintPath>..\..\..\..\..\..\..\TeklaStructures\2021.0\nt\bin\applications\Tekla\Model\ObjectBrowser\Tekla.Macros.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Tekla.Macros.Akit">
-      <HintPath>..\..\..\..\..\..\..\TeklaStructures\2021.0\Environments\common\macros\modeling\Tekla.Macros.Akit.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tekla.Macros.Fusion">
-      <HintPath>..\..\..\..\..\..\..\TeklaStructures\2021.0\Environments\common\macros\modeling\Tekla.Macros.Fusion.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Tekla.Macros.Runtime">
       <HintPath>..\..\..\..\..\..\..\TeklaStructures\2021.0\nt\bin\applications\Tekla\Model\ObjectBrowser\Tekla.Macros.Runtime.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tekla.Macros.Wpf">
-      <HintPath>..\..\..\..\..\..\..\TeklaStructures\2021.0\Environments\common\macros\modeling\Tekla.Macros.Wpf.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tekla.Macros.Wpf.AddOn.Structures">
-      <HintPath>..\..\..\..\..\..\..\TeklaStructures\2021.0\Environments\common\macros\modeling\Tekla.Macros.Wpf.AddOn.Structures.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Tekla.Macros.Wpf.Runtime">
-      <HintPath>..\..\..\..\..\..\..\TeklaStructures\2021.0\Environments\common\macros\modeling\Tekla.Macros.Wpf.Runtime.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Tekla.Structures, Version=2022.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">

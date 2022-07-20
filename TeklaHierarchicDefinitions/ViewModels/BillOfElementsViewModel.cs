@@ -385,7 +385,30 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
-        SelectSimilarParts_Click
+        public ICommand SelectSimilarParts_Click
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    var selectedBOEPos = ((DataGrid)obj).SelectedItem as BillOfElements;
+                    var hoit = _billOfElements.Select(t=>t.HierarchicObjectInTekla).ToList();
+                    selectedBOEPos.GetSimilardObjects(hoit);
+                }, (obj) => SelectedItem != null & TeklaDB.ModelHasSelectedObjects());
+            }
+        }
+        
+        public ICommand BorrowProperties_Click
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    var selectedBOEPos = ((DataGrid)obj).SelectedItem as BillOfElements;
+                    selectedBOEPos.BorrowPropertiesFromModelObject();
+                }, (obj) => SelectedItem != null & TeklaDB.ModelHasSelectedObjects());
+            }
+        }
 
 
         //public ICommand SelectMaterialForHierarchicObject_Click

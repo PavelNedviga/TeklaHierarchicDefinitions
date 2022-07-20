@@ -332,6 +332,53 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             return result;
         }
 
+        /// <summary>
+        /// Выделяет похожие объекты
+        /// </summary>
+        /// <param name="prefix">Префикс сборки</param>
+        /// <param name="preliminaryPos">Позиция в составном сечении</param>
+        /// <param name="profile">Профиль</param>
+        /// <param name="material">Материал</param>
+        /// <param name="hierarchicObject">Иерархический объект</param>
+        public static void SelectSimilarModelObjects(string prefix, string preliminaryPos, string profile, string material, List<HierarchicObject> hierarchicObjects)
+        {
+            var modelObjectEnumerator = modelObjectSelector.GetSelectedObjects();
+            var selectedArray = new List<ModelObject>();
+            foreach(ModelObject mo in modelObjectEnumerator)
+            {
+                selectedArray.Add(mo);
+            }
+            var distinctAttachedModels = hierarchicObjects.SelectMany(t =>
+            {
+                var attObj = new List<ModelObject>();   
+                foreach (ModelObject mo in t.GetChildren())
+                {
+                    attObj.Add(mo);
+                }
+                return attObj;
+            }).Select(x=>x.Identifier).Distinct();
+
+            var listForSelection = selectedArray.Where(
+                t =>
+                {
+                    string prelimMark = string.Empty;
+                    if (t is Part)
+                    {
+                        (t as Part).GetUserProperty("PRELIM_MARK", ref prelimMark);
+                        return !distinctAttachedModels.Contains(t.Identifier)
+                        & (t as Part).GetAssembly().AssemblyNumber.Prefix == prefix
+                        & prelimMark == preliminaryPos
+                        & profile == (t as Part).Profile.ProfileString
+                        & material == (t as Part).Material.MaterialString;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                ).ToArray();
+            modelObjectSelector.Select(new ArrayList(listForSelection));
+        }
 
         public static bool SelectObjectsInModelView(ArrayList partList)
         {
@@ -631,6 +678,62 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             }
             model.CommitChanges("Parts updated");
             return res;
+        }
+
+        private static void GetStringPropertyFromObject(Part borrowedPart, string udaName, string dictName, ref Hashtable hashtable)
+        {
+            string extracted = string.Empty;
+            if (borrowedPart.GetUserProperty(udaName, ref extracted))
+                hashtable[dictName] = extracted;
+            int extractedInt = -1;
+            if (borrowedPart.GetUserProperty(udaName, ref extractedInt))
+                hashtable[dictName] = extractedInt;
+            double extractedDouble = 0;
+            if (borrowedPart.GetUserProperty(udaName, ref extractedDouble))
+                hashtable[dictName] = extractedDouble;
+        }
+
+        internal static Hashtable GetInterestedPropertiesFromSelectedObjects()
+        {
+            Part borrowedPart = GetSelectedModelObjects().ToArray().SkipWhile(x => !(x is Part)).Cast<Part>().FirstOrDefault();
+            Hashtable hashtable = new Hashtable();
+            hashtable["Mark"] = borrowedPart.AssemblyNumber.Prefix;
+            hashtable["Profile"] = borrowedPart.Profile.ProfileString;
+
+            GetStringPropertyFromObject(borrowedPart, "PRELIM_MARK", "Position", ref hashtable);
+            GetStringPropertyFromObject(borrowedPart, "momentY1", "momentY1", ref hashtable);
+            GetStringPropertyFromObject(borrowedPart, "momentY2", "momentY2", ref hashtable);
+            GetStringPropertyFromObject(borrowedPart, "momentZ1", "momentZ1", ref hashtable);
+            GetStringPropertyFromObject(borrowedPart, "momentZ2", "momentZ2", ref hashtable);
+            GetStringPropertyFromObject(borrowedPart, "axial1", "axial1", ref hashtable);
+            GetStringPropertyFromObject(borrowedPart, "axial2", "axial12", ref hashtable);
+            GetStringPropertyFromObject(borrowedPart, "axialcomp1", "axialcomp1", ref hashtable);
+            GetStringPropertyFromObject(borrowedPart, "axialcomp2", "axialcomp2", ref hashtable);
+            
+
+            string m,
+            string m_end,
+            int startMomentConnection,
+            int endMomentConnection,
+            int startFrictionConnection,
+            int endFrictionConnection,
+            string n,
+            string n_end,
+            string n_start_min,
+            string n_end_min,
+            string n_summary,
+            string q,
+            string q_end,
+            string material,
+            string notes,
+            int isSimple,
+            int emptyRowsNumber,
+            int crossSectionOnOtherList,
+            string classificator,
+            string album
+
+            return exportedHT;
+            throw new NotImplementedException();
         }
 
         internal static bool InheritPropsFromHierarchicObjectToAssociatedParts(
