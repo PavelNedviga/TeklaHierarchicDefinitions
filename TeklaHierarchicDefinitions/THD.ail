@@ -338,6 +338,26 @@ string_utf8 albl_NSummary
     entry = ("rus", "N поле");
 };
 
+string_utf8 albl_QSummary
+{
+    entry = ("enu", "Q field");
+    entry = ("chs", "Q field");
+    entry = ("cht", "Q field");
+    entry = ("csy", "Q field");
+    entry = ("deu", "Q field");
+    entry = ("esp", "Q field");
+    entry = ("fra", "Q field");
+    entry = ("hun", "Q field");
+    entry = ("ita", "Q field");
+    entry = ("jpn", "Q field");
+    entry = ("kor", "Q field");
+    entry = ("nld", "Q field");
+    entry = ("plk", "Q field");
+    entry = ("ptb", "Q field");
+    entry = ("ptg", "Q field");
+    entry = ("rus", "Q поле");
+};
+
 string_utf8 albl_MomentConnections
 {
     entry = ("enu", "Moment");
@@ -781,6 +801,26 @@ string_utf8 albl_Num
     entry = ("ptb", "Count");
     entry = ("ptg", "Count");
     entry = ("rus", "Кол.");
+};
+
+string_utf8 albl_BorrowProperties
+{
+    entry = ("enu", "Borrow properties");
+    entry = ("chs", "Borrow properties");
+    entry = ("cht", "Borrow properties");
+    entry = ("csy", "Borrow properties");
+    entry = ("deu", "Borrow properties");
+    entry = ("esp", "Borrow properties");
+    entry = ("fra", "Borrow properties");
+    entry = ("hun", "Borrow properties");
+    entry = ("ita", "Borrow properties");
+    entry = ("jpn", "Borrow properties");
+    entry = ("kor", "Borrow properties");
+    entry = ("nld", "Borrow properties");
+    entry = ("plk", "Borrow properties");
+    entry = ("ptb", "Borrow properties");
+    entry = ("ptg", "Borrow properties");
+    entry = ("rus", "Заимствовать свойства");
 };
 
 string_utf8 albl_

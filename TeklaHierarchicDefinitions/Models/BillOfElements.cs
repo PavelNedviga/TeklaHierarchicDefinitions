@@ -28,7 +28,6 @@ namespace TeklaHierarchicDefinitions.Models
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
-
         #endregion
 
         #region Конструктор
@@ -83,7 +82,6 @@ namespace TeklaHierarchicDefinitions.Models
             _hierarchicObjectInTekla.CommitChanges();
             TeklaDB.model.CommitChanges();
         }
-
         #endregion
 
         #region Внутренние параметры объекта
@@ -548,9 +546,9 @@ namespace TeklaHierarchicDefinitions.Models
             { 
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q", value);
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_end", value);
-                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_summary", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_summary", GetQSummary());
                 if (_instantUpdate) 
-                    _hierarchicObjectInTekla.PartsSetAttr("reakciya_A", value);
+                    _hierarchicObjectInTekla.PartsSetAttr("reakciya_A", Q_summary);
                 OnPropertyChanged("Q");
                 OnPropertyChanged("Q_end");
                 OnPropertyChanged("Q_summary");
@@ -563,13 +561,44 @@ namespace TeklaHierarchicDefinitions.Models
             set
             {
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_end", value);
-                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_summary", Q + "/" + value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_summary", GetQSummary());
                 if (_instantUpdate)
-                    _hierarchicObjectInTekla.PartsSetAttr("reakciya_A", Q + "/" + value);
+                    _hierarchicObjectInTekla.PartsSetAttr("reakciya_A", Q_summary);
                 OnPropertyChanged("Q_end");
                 OnPropertyChanged("Q_summary");
             }
         }
+
+        public string Q_min
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("Q_min"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_min", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_end_min", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_summary", GetQSummary());
+                if (_instantUpdate)
+                    _hierarchicObjectInTekla.PartsSetAttr("reakciya_A", Q_summary);
+                OnPropertyChanged("Q_min");
+                OnPropertyChanged("Q_end_min");
+                OnPropertyChanged("Q_summary");
+            }
+        }
+
+        public string Q_end_min
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("Q_end_min"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_end_min", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_summary", GetQSummary());
+                if (_instantUpdate)
+                    _hierarchicObjectInTekla.PartsSetAttr("reakciya_A", Q_summary);
+                OnPropertyChanged("Q_end_min");
+                OnPropertyChanged("Q_summary");
+            }
+        }
+
 
         public string Q_summary
         {
@@ -697,6 +726,69 @@ namespace TeklaHierarchicDefinitions.Models
         internal void BorrowPropertiesFromModelObject()
         {
             Hashtable ht = TeklaDB.GetInterestedPropertiesFromSelectedObjects();
+            this.Mark = ht["ASSEMBLY.PREFIX"].ToString();
+            this.Material = ht["MATERIAL"].ToString();
+            this.Profile = ht["PROFILE"].ToString();
+            var connConvert = FrictionConnection.ToDictionary(t=>t.Value,t=>t.Key);
+            if (ht.ContainsKey("END_FRICT_CONN"))
+                this.EndFrictionConnection = connConvert[ht["END_FRICT_CONN"].ToString()];
+            if (ht.ContainsKey("START_FRICT_CONN"))
+                this.StartFrictionConnection = connConvert[ht["START_FRICT_CONN"].ToString()];
+            
+            var momentConvert = MomentConnection.ToDictionary(t => t.Value, t => t.Key);
+            //this.EndMomentConnection = connConvert[ht["END_FRICT_CONN"].ToString()];
+            //this.StartMomentConnection
+            if (ht.ContainsKey("PRELIM_MARK"))
+                this.Position = ht["PRELIM_MARK"].ToString();
+            if (ht.ContainsKey("momentY1"))
+                this.M = (double.Parse(ht["momentY1"].ToString()) / 1000).ToString();
+            if (ht.ContainsKey("momentY2"))
+                this.M_end = (double.Parse(ht["momentY2"].ToString()) / 1000).ToString();
+            if (ht.ContainsKey("axial1"))
+                this.N = (double.Parse(ht["axial1"].ToString()) / 1000).ToString();
+            if (ht.ContainsKey("axial2"))
+                this.N_end = (double.Parse(ht["axial2"].ToString()) / 1000).ToString();
+            if (ht.ContainsKey("axialcomp1"))
+                this.N_start_min = (double.Parse(ht["axialcomp1"].ToString()) / 1000).ToString();
+            if (ht.ContainsKey("axialcomp1"))
+                this.N_end_min = (double.Parse(ht["axialcomp1"].ToString()) / 1000).ToString();
+            if (ht.ContainsKey("shearZ1"))
+                this.Q = (double.Parse(ht["shearZ1"].ToString()) / 1000).ToString();
+            if (ht.ContainsKey("shearZ2"))
+                this.Q_end = (double.Parse(ht["shearZ2"].ToString()) / 1000).ToString();
+
+            var rotConvert = RotationOptions.ToDictionary(t => t.Value, t => t.Key);
+            if (ht.ContainsKey("ROT_NOT_ALLOWED"))
+                this.RotNotAllowed = rotConvert[ht["ROT_NOT_ALLOWED"].ToString()];
+            //hashtable["Mark"] = borrowedPart.AssemblyNumber.Prefix;
+            //hashtable["Profile"] = borrowedPart.Profile.ProfileString;
+            //GetStringPropertyFromObject(borrowedPart, "PRELIM_MARK", "Position", ref hashtable);
+            //GetStringPropertyFromObject(borrowedPart, "momentY1", "momentY1", ref hashtable);
+            //GetStringPropertyFromObject(borrowedPart, "momentY2", "momentY2", ref hashtable);
+            //GetStringPropertyFromObject(borrowedPart, "momentZ1", "momentZ1", ref hashtable);
+            //GetStringPropertyFromObject(borrowedPart, "momentZ2", "momentZ2", ref hashtable);
+            //GetStringPropertyFromObject(borrowedPart, "axial1", "axial1", ref hashtable);
+            //GetStringPropertyFromObject(borrowedPart, "axial2", "axial12", ref hashtable);
+            //GetStringPropertyFromObject(borrowedPart, "axialcomp1", "axialcomp1", ref hashtable);
+            //GetStringPropertyFromObject(borrowedPart, "axialcomp2", "axialcomp2", ref hashtable);
+
+
+
+            //int startMomentConnection,
+            //int endMomentConnection,
+            //int startFrictionConnection,
+            //int endFrictionConnection,
+
+            //string material,
+            //string notes,
+            //int isSimple,
+            //int emptyRowsNumber,
+            //int crossSectionOnOtherList,
+            //string classificator,
+            //string album
+
+            //return exportedHT;
+            //throw new NotImplementedException();
         }
 
         internal void GetSimilardObjects(List<HierarchicObjectInTekla> hoit)
@@ -715,15 +807,37 @@ namespace TeklaHierarchicDefinitions.Models
             }
             else
             {
-                N_startF = N + ";" + N_start_min ;
+                double d = 0;
+                string N_start_res = string.Empty;
+                if (double.TryParse(N_start_min, out d))
+                {
+                    N_start_res = (-d).ToString();
+                }
+                else
+                {
+                    N_start_res = N_start_min;
+                }
+
+                N_startF = N + ";" + N_start_res;
             }
+
             if (N_end == N_end_min)
             {
                 N_endF = N_end;
             }
             else
             {
-                N_endF = N_end + ";" + N_end_min;
+                double d = 0;
+                string N_end_res = string.Empty;
+                if (double.TryParse(N_end_min, out d))
+                {
+                    N_end_res = (-d).ToString();
+                }
+                else
+                {
+                    N_end_res = N_end_min;
+                }
+                N_endF = N_end + ";" + N_end_res;
             }
 
             string n_F;
@@ -736,6 +850,39 @@ namespace TeklaHierarchicDefinitions.Models
                 n_F = N_startF + "/" + N_endF;
             }
             return n_F;
+        }
+
+        internal string GetQSummary()
+        {
+            string Q_startF;
+            string Q_endF;
+            if (Q == Q_min)
+            {
+                Q_startF = Q;
+            }
+            else
+            {
+                Q_startF = Q + ";" + Q_min;
+            }
+            if (Q_end == Q_end_min)
+            {
+                Q_endF = Q_end;
+            }
+            else
+            {
+                Q_endF = Q_end + ";" + Q_end_min;
+            }
+
+            string Q_F;
+            if (Q_startF == Q_endF)
+            {
+                Q_F = Q_startF;
+            }
+            else
+            {
+                Q_F = Q_startF + "/" + Q_endF;
+            }
+            return Q_F;
         }
 
         public bool AttachSelectedObjects()
@@ -759,6 +906,9 @@ namespace TeklaHierarchicDefinitions.Models
                 N_summary,
                 Q,
                 Q_end,
+                Q_min,
+                Q_end_min,
+                Q_summary,
                 Material,
                 Notes,
                 BoolToInt(IsComplexCrossSection),
@@ -826,6 +976,9 @@ namespace TeklaHierarchicDefinitions.Models
                 N_summary,
                 Q,
                 Q_end,
+                Q_min,
+                Q_end_min,
+                Q_summary,
                 Material,
                 Notes,
                 _isComplexCrossSection,
@@ -916,6 +1069,12 @@ namespace TeklaHierarchicDefinitions.Models
             return result;
         }
 
+        private bool IsFilled()
+        {
+            bool result = Mark.Length > 1;
+            return result;
+        }
+
         public string this[string name]
         {
             get
@@ -963,7 +1122,13 @@ namespace TeklaHierarchicDefinitions.Models
                         result = "Empty field is prohibited. Please fill the value manually";
                     }
                 }
-
+                else if (name == "Mark")
+                {
+                    if (Mark.Length<2)
+                    {
+                        result = "Is mark properly set?";
+                    }
+                }
                 return result;
             }
         }

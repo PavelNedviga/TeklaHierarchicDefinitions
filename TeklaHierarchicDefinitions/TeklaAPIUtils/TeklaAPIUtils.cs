@@ -365,11 +365,16 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     if (t is Part)
                     {
                         (t as Part).GetUserProperty("PRELIM_MARK", ref prelimMark);
-                        return !distinctAttachedModels.Contains(t.Identifier)
-                        & (t as Part).GetAssembly().AssemblyNumber.Prefix == prefix
-                        & prelimMark == preliminaryPos
-                        & profile == (t as Part).Profile.ProfileString
-                        & material == (t as Part).Material.MaterialString;
+                        bool checkedIdentifier = !distinctAttachedModels.Contains(t.Identifier);
+                        bool prefixesEquality = (t as Part).GetAssembly().AssemblyNumber.Prefix == prefix;
+                        bool internalPosEquality = prelimMark == preliminaryPos;
+                        bool materialEquality = material == (t as Part).Material.MaterialString;
+                        bool profileEqualioty = profile == (t as Part).Profile.ProfileString;
+                        return checkedIdentifier
+                        & prefixesEquality
+                        //& internalPosEquality
+                        & profileEqualioty
+                        & materialEquality;
                     }
                     else
                     {
@@ -605,6 +610,9 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             string n_summary,
             string q,
             string q_end,
+            string q_min,
+            string q_end_min,
+            string q_summary,
             string material, 
             string notes,
             int isSimple,
@@ -653,16 +661,16 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     Double.TryParse(n_end_min, out result);
                     part.SetUserProperty("axialcomp2", result * 1000);
 
-                    string shear;
-                    if (q == q_end)
-                        shear = q;
-                    else
-                        shear = q + "/" + q_end;
-                    part.SetUserProperty("reakciya_A", shear);
+
+                    part.SetUserProperty("reakciya_A", q_summary);
                     Double.TryParse(q, out result);
                     part.SetUserProperty("shearZ1", result * 1000);
                     Double.TryParse(q_end, out result);
                     part.SetUserProperty("shearZ2", result * 1000);
+                    Double.TryParse(q_min, out result);
+                    part.SetUserProperty("shear1", result * 1000);
+                    Double.TryParse(q_end_min, out result);
+                    part.SetUserProperty("shear2", result * 1000);
 
                     part.Material.MaterialString = material;
                     part.SetUserProperty("prim_vedomost", notes);
@@ -697,43 +705,11 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         {
             Part borrowedPart = GetSelectedModelObjects().ToArray().SkipWhile(x => !(x is Part)).Cast<Part>().FirstOrDefault();
             Hashtable hashtable = new Hashtable();
-            hashtable["Mark"] = borrowedPart.AssemblyNumber.Prefix;
-            hashtable["Profile"] = borrowedPart.Profile.ProfileString;
-
-            GetStringPropertyFromObject(borrowedPart, "PRELIM_MARK", "Position", ref hashtable);
-            GetStringPropertyFromObject(borrowedPart, "momentY1", "momentY1", ref hashtable);
-            GetStringPropertyFromObject(borrowedPart, "momentY2", "momentY2", ref hashtable);
-            GetStringPropertyFromObject(borrowedPart, "momentZ1", "momentZ1", ref hashtable);
-            GetStringPropertyFromObject(borrowedPart, "momentZ2", "momentZ2", ref hashtable);
-            GetStringPropertyFromObject(borrowedPart, "axial1", "axial1", ref hashtable);
-            GetStringPropertyFromObject(borrowedPart, "axial2", "axial12", ref hashtable);
-            GetStringPropertyFromObject(borrowedPart, "axialcomp1", "axialcomp1", ref hashtable);
-            GetStringPropertyFromObject(borrowedPart, "axialcomp2", "axialcomp2", ref hashtable);
-            
-
-            string m,
-            string m_end,
-            int startMomentConnection,
-            int endMomentConnection,
-            int startFrictionConnection,
-            int endFrictionConnection,
-            string n,
-            string n_end,
-            string n_start_min,
-            string n_end_min,
-            string n_summary,
-            string q,
-            string q_end,
-            string material,
-            string notes,
-            int isSimple,
-            int emptyRowsNumber,
-            int crossSectionOnOtherList,
-            string classificator,
-            string album
-
-            return exportedHT;
-            throw new NotImplementedException();
+            ArrayList stringNames = new ArrayList() { "PRELIM_MARK", "START_FRICT_CONN", "END_FRICT_CONN", "ROT_NOT_ALLOWED","MATERIAL", "PROFILE", "ASSEMBLY.PREFIX", "prim_vedomost", "RU_BOM_CTG" };
+            ArrayList doubleNames = new ArrayList() { "momentY1", "momentY2", "momentZ1", "momentZ2", "axial1", "axial2", "axialcomp1", "axialcomp2", "shearZ1", "shearZ2", "shear1", "shear2" };
+            ArrayList integerNames = new ArrayList() {};
+            borrowedPart.GetAllReportProperties(stringNames, doubleNames, integerNames, ref hashtable);
+            return hashtable;
         }
 
         internal static bool InheritPropsFromHierarchicObjectToAssociatedParts(
@@ -754,6 +730,9 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             string n_summary,
             string q,
             string q_end,
+            string q_min,
+            string q_end_min,
+            string q_summary,
             string material, 
             string notes,
             int isSimple,
@@ -805,17 +784,15 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     part.SetUserProperty("axialcomp2", result * 1000);
 
 
-                    string shear;
-                    if (q == q_end)
-                        shear = q;
-                    else
-                        shear = q + "/" + q_end;
-                    part.SetUserProperty("reakciya_A", shear);
-
+                    part.SetUserProperty("reakciya_A", q_summary);
                     Double.TryParse(q, out result);
                     part.SetUserProperty("shearZ1", result * 1000);
                     Double.TryParse(q_end, out result);
                     part.SetUserProperty("shearZ2", result * 1000);
+                    Double.TryParse(q_min, out result);
+                    part.SetUserProperty("shear1", result * 1000);
+                    Double.TryParse(q_end_min, out result);
+                    part.SetUserProperty("shear2", result * 1000);
 
                     part.Material.MaterialString = material;
                     part.SetUserProperty("prim_vedomost", notes);

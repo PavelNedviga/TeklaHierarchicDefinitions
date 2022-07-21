@@ -17,7 +17,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 //// get deployment version
                 version = Assembly.GetEntryAssembly().GetName().Version;
-                return version.ToString();
+                return version.Major + "."+ version.Minor;
 
             }
             catch (InvalidDeploymentException)

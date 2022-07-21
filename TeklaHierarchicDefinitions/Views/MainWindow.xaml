@@ -97,7 +97,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>-->
                         <DataGridTextColumn Header="{tsd:Loc albl_Mark}" 
-                                    Binding="{Binding Mark,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" 
+                                    Binding="{Binding Mark,Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" 
                                     FontWeight="Bold"/>
                         <DataGridTextColumn Header="{tsd:Loc albl_Father}" IsReadOnly="True" Binding="{Binding Father, UpdateSourceTrigger=PropertyChanged}"/>
                         <DataGridTextColumn Header="{tsd:Loc albl_Position}" Binding="{Binding Position, UpdateSourceTrigger=LostFocus}" />
@@ -191,6 +191,8 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="{tsd:Loc albl_NSummary}" Binding="{Binding N_summary, UpdateSourceTrigger=PropertyChanged}"/>
+
                         <DataGridTemplateColumn Header="Q"  >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -212,8 +214,28 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="{tsd:Loc albl_NSummary}" Binding="{Binding N_summary, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTemplateColumn Header="Qmin"  >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <DockPanel Grid.Row="0">
+                                            <TextBox Text="{Binding Q_min, UpdateSourceTrigger=PropertyChanged}" 
+                                             IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
 
+                                        </DockPanel>
+                                        <DockPanel Grid.Row="1">
+                                            <TextBox Text="{Binding Q_end_min, UpdateSourceTrigger=PropertyChanged}" 
+                                             IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
+                                        </DockPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="{tsd:Loc albl_QSummary}" Binding="{Binding Q_summary, UpdateSourceTrigger=PropertyChanged}"/>
                         <!--DataGridTemplateColumn Header="{tsd:Loc albl_MomentConnections}"  >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

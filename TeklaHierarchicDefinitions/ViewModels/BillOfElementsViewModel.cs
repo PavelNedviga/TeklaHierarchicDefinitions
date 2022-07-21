@@ -406,7 +406,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 {
                     var selectedBOEPos = ((DataGrid)obj).SelectedItem as BillOfElements;
                     selectedBOEPos.BorrowPropertiesFromModelObject();
-                }, (obj) => SelectedItem != null & TeklaDB.ModelHasSelectedObjects());
+                }, (obj) => SelectedItem != null & TeklaDB.ModelHasSelectedObjects() & !ModificationBlocked);
             }
         }
 
