@@ -61,6 +61,12 @@ namespace TeklaHierarchicDefinitions.ViewModels
 
         #region Свойства
 
+        public bool FilterByMark { get; set; } = true;
+
+        public bool FilterByProfile { get; set; } = true;
+
+        public bool FilterByMaterial { get; set; } = true;
+
 
         public MyObservableCollection<BillOfElements> BillOfElements
         {
@@ -393,7 +399,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 {
                     var selectedBOEPos = ((DataGrid)obj).SelectedItem as BillOfElements;
                     var hoit = _billOfElements.Select(t=>t.HierarchicObjectInTekla).ToList();
-                    selectedBOEPos.GetSimilardObjects(hoit);
+                    selectedBOEPos.GetSimilardObjects(hoit, FilterByMark, FilterByProfile, FilterByMaterial);
                 }, (obj) => SelectedItem != null & TeklaDB.ModelHasSelectedObjects());
             }
         }

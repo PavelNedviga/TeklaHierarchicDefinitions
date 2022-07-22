@@ -791,10 +791,21 @@ namespace TeklaHierarchicDefinitions.Models
             //throw new NotImplementedException();
         }
 
-        internal void GetSimilardObjects(List<HierarchicObjectInTekla> hoit)
+        internal void GetSimilardObjects(List<HierarchicObjectInTekla> hoit, bool filterByMark, bool filterByProfile, bool filterByMaterial)
         {
             List<HierarchicObject> HOinTS = hoit.Select(o => o.HierarchicObject).ToList();
-            TeklaDB.SelectSimilarModelObjects(Mark, Position, Profile, Material, HOinTS);
+            string mark = null;
+
+            if (filterByMark)
+                mark = Mark;
+            string profile = null;
+            if (filterByProfile)
+                profile = Profile;
+            string material = null;
+            if (filterByMaterial)
+                material = Material;
+
+            TeklaDB.SelectSimilarModelObjects(mark, profile, material, HOinTS);
         }
 
         internal string GetNSummary()

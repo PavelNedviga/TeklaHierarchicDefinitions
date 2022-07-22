@@ -14,7 +14,7 @@
                             xmlns:vm="clr-namespace:TeklaHierarchicDefinitions.ViewModels"
                             mc:Ignorable="d"
                             Title="{tsd:Loc albl_WindowName}"
-                            Height="650" Width="1000" MinWidth="1080" MinHeight="600" Topmost="True">
+                            Height="650" Width="1000" MinWidth="1080" MinHeight="680" Topmost="True">
     <Window.Resources>
         <Convertors:LevelToIndentConverter x:Key="LevelToIndentConverter"/>
     </Window.Resources>
@@ -399,6 +399,21 @@
                     Command="{Binding BorrowProperties_Click}" 
                     CommandParameter="{Binding ElementName=HODataGrid}"
                     Grid.Row="3" VerticalAlignment="Center" Width="180" Height="30" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1"/>
+                <StackPanel Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="8" >
+                    <CheckBox x:Name="FilterByMark" Content="{tsd:Loc albl_FilterMark}"
+                        IsChecked="{Binding FilterByMark, UpdateSourceTrigger=PropertyChanged}"
+                        HorizontalAlignment="Left" Margin="10,5" 
+                        VerticalAlignment="Top" Width="180" ClickMode="Press"/>
+                    <CheckBox x:Name="FilterByProfile" Content="{tsd:Loc albl_FilterProfile}"
+                        IsChecked="{Binding FilterByProfile, UpdateSourceTrigger=PropertyChanged}"
+                        HorizontalAlignment="Left" Margin="10,5" 
+                        VerticalAlignment="Top" Width="180" ClickMode="Press"/>
+                    <CheckBox x:Name="FilterByMaterial" Content="{tsd:Loc albl_FilterMaterial}"
+                        IsChecked="{Binding FilterByMaterial, UpdateSourceTrigger=PropertyChanged}"
+                        HorizontalAlignment="Left" Margin="10,5" 
+                        VerticalAlignment="Top"  Width="180" ClickMode="Press"/>
+
+                </StackPanel>
 
                 <!--CommandParameter="{Binding ElementName=HODataGrid}"-->
 

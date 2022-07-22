@@ -823,6 +823,66 @@ string_utf8 albl_BorrowProperties
     entry = ("rus", "Заимствовать свойства");
 };
 
+string_utf8 albl_FilterMark
+{
+    entry = ("enu", "Filter by mark");
+    entry = ("chs", "Filter by mark");
+    entry = ("cht", "Filter by mark");
+    entry = ("csy", "Filter by mark");
+    entry = ("deu", "Filter by mark");
+    entry = ("esp", "Filter by mark");
+    entry = ("fra", "Filter by mark");
+    entry = ("hun", "Filter by mark");
+    entry = ("ita", "Filter by mark");
+    entry = ("jpn", "Filter by mark");
+    entry = ("kor", "Filter by mark");
+    entry = ("nld", "Filter by mark");
+    entry = ("plk", "Filter by mark");
+    entry = ("ptb", "Filter by mark");
+    entry = ("ptg", "Filter by mark");
+    entry = ("rus", "Фильтр по марке");
+};
+
+string_utf8 albl_FilterProfile
+{
+    entry = ("enu", "Filter by profile");
+    entry = ("chs", "Filter by profile");
+    entry = ("cht", "Filter by profile");
+    entry = ("csy", "Filter by profile");
+    entry = ("deu", "Filter by profile");
+    entry = ("esp", "Filter by profile");
+    entry = ("fra", "Filter by profile");
+    entry = ("hun", "Filter by profile");
+    entry = ("ita", "Filter by profile");
+    entry = ("jpn", "Filter by profile");
+    entry = ("kor", "Filter by profile");
+    entry = ("nld", "Filter by profile");
+    entry = ("plk", "Filter by profile");
+    entry = ("ptb", "Filter by profile");
+    entry = ("ptg", "Filter by profile");
+    entry = ("rus", "Фильтр по профилю");
+};
+
+string_utf8 albl_FilterMaterial
+{
+    entry = ("enu", "Filter by material");
+    entry = ("chs", "Filter by material");
+    entry = ("cht", "Filter by material");
+    entry = ("csy", "Filter by material");
+    entry = ("deu", "Filter by material");
+    entry = ("esp", "Filter by material");
+    entry = ("fra", "Filter by material");
+    entry = ("hun", "Filter by material");
+    entry = ("ita", "Filter by material");
+    entry = ("jpn", "Filter by material");
+    entry = ("kor", "Filter by material");
+    entry = ("nld", "Filter by material");
+    entry = ("plk", "Filter by material");
+    entry = ("ptb", "Filter by material");
+    entry = ("ptg", "Filter by material");
+    entry = ("rus", "Фильтр по материалу");
+};
+
 string_utf8 albl_
 {
     entry = ("enu", "Temp");

@@ -340,7 +340,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         /// <param name="profile">Профиль</param>
         /// <param name="material">Материал</param>
         /// <param name="hierarchicObject">Иерархический объект</param>
-        public static void SelectSimilarModelObjects(string prefix, string preliminaryPos, string profile, string material, List<HierarchicObject> hierarchicObjects)
+        public static void SelectSimilarModelObjects(string prefix, string profile, string material, List<HierarchicObject> hierarchicObjects)
         {
             var modelObjectEnumerator = modelObjectSelector.GetSelectedObjects();
             var selectedArray = new List<ModelObject>();
@@ -366,14 +366,25 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     {
                         (t as Part).GetUserProperty("PRELIM_MARK", ref prelimMark);
                         bool checkedIdentifier = !distinctAttachedModels.Contains(t.Identifier);
-                        bool prefixesEquality = (t as Part).GetAssembly().AssemblyNumber.Prefix == prefix;
-                        bool internalPosEquality = prelimMark == preliminaryPos;
-                        bool materialEquality = material == (t as Part).Material.MaterialString;
-                        bool profileEqualioty = profile == (t as Part).Profile.ProfileString;
+                        bool prefixesEquality;
+                        if (prefix != null)
+                            prefixesEquality = (t as Part).GetAssembly().AssemblyNumber.Prefix == prefix;
+                        else
+                            prefixesEquality = true;
+                        bool materialEquality;
+                        if (material != null)
+                            materialEquality = material == (t as Part).Material.MaterialString;
+                        else
+                            materialEquality = true;
+                        bool profileEquality;
+                        if (profile != null)
+                            profileEquality = profile == (t as Part).Profile.ProfileString;
+                        else
+                            profileEquality = true;
                         return checkedIdentifier
                         & prefixesEquality
                         //& internalPosEquality
-                        & profileEqualioty
+                        & profileEquality
                         & materialEquality;
                     }
                     else
