@@ -730,6 +730,10 @@ namespace TeklaHierarchicDefinitions.Models
             this.Material = ht["MATERIAL"].ToString();
             this.Profile = ht["PROFILE"].ToString();
             var connConvert = FrictionConnection.ToDictionary(t=>t.Value,t=>t.Key);
+            
+            connConvert["Нет"] = 0;
+            connConvert["Да"] = 1;
+
             if (ht.ContainsKey("END_FRICT_CONN"))
                 this.EndFrictionConnection = connConvert[ht["END_FRICT_CONN"].ToString()];
             if (ht.ContainsKey("START_FRICT_CONN"))
@@ -758,6 +762,9 @@ namespace TeklaHierarchicDefinitions.Models
                 this.Q_end = (double.Parse(ht["shearZ2"].ToString()) / 1000).ToString();
 
             var rotConvert = RotationOptions.ToDictionary(t => t.Value, t => t.Key);
+            rotConvert["Да"] = -1;
+            rotConvert["Нет"] = 0;
+
             if (ht.ContainsKey("ROT_NOT_ALLOWED"))
                 this.RotNotAllowed = rotConvert[ht["ROT_NOT_ALLOWED"].ToString()];
             //hashtable["Mark"] = borrowedPart.AssemblyNumber.Prefix;

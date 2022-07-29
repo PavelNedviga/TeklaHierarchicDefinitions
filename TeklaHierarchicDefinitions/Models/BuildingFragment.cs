@@ -164,30 +164,30 @@ namespace TeklaHierarchicDefinitions.Models
                     if (filtered.Select(t => t.Rx).Distinct().Count() > 1)
                     {
                         var max = filtered.Where(t => t.Rx.Equals(filtered.Select(z => z.Rx).Max())).FirstOrDefault();
-                        var min = filtered.Where(t => t.Rx.Equals(filtered.Select(z => z.Rx).Min())).FirstOrDefault();
                         ff.Add(max);
+                        var min = filtered.Where(t => t.Rx.Equals(filtered.Select(z => z.Rx).Min())).FirstOrDefault();
                         ff.Add(min);
                     }
                     if (filtered.Select(t => t.Ry).Distinct().Count() > 1)
                     {
                         var max = filtered.Where(t => t.Ry.Equals(filtered.Select(z => z.Ry).Max())).FirstOrDefault();
-                        var min = filtered.Where(t => t.Ry.Equals(filtered.Select(z => z.Ry).Min())).FirstOrDefault();
                         ff.Add(max);
+                        var min = filtered.Where(t => t.Ry.Equals(filtered.Select(z => z.Ry).Min())).FirstOrDefault();
                         ff.Add(min);
                     }
                     if (filtered.Select(t => t.Rz).Distinct().Count() > 1)
                     {
                         var max = filtered.Where(t => t.Rz.Equals(filtered.Select(z => z.Rz).Max())).FirstOrDefault();
-                        var min = filtered.Where(t => t.Rz.Equals(filtered.Select(z => z.Rz).Min())).FirstOrDefault();
                         ff.Add(max);
+                        var min = filtered.Where(t => t.Rz.Equals(filtered.Select(z => z.Rz).Min())).FirstOrDefault();
                         ff.Add(min);
                     }
                     if (filtered.Select(t => t.Rux).Distinct().Count() > 1)
                     {
                         var max = filtered.Where(t => t.Rux.Equals(filtered.Select(z => z.Rux).Max())).FirstOrDefault();
+                        ff.Add(max);
                         var min = filtered.Where(t => t.Rux.Equals(filtered.Select(z => z.Rux).Min())).Where(c => c.Rux != 0).FirstOrDefault();
                         ff.Add(min);
-                        ff.Add(max);
                     }
                     if (filtered.Select(t => t.Ruy).Distinct().Count() > 1)
                     {
@@ -202,6 +202,10 @@ namespace TeklaHierarchicDefinitions.Models
                         var min = filtered.Where(t => t.Ruz.Equals(filtered.Select(z => z.Ruz).Min())).Where(c => c.Ruz != 0).FirstOrDefault();
                         ff.Add(max);
                         ff.Add(min);
+                    }
+                    if(filtered.Count() == 1)
+                    {
+                        ff.Add(filtered.FirstOrDefault());
                     }
                     
                     foreach (var ccc in ff.Distinct())
