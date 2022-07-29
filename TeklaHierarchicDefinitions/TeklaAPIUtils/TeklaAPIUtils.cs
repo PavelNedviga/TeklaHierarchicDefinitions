@@ -343,57 +343,59 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         public static void SelectSimilarModelObjects(string prefix, string profile, string material, List<HierarchicObject> hierarchicObjects)
         {
             var modelObjectEnumerator = modelObjectSelector.GetSelectedObjects();
-            var selectedArray = new List<ModelObject>();
-            foreach(ModelObject mo in modelObjectEnumerator)
+            var selectedArray = new ArrayList();
+            var distinctAttachedModelObjects = hierarchicObjects.SelectMany(t =>
             {
-                selectedArray.Add(mo);
-            }
-            var distinctAttachedModels = hierarchicObjects.SelectMany(t =>
-            {
-                var attObj = new List<ModelObject>();   
-                foreach (ModelObject mo in t.GetChildren())
+                var attObj = new List<ModelObject>();
+                var moenum = t.GetChildren();
+                foreach (ModelObject modelObj in moenum)
                 {
-                    attObj.Add(mo);
+                    attObj.Add(modelObj);
                 }
                 return attObj;
             }).Select(x=>x.Identifier).Distinct();
+            foreach(ModelObject mo in modelObjectEnumerator)
+            {
 
-            var listForSelection = selectedArray.Where(
-                t =>
+                if (mo is Part)
                 {
-                    string prelimMark = string.Empty;
-                    if (t is Part)
+                    var part = (Part)mo;
+                    //string prelimMark = string.Empty;
+                    //part.GetUserProperty("PRELIM_MARK", ref prelimMark);
+                    bool result;
+                    bool prefixesEquality = false, materialEquality = false, profileEquality = false, checkedIdentifier=false;
+                    if (material != null)
+                        materialEquality = material == part.Material.MaterialString;
+                    else
+                        materialEquality = true;
+                    if (materialEquality)
                     {
-                        (t as Part).GetUserProperty("PRELIM_MARK", ref prelimMark);
-                        bool checkedIdentifier = !distinctAttachedModels.Contains(t.Identifier);
-                        bool prefixesEquality;
-                        if (prefix != null)
-                            prefixesEquality = (t as Part).GetAssembly().AssemblyNumber.Prefix == prefix;
-                        else
-                            prefixesEquality = true;
-                        bool materialEquality;
-                        if (material != null)
-                            materialEquality = material == (t as Part).Material.MaterialString;
-                        else
-                            materialEquality = true;
-                        bool profileEquality;
                         if (profile != null)
-                            profileEquality = profile == (t as Part).Profile.ProfileString;
+                            profileEquality = profile == part.Profile.ProfileString;
                         else
                             profileEquality = true;
-                        return checkedIdentifier
-                        & prefixesEquality
-                        //& internalPosEquality
-                        & profileEquality
-                        & materialEquality;
+                        if (profileEquality)
+                        {
+                            if (prefix != null)
+                                prefixesEquality = part.GetAssembly().AssemblyNumber.Prefix == prefix;
+                            else
+                                prefixesEquality = true;
+                            if (prefixesEquality)
+                            {
+                                checkedIdentifier = !distinctAttachedModelObjects.Contains(part.Identifier);     
+                            }
+                        }
                     }
-                    else
-                    {
-                        return false;
-                    }
+                    result =  checkedIdentifier
+                    & prefixesEquality
+                    //& internalPosEquality
+                    & profileEquality
+                    & materialEquality;
+                    if(result)
+                        selectedArray.Add(mo);
                 }
-                ).ToArray();
-            modelObjectSelector.Select(new ArrayList(listForSelection));
+            }
+            modelObjectSelector.Select(selectedArray);
         }
 
         public static bool SelectObjectsInModelView(ArrayList partList)
