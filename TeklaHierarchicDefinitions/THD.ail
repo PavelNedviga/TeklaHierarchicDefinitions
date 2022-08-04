@@ -883,6 +883,28 @@ string_utf8 albl_FilterMaterial
     entry = ("rus", "Фильтр по материалу");
 };
 
+
+string_utf8 albl_CopyHOposition
+{
+    entry = ("enu", "Copy position");
+    entry = ("chs", "Copy position");
+    entry = ("cht", "Copy position");
+    entry = ("csy", "Copy position");
+    entry = ("deu", "Copy position");
+    entry = ("esp", "Copy position");
+    entry = ("fra", "Copy position");
+    entry = ("hun", "Copy position");
+    entry = ("ita", "Copy position");
+    entry = ("jpn", "Copy position");
+    entry = ("kor", "Copy position");
+    entry = ("nld", "Copy position");
+    entry = ("plk", "Copy position");
+    entry = ("ptb", "Copy position");
+    entry = ("ptg", "Copy position");
+    entry = ("rus", "Копировать позицию");
+};
+
+
 string_utf8 albl_
 {
     entry = ("enu", "Temp");

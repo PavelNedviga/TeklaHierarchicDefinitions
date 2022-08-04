@@ -149,6 +149,67 @@ namespace CustomPropertyHierarchicObject
         }
     }
 
+    /// <summary>Is up-to-date to the element list</summary>
+    [Export(typeof(ICustomPropertyPlugin))]
+    [ExportMetadata("CustomProperty", "CUSTOM.PART.IS_UPTODATE_TO_EL")]
+    public class CUSTOM_PART_IS_UPTODATE_TO_EL : ICustomPropertyPlugin
+    {
+
+        /// <summary>Returns custom property int value for object.</summary>
+        /// <param name="objectId">The object id.</param>
+        /// <returns>The <see cref="int"/>.</returns>
+        public int GetIntegerProperty(int objectId)
+        {
+            var mo = TeklaHierarchicObject.GetModelObject(objectId);
+            var part = mo as Part;
+            if (part != null & mo.GetHierarchicObjects().GetSize() > 0)
+            {
+                string res = string.Empty;
+                var mobjenum = mo.GetHierarchicObjects();
+                while (mobjenum.MoveNext())
+                {
+                    var mobj = mobjenum.Current as HierarchicObject;
+                    if(mobj != null)
+                    {
+                        string classifier = "", prelim_mark = "", pos = "";
+                        
+                        mobj.GetUserProperty("Classificator", ref classifier);
+                        part.GetUserProperty("PRELIM_MARK", ref prelim_mark);
+                        mobj.GetUserProperty("Position", ref pos);
+                        
+                        if (
+                            mobj.Name == part.AssemblyNumber.Prefix 
+                            & classifier == part.Class
+                            & prelim_mark == pos)
+                        {
+                            return 1;
+                        }
+                    }
+
+                }
+            }
+                
+            return 0;
+        }
+
+        /// <summary>Returns custom property string value for object.</summary>
+        /// <param name="objectId">The object id.</param>
+        /// <returns>The <see cref="string"/>.</returns>
+        public string GetStringProperty(int objectId)
+        {
+            return GetIntegerProperty(objectId).ToString();
+        }
+
+        /// <summary>Returns custom property double value for object.</summary>
+        /// <param name="objectId">The object id.</param>
+        /// <returns>The <see cref="double"/>.</returns>
+        public double GetDoubleProperty(int objectId)
+        {
+            return GetIntegerProperty(objectId);
+        }
+    }
+
+
     /// <summary>The test if part is attached to element list</summary>
     [Export(typeof(ICustomPropertyPlugin))]
     [ExportMetadata("CustomProperty", "CUSTOM.PART.EL")]

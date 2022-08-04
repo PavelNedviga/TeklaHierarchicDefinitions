@@ -44,6 +44,7 @@
                 </Grid.RowDefinitions>
                 <DataGrid Name="HODataGrid" 
                   CanUserDeleteRows="False"
+                          
                   Margin="10,10,10,10" ItemsSource="{Binding BillOfElements, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
                   CanUserAddRows="False" CanUserResizeColumns="False" 
                   CanUserResizeRows="False" HeadersVisibility="Column" 
@@ -318,6 +319,7 @@
                         <ContextMenu>
                             <MenuItem Header="{tsd:Loc albl_AttachHOposition}" Command="{Binding AddToHO_Click}" />
                             <MenuItem Header="{tsd:Loc albl_RemoveFromHO}" Command="{Binding RemoveFromHO_Click}" />
+                            <MenuItem Header="{tsd:Loc albl_CopyHOposition}" Command="{Binding CopyHO_Click}" />
                         </ContextMenu>
                     </DataGrid.ContextMenu>
                 </DataGrid>
@@ -375,9 +377,8 @@
                 CommandParameter="{Binding ElementName=InstantUpdate}"
                 Grid.Row="9" VerticalAlignment="Center" Width="120" Height="30"/>
                 <ComboBox ItemsSource ="{Binding BillOfElementsList, UpdateSourceTrigger =PropertyChanged}" 
-                  SelectedItem="{Binding SelectedBOE, UpdateSourceTrigger=PropertyChanged}"
-                  
-                  Grid.Column="1" Margin="10,10,10,10" Grid.ColumnSpan="2"/>
+                     SelectedItem="{Binding SelectedBOE, UpdateSourceTrigger=PropertyChanged}"                                            
+                    Grid.Column="1" Margin="10,10,10,10" Grid.ColumnSpan="2"/>
                 <Button x:Name="SelectUnboundedParts" 
             Content="{tsd:Loc albl_Unbounded_parts}" HorizontalAlignment="Left" Margin="544,0,0,0" 
             Command="{Binding SelectUnboundParts_Click}" 

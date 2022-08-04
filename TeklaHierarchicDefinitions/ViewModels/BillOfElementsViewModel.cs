@@ -17,6 +17,7 @@ using Tekla.Structures.Dialog.UIControls;
 using DataGrid = System.Windows.Controls.DataGrid;
 using System.Collections;
 using System.Threading;
+using System.Reflection;
 
 namespace TeklaHierarchicDefinitions.ViewModels
 {
@@ -209,17 +210,16 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
-                    var boe = ((DataGrid)obj).SelectedItem as BillOfElements;
-                    if (boe != null && TeklaDB.ModelHasSelectedObjects())
+                    var boe = ((DataGrid)obj).SelectedItem as BillOfElements;                      
+                    if (boe.AttachSelectedObjects())
                     {
-                        if (boe.AttachSelectedObjects())
+                        TeklaDB.model.CommitChanges();
+                        MessageBox.Show("Objects successfully attached to " + boe.Mark + " " + boe.Position);
+                        foreach (var billOfElements in BillOfElements)
                         {
-                            TeklaDB.model.CommitChanges();
-                            MessageBox.Show("Objects successfully attached to " + boe.Mark + " " + boe.Position);
+                            billOfElements.OnPropertyChanged("ObjectsCount");
                         }
                     }
-
-
                 }, (obj) => obj == null ? true : (TeklaDB.ModelHasSelectedObjects() && ((DataGrid)obj).SelectedIndex !=-1));
             }            
         }
@@ -388,6 +388,30 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     OnPropertyChanged("BillOfElements");
                     OnPropertyChanged("BillOfElementsList");
                 }, (obj) => (ModificationBlocked == false & BillOfElements.Any(t => (t.Selection & t.FatherHierarchicObject.HierarchicObject.Father !=null))));
+            }
+        }
+
+        public ICommand CopyHO_Click
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {                    
+                    var new_boe = new BillOfElements(null, _billOfElements, _selectedBOE);
+                    foreach (PropertyInfo prop in new_boe.GetType().GetProperties())
+                    {
+                        if (prop == null)
+                            continue;
+                        if (!prop.CanWrite)
+                            continue;
+                        var value = prop.GetValue(SelectedItem, null);
+                        prop.SetValue(new_boe, value, null);
+                    }
+                    _billOfElements.Add(new_boe);
+                    OnPropertyChanged("BillOfElements");
+                    OnPropertyChanged("BillOfElementsList");
+                }, (obj) => obj == null ? (ModificationBlocked == false & SelectedItem != null) : false);
+
             }
         }
 
@@ -648,7 +672,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     });
                     thread.IsBackground = true;
                     thread.Start(); 
-                }, (obj) => obj == null ? false : (TeklaDB.ModelGetSelectedComponents().Count>0 && ((ListBox)obj).SelectedIndex != -1) && !Attaching);
+                }, (obj) => obj == null ? false : (TeklaDB.ModelHasSelectedObjects() && ((ListBox)obj).SelectedIndex != -1) && !Attaching);
             }
         }
 
@@ -669,7 +693,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     });
                     thread.IsBackground = true;
                     thread.Start();
-                }, (obj) => obj == null ? false : (TeklaDB.ModelGetSelectedComponents().Count>0 && ((ListBox)obj).SelectedIndex != -1 && !Attaching));
+                }, (obj) => obj == null ? false : (TeklaDB.ModelHasSelectedObjects() && ((ListBox)obj).SelectedIndex != -1 && !Attaching));
             }
         }
         #endregion

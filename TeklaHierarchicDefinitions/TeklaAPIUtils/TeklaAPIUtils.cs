@@ -353,7 +353,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     attObj.Add(modelObj);
                 }
                 return attObj;
-            }).Select(x=>x.Identifier).Distinct();
+            }).Select(x=>x.Identifier).ToHashSet();
             foreach(ModelObject mo in modelObjectEnumerator)
             {
 
@@ -562,7 +562,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 
             if (res) {
                 @object.Modify();
-                model.CommitChanges();
+                //model.CommitChanges();
             }
 
             return res;
@@ -571,6 +571,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         public static bool SetPropertyInt(ModelObject @object, string prop, int val)
         {
             //HierarchicObject ho = @object as HierarchicObject;
+
             bool res = @object.SetUserProperty(prop, val);
 
             if (res)
@@ -636,7 +637,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         {
             bool res = false;
             ArrayList arrayList = GetSelectedModelObjects();
-
+            
             foreach (var @object in arrayList)
             {
                 Part part = @object as Part;
@@ -646,7 +647,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     part.Profile.ProfileString = profile;
                     part.Class = classificator;
                     part.SetUserProperty("PRELIM_MARK", position);
-
+                    
                     string moment;
                     if (m == m_end)
                         moment = m;
