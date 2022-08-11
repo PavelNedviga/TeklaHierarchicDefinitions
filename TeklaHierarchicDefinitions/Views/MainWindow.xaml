@@ -666,6 +666,11 @@
 
             </Grid>
         </TabItem>
+        <!--<TabItem Header="{tsd:Loc albl_SBOM}">
+            <Grid Background="#FFE5E5E5" >
+                <DataGrid Grid.Column="1" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10"/>
+            </Grid>
+        </TabItem>-->
     </TabControl>
 
 

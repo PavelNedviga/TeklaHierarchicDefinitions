@@ -596,8 +596,37 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         internal static bool SetProfile(Part part, string profile)
         {
             bool result = false;
-            part.Profile.ProfileString = profile;
-            result = part.Modify();
+            string patternPlate = @"^\D*\d+";
+
+            // Instantiate the regular expression object.
+            Regex r = new Regex(patternPlate, RegexOptions.IgnoreCase);
+            string patternBeam = @"^\D*\d+$";
+
+            // Instantiate the regular expression object.
+            Regex rb = new Regex(patternBeam, RegexOptions.IgnoreCase);
+
+            string profileType = string.Empty;
+            var rs = part.GetReportProperty("PROFILE_TYPE", ref profileType);
+            if(profile.Length > 0)
+            {
+                if (part is ContourPlate)
+                {
+                    Match ms = r.Match(profile);
+                    if (ms.Success)
+                        part.Profile.ProfileString = ms.Groups[0].Value;
+                    else
+                        part.Profile.ProfileString = profile;
+                }
+                else
+                {
+                    Match ms = rb.Match(profile);
+                    if (ms.Success & (ms.Groups[0].Value.StartsWith("PL") | ms.Groups[0].Value.StartsWith("-") | ms.Groups[0].Value.StartsWith("FPL")))
+                        part.Profile.ProfileString = profile + "*200";
+                    else
+                        part.Profile.ProfileString = profile;
+                }
+                result = part.Modify();
+            }
             return result;
         }
 
@@ -907,7 +936,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             LibraryProfileItem libraryProfileItem = new LibraryProfileItem();
             Beam beam = new Beam();
 
-            result = libraryProfileItem.Select(profile) || parametricProfileItem.Select(profile);
+            result = profile.Length > 0 & (libraryProfileItem.Select(profile) || parametricProfileItem.Select(profile));
             return result;
         }
 

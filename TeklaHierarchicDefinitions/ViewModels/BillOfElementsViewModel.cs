@@ -214,13 +214,13 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     if (boe.AttachSelectedObjects())
                     {
                         TeklaDB.model.CommitChanges();
-                        MessageBox.Show("Objects successfully attached to " + boe.Mark + " " + boe.Position);
-                        foreach (var billOfElements in BillOfElements)
+                        foreach (var billOfElement in BillOfElements)
                         {
-                            billOfElements.OnPropertyChanged("ObjectsCount");
+                            billOfElement.OnPropertyChanged("ObjectsCount");
                         }
+                        MessageBox.Show("Objects successfully attached to " + boe.Mark + " " + boe.Position);
                     }
-                }, (obj) => obj == null ? true : (TeklaDB.ModelHasSelectedObjects() && ((DataGrid)obj).SelectedIndex !=-1));
+                }, (obj) => (obj == null | SelectedItem == null) ? false : (TeklaDB.ModelHasSelectedObjects() && TeklaDB.ProfileIsAllowed(SelectedItem.Profile) && TeklaDB.MaterialIsAllowed(SelectedItem.Material) && ((DataGrid)obj).SelectedIndex !=-1));
             }            
         }
 
@@ -243,9 +243,9 @@ namespace TeklaHierarchicDefinitions.ViewModels
                         {
                             if (boe.HierarchicObjectInTekla.RemoveSelectedModedlObjectsFromHierarchicObject())
                             {
+                                boe.OnPropertyChanged("ObjectsCount");
                                 MessageBox.Show("Objects were successfully removed from " + boe.Mark);
-                            }
-                            boe.OnPropertyChanged("ObjectsCount");
+                            }                            
                         }
                         TeklaDB.model.CommitChanges();
                     }
@@ -312,14 +312,21 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
-                    var elementsList = _billOfElements.Where(x => x.Selection == true).ToArray();
+                    List<string> upd = new List<string>();
+                    bool updated = false;
+                    var elementsList = _billOfElements.Where(x => x.Selection == true & TeklaDB.MaterialIsAllowed(x.Material) & TeklaDB.ProfileIsAllowed(x.Profile)).ToArray();
                     foreach(var boe in elementsList)
                     {
-                        boe.UpdateAssociatedObjects();
+                        bool res = boe.UpdateAssociatedObjects();
+                        updated = updated | res;
+                        if(res)
+                            upd.Add(boe.Mark);                        
                     }
-
-                    TeklaDB.model.CommitChanges();
-                    //MessageBox.Show("Properties successfully updated");
+                    if (updated)
+                    {
+                        TeklaDB.model.CommitChanges();
+                        MessageBox.Show($"Properties successfully updated for {string.Join(", ", upd)}");
+                    }
                 }, (obj) => _billOfElements.Where(x => x.Selection == true & x.Profile.Length>0).Count() > 0);
             }
         }
