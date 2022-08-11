@@ -61,7 +61,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         #endregion
 
         #region Свойства
-
+        public string WindowName { get => $"Ведомость элементов {typeof(BillOfElementsViewModel).Assembly.GetName().Version.Major.ToString()}.{typeof(BillOfElementsViewModel).Assembly.GetName().Version.Minor.ToString()}"; }
         public bool FilterByMark { get; set; } = true;
 
         public bool FilterByProfile { get; set; } = true;
@@ -236,7 +236,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     {
                         boes.Add(row as BillOfElements);
                     }
-
+                    boes = BillOfElements.ToList();
                     if (boes.Count > 0 && TeklaDB.ModelHasSelectedObjects())
                     {
                         foreach(BillOfElements boe in boes)
@@ -244,8 +244,8 @@ namespace TeklaHierarchicDefinitions.ViewModels
                             if (boe.HierarchicObjectInTekla.RemoveSelectedModedlObjectsFromHierarchicObject())
                             {
                                 MessageBox.Show("Objects were successfully removed from " + boe.Mark);
-                                boe.OnPropertyChanged("ObjectsCount");
                             }
+                            boe.OnPropertyChanged("ObjectsCount");
                         }
                         TeklaDB.model.CommitChanges();
                     }
@@ -293,9 +293,12 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
-                    var boe = ((DataGrid)obj).SelectedItem as BillOfElements;
-                    boe.DeleteHierarchicObject();
-                    _billOfElements.Remove(boe);
+                    var boes = ((DataGrid)obj).SelectedItems.Cast<BillOfElements>().ToList();
+                    foreach(var boe in boes)
+                    {
+                        boe.DeleteHierarchicObject();
+                        _billOfElements.Remove(boe);
+                    }
                     OnPropertyChanged("BillOfElements");
                     OnPropertyChanged("BillOfElementsList");
 
@@ -317,7 +320,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
 
                     TeklaDB.model.CommitChanges();
                     //MessageBox.Show("Properties successfully updated");
-                }, (obj) => _billOfElements.Where(x => x.Selection == true).Count() > 0);
+                }, (obj) => _billOfElements.Where(x => x.Selection == true & x.Profile.Length>0).Count() > 0);
             }
         }
 
@@ -411,6 +414,32 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     OnPropertyChanged("BillOfElements");
                     OnPropertyChanged("BillOfElementsList");
                 }, (obj) => obj == null ? (ModificationBlocked == false & SelectedItem != null) : false);
+
+            }
+        }
+
+        public ICommand SelectDeselectRows_Click
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    if (BillOfElements.Any(t => !t.Selection))
+                    {
+                        foreach (var item in BillOfElements)
+                        {
+                            item.Selection = true;
+                        }
+                    }
+                    else
+                    {
+                        foreach(var item in BillOfElements)
+                        {
+                            item.Selection = false;
+                        }
+                    }
+
+                }, (obj) => obj == null ? (BillOfElements != null & BillOfElements.Count > 0) : false);
 
             }
         }

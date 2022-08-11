@@ -377,7 +377,14 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                         if (profileEquality)
                         {
                             if (prefix != null)
-                                prefixesEquality = part.GetAssembly().AssemblyNumber.Prefix == prefix;
+                            {
+                                var ass = part.GetAssembly();
+                                if(ass != null)
+                                    prefixesEquality = ass.AssemblyNumber.Prefix == prefix;
+                                else
+                                    prefixesEquality = part.AssemblyNumber.Prefix == prefix;
+                            }
+                                
                             else
                                 prefixesEquality = true;
                             if (prefixesEquality)
@@ -530,19 +537,23 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         internal static bool RemoveSelectedModedlObjects(HierarchicObject hierarchicObject)
         {
             var modelObjects = GetSelectedModelObjects();
-            foreach(var modelObject in modelObjects)
+            var res = hierarchicObject.RemoveObjects(modelObjects);
+            if (res)
             {
-                Part part = modelObject as Part;
-                if (part != null)
+                foreach (var modelObject in modelObjects)
                 {
-                    part.Class = "1";
-                    part.AssemblyNumber.Prefix = "Б";
-                    part.SetUserProperty("Album", "");
-                    part.SetUserProperty("PRELIM_MARK", "");
-                    part.Modify();
+                    Part part = modelObject as Part;
+                    if (part != null)
+                    {
+                        part.Class = "1";
+                        part.AssemblyNumber.Prefix = "Б";
+                        part.SetUserProperty("Album", "");
+                        part.SetUserProperty("PRELIM_MARK", "");
+                        part.Modify();
+                    }
                 }
             }
-            return hierarchicObject.RemoveObjects(modelObjects);
+            return res;
         }
         #endregion
 
@@ -642,9 +653,36 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             {
                 Part part = @object as Part;
                 if (part != null)
-                {
+                {                    
+                    string patternPlate = @"^\D*\d+";
+
+                    // Instantiate the regular expression object.
+                    Regex r = new Regex(patternPlate, RegexOptions.IgnoreCase);
+                    string patternBeam = @"^\D*\d+$";
+
+                    // Instantiate the regular expression object.
+                    Regex rb = new Regex(patternBeam, RegexOptions.IgnoreCase);
+
                     part.AssemblyNumber.Prefix = mark;
-                    part.Profile.ProfileString = profile;
+                    string profileType = string.Empty;
+                    var rs = part.GetReportProperty("PROFILE_TYPE", ref profileType);
+                    if (part is ContourPlate)
+                    {
+                        Match ms = r.Match(profile);
+                        if (ms.Success)
+                            part.Profile.ProfileString = ms.Groups[0].Value;
+                        else
+                            part.Profile.ProfileString = profile;
+                    }
+                    else
+                    {
+                        Match ms = rb.Match(profile);
+                        if (ms.Success & (ms.Groups[0].Value.StartsWith("PL") | ms.Groups[0].Value.StartsWith("-") | ms.Groups[0].Value.StartsWith("FPL")))
+                            part.Profile.ProfileString = profile + "*200";
+                        else
+                            part.Profile.ProfileString = profile;
+                    }
+
                     part.Class = classificator;
                     part.SetUserProperty("PRELIM_MARK", position);
                     
@@ -765,7 +803,37 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                 if (part != null)
                 {
                     part.AssemblyNumber.Prefix = mark;
+                    string patternPlate = @"^\D*\d+";
+
+                    // Instantiate the regular expression object.
+                    Regex r = new Regex(patternPlate, RegexOptions.IgnoreCase);
+                    string patternBeam = @"^\D*\d+$";
+
+                    // Instantiate the regular expression object.
+                    Regex rb = new Regex(patternBeam, RegexOptions.IgnoreCase);
+
+                    part.AssemblyNumber.Prefix = mark;
                     part.Profile.ProfileString = profile;
+                    part.Modify();
+                    part.Material.MaterialString = material;
+                    string profileType = string.Empty;
+                    var rs = part.GetReportProperty("PROFILE_TYPE", ref profileType);
+                    if (part is ContourPlate)
+                    {
+                        Match ms = r.Match(profile);
+                        if (ms.Success)
+                            part.Profile.ProfileString = ms.Groups[0].Value;
+                        else
+                            part.Profile.ProfileString = profile;
+                    }
+                    else
+                    {
+                        Match ms = rb.Match(profile);
+                        if (ms.Success & (ms.Groups[0].Value.StartsWith("PL") | ms.Groups[0].Value.StartsWith("-") | ms.Groups[0].Value.StartsWith("FPL")))
+                            part.Profile.ProfileString = profile + "*200";
+                        else
+                            part.Profile.ProfileString = profile;
+                    }
                     part.Class = classificator;
                     part.SetUserProperty("PRELIM_MARK", position);
 
@@ -808,7 +876,6 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     Double.TryParse(q_end_min, out result);
                     part.SetUserProperty("shear2", result * 1000);
 
-                    part.Material.MaterialString = material;
                     part.SetUserProperty("prim_vedomost", notes);
 
                     part.SetUserProperty("slozhnoe_sechenie", isSimple);

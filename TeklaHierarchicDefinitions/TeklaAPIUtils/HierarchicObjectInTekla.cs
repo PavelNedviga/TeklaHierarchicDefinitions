@@ -364,14 +364,14 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             HashSet<Part> hsParts = new HashSet<Part>();
             foreach (Assembly assembly in hs)
             {
-                if (!assembly.Equals(null))
+                if (assembly != null)
                 {
                     GetAllAssemblyParts(assembly, ref hsParts);
                 }
             }            
             foreach (Part part in hsParts)
             {
-                if (!part.Equals(null))
+                if (part != null)
                     TeklaDB.SetPropertyStr(part, name, input);
             }
             bool res = TeklaDB.model.CommitChanges(HierarchicObject.Name + ": property " + name + " is set to " + input);

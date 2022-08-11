@@ -24,6 +24,9 @@ using TeklaHierarchicDefinitions.ViewModels;
 using DataGrid = System.Windows.Controls.DataGrid;
 using Path = System.IO.Path;
 using Tekla.Structures;
+using TeklaHierarchicDefinitions.TeklaAPIUtils;
+using System.Collections;
+using Tekla.Structures.Model;
 
 namespace TeklaHierarchicDefinitions
 {
@@ -111,8 +114,17 @@ namespace TeklaHierarchicDefinitions
             if ((bool)HightlightObjects.IsChecked)
             {
                 var boe = (sender as System.Windows.Controls.DataGrid).SelectedItem as BillOfElements;
-                if (boe != null)
-                    boe.GetSelectedObjects();
+                //if (boe != null)
+                //    boe.GetSelectedObjects();
+                var boes = (sender as System.Windows.Controls.DataGrid).SelectedItems.Cast<BillOfElements>().SelectMany(t =>
+                {
+                    var arr = new List<ModelObject>();
+                    var xx = t.HierarchicObjectInTekla.HierarchicObject.GetChildren().GetEnumerator();
+                    while (xx.MoveNext())
+                        arr.Add(xx.Current as ModelObject);
+                    return arr;
+                }).ToArray();
+                TeklaDB.SelectObjectsInModelView(new ArrayList(boes));
             }
         }
 

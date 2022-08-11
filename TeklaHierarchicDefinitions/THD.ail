@@ -905,6 +905,26 @@ string_utf8 albl_CopyHOposition
 };
 
 
+string_utf8 albl_SelectDeselectRows
+{
+    entry = ("enu", "Select/deselect rows");
+    entry = ("chs", "Select/deselect rows");
+    entry = ("cht", "Select/deselect rows");
+    entry = ("csy", "Select/deselect rows");
+    entry = ("deu", "Select/deselect rows");
+    entry = ("esp", "Select/deselect rows");
+    entry = ("fra", "Select/deselect rows");
+    entry = ("hun", "Select/deselect rows");
+    entry = ("ita", "Select/deselect rows");
+    entry = ("jpn", "Select/deselect rows");
+    entry = ("kor", "Select/deselect rows");
+    entry = ("nld", "Select/deselect rows");
+    entry = ("plk", "Select/deselect rows");
+    entry = ("ptb", "Select/deselect rows");
+    entry = ("ptg", "Select/deselect rows");
+    entry = ("rus", "Выделить/снять выделение");
+};
+
 string_utf8 albl_
 {
     entry = ("enu", "Temp");

@@ -50,6 +50,7 @@
                   CanUserResizeRows="False" HeadersVisibility="Column" 
                   CellEditEnding="HODataGrid_CellEditEnding"
                   SelectedItem="{Binding SelectedItem}" 
+                          
                   SelectionChanged="HODataGrid_SelectionChanged"
                   AutoGenerateColumns="False" Grid.ColumnSpan="1" Grid.RowSpan="9"
                   IsReadOnly="{Binding ModificationBlocked, NotifyOnSourceUpdated=True}">
@@ -194,7 +195,7 @@
                         </DataGridTemplateColumn>
                         <DataGridTextColumn Header="{tsd:Loc albl_NSummary}" Binding="{Binding N_summary, UpdateSourceTrigger=PropertyChanged}"/>
 
-                        <DataGridTemplateColumn Header="Q"  >
+                        <DataGridTemplateColumn Header=" Qz "  >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -215,7 +216,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Qmin"  >
+                        <DataGridTemplateColumn Header=" Qy "  >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -320,6 +321,7 @@
                             <MenuItem Header="{tsd:Loc albl_AttachHOposition}" Command="{Binding AddToHO_Click}" />
                             <MenuItem Header="{tsd:Loc albl_RemoveFromHO}" Command="{Binding RemoveFromHO_Click}" />
                             <MenuItem Header="{tsd:Loc albl_CopyHOposition}" Command="{Binding CopyHO_Click}" />
+                            <MenuItem Header="{tsd:Loc albl_SelectDeselectRows}" Command="{Binding SelectDeselectRows_Click}" />
                         </ContextMenu>
                     </DataGrid.ContextMenu>
                 </DataGrid>
