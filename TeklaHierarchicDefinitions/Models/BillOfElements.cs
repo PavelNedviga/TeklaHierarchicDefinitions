@@ -331,9 +331,9 @@ namespace TeklaHierarchicDefinitions.Models
             { 
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M", value);
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_end", value);
-                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_summary", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_summary", GetMSummary());
                 if (_instantUpdate)                    
-                    _hierarchicObjectInTekla.PartsSetAttr("moment_M", value);
+                    _hierarchicObjectInTekla.PartsSetAttr("moment_M", M_summary);
                 double momentConn;
                 if (double.TryParse(value, out momentConn))
                 {
@@ -354,9 +354,9 @@ namespace TeklaHierarchicDefinitions.Models
             set
             {
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_end", value);
-                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_summary", M + "/" + value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_summary", GetMSummary());
                 if (_instantUpdate)
-                    _hierarchicObjectInTekla.PartsSetAttr("moment_M", M +"/"+ value);
+                    _hierarchicObjectInTekla.PartsSetAttr("moment_M", M_summary);
                 double momentConn;
                 if (double.TryParse(value, out momentConn))
                 {
@@ -370,13 +370,69 @@ namespace TeklaHierarchicDefinitions.Models
             }
         }
 
-        internal void AddAsChildHO(List<BillOfElements> fatherItem)
+        public string MyStartReverse
         {
-            foreach (var i in fatherItem)
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("MyStartReverse"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("MyStartReverse", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("MyEndReverse", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_summary", GetMSummary());
+                if (_instantUpdate)
+                    _hierarchicObjectInTekla.PartsSetAttr("moment_M", M_summary);
+                double momentConn;
+                if (double.TryParse(value, out momentConn))
+                {
+                    if (momentConn != 0)
+                        StartMomentConnection = 0;
+                    else
+                        StartMomentConnection = -1;
+                }
+                OnPropertyChanged("MyStartReverse");
+                OnPropertyChanged("MyEndReverse");
+                OnPropertyChanged("M_summary");
+            }
+        }
+
+        public string MyEndReverse
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("MyEndReverse"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("MyEndReverse", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_summary", GetMSummary());
+                if (_instantUpdate)
+                    _hierarchicObjectInTekla.PartsSetAttr("moment_M", M_summary);
+                double momentConn;
+                if (double.TryParse(value, out momentConn))
+                {
+                    if (momentConn != 0)
+                        StartMomentConnection = 0;
+                    else
+                        StartMomentConnection = -1;
+                }
+                OnPropertyChanged("MyEndReverse");
+                OnPropertyChanged("M_summary");
+            }
+        }
+
+        
+
+        internal void AddAsChildHO(List<BillOfElements> childrenItems)
+        {
+            //this.HierarchicObjectInTekla.HierarchicObject.HierarchicChildren.AddRange(childrenItems.Select(t=>t.HierarchicObjectInTekla.HierarchicObject).ToList());
+            foreach (var i in childrenItems)
             {
                 if(i != this)
+                {
+                    //this.HierarchicObjectInTekla.HierarchicObject.HierarchicChildren.Add(i.HierarchicObjectInTekla.HierarchicObject);
                     i.HierarchicObjectInTekla.AddFather(this.HierarchicObjectInTekla);
+                    i.Classificator = ClassGenerator.Generate(Mark, i.Position);
+                    i.Category = ClassGenerator.GenerateCategory(Mark);
+                }
             }
+            //this.HierarchicObjectInTekla.HierarchicObject.Modify();
+            TeklaDB.model.CommitChanges($"{childrenItems.Count} items are attached to {this.Mark}");
 
             OnPropertyChanged("Father");
             OnPropertyChanged("Mark");
@@ -599,7 +655,6 @@ namespace TeklaHierarchicDefinitions.Models
             }
         }
 
-
         public string Q_summary
         {
             get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("Q_summary"); }
@@ -621,8 +676,18 @@ namespace TeklaHierarchicDefinitions.Models
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Material", value);
                 if (_instantUpdate) 
                     _hierarchicObjectInTekla.PartSetMaterial(value);
-
+                MaterialLabel = TeklaDB.GetMaterialForSpec(value);
                 OnPropertyChanged("Material");
+            }
+        }
+
+        public string MaterialLabel
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("MaterialLabel"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("MaterialLabel", value);
+                OnPropertyChanged("MaterialLabel");
             }
         }
 
@@ -748,6 +813,10 @@ namespace TeklaHierarchicDefinitions.Models
                 this.M = (double.Parse(ht["momentY1"].ToString()) / 1000).ToString();
             if (ht.ContainsKey("momentY2"))
                 this.M_end = (double.Parse(ht["momentY2"].ToString()) / 1000).ToString();
+            if (ht.ContainsKey("momentRY1"))
+                this.MyStartReverse = (double.Parse(ht["momentRY1"].ToString()) / 1000).ToString();
+            if (ht.ContainsKey("momentRY2"))
+                this.MyEndReverse = (double.Parse(ht["momentRY2"].ToString()) / 1000).ToString();
             if (ht.ContainsKey("axial1"))
                 this.N = (double.Parse(ht["axial1"].ToString()) / 1000).ToString();
             if (ht.ContainsKey("axial2"))
@@ -815,6 +884,64 @@ namespace TeklaHierarchicDefinitions.Models
             TeklaDB.SelectSimilarModelObjects(mark, profile, material, HOinTS);
         }
 
+        internal string GetMSummary()
+        {
+            string MStartF;
+            string MEndF;
+            if (MyStartReverse == "")
+            {
+                MStartF = M;
+            }
+            else
+            {
+                double d = 0;
+                string MyStartRes = string.Empty;
+                if (double.TryParse(MyStartReverse, out d))
+                {
+                    MyStartRes = (-d).ToString();
+                }
+                else
+                {
+                    MyStartRes = MyStartReverse;
+                }
+
+                MStartF = M + ";" + MyStartRes;
+            }
+
+            if (MyEndReverse == "")
+            {
+                MEndF = M_end;
+            }
+            else
+            {
+                double d = 0;
+                string MyEndRes = string.Empty;
+                if (double.TryParse(MyEndReverse, out d))
+                {
+                    MyEndRes = (-d).ToString();
+                }
+                else
+                {
+                    MyEndRes = MyEndReverse;
+                }
+                MEndF = M_end + ";" + MyEndRes;
+            }
+
+            string m_F;
+            if (MStartF == MEndF)
+            {
+                if (MStartF == "")
+                    m_F = "-";
+                else
+                    m_F = MStartF;
+            }
+            else
+            {
+                m_F = MStartF + "/" + MEndF;
+            }
+            return m_F;
+        }
+
         internal string GetNSummary()
         {
             string N_startF;
@@ -861,7 +988,10 @@ namespace TeklaHierarchicDefinitions.Models
             string n_F;
             if (N_startF == N_endF)
             {
-                n_F = N_startF;
+                if (N_startF == "")
+                    n_F = "-";
+                else
+                    n_F = N_startF;
             }
             else
             {
@@ -891,16 +1021,19 @@ namespace TeklaHierarchicDefinitions.Models
                 Q_endF = Q_end + ";" + Q_end_min;
             }
 
-            string Q_F;
+            string q_F;
             if (Q_startF == Q_endF)
-            {
-                Q_F = Q_startF;
+            {                
+                if (Q_startF == "")
+                    q_F = "-";
+                else
+                    q_F = Q_startF;
             }
             else
             {
-                Q_F = Q_startF + "/" + Q_endF;
+                q_F = Q_startF + "/" + Q_endF;
             }
-            return Q_F;
+            return q_F;
         }
 
         public bool AttachSelectedObjects()
@@ -912,7 +1045,9 @@ namespace TeklaHierarchicDefinitions.Models
                 Profile,
                 Position,
                 M,
+                MyStartReverse,
                 M_end,
+                MyEndReverse,
                 StartMomentConnection,
                 EndMomentConnection,
                 StartFrictionConnection,
@@ -982,7 +1117,9 @@ namespace TeklaHierarchicDefinitions.Models
                 Profile,
                 Position,
                 M,
+                MyStartReverse,
                 M_end,
+                MyEndReverse,
                 StartMomentConnection,
                 EndMomentConnection,
                 StartFrictionConnection,

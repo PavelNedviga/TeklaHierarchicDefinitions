@@ -74,7 +74,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             get 
             {
                 MyObservableCollection<BillOfElements> billOfElements = new MyObservableCollection<BillOfElements>();
-                foreach (BillOfElements boe in _billOfElements.Where(t => t.BOE.Equals(_selectedBOE)))
+                foreach (BillOfElements boe in _billOfElements.Where(t => t.BOE.Equals(_selectedBOE)).OrderBy(t=>t.Classificator))
                 {
                     billOfElements.Add(boe);
                 }
@@ -90,7 +90,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
 
 
 
-        public List<string> BillOfElementsList
+        public ObservableCollection<string> BillOfElementsList
         {
             get 
             {
@@ -734,6 +734,27 @@ namespace TeklaHierarchicDefinitions.ViewModels
         }
         #endregion
         #endregion
+
+        #region ТСС
+        ObservableCollection<SteelBOMPart> steelBOMPositions;
+
+        public ICommand AddSBOMParts
+        {
+            get
+            {
+                return new DelegateCommand(
+                    (obj) =>
+                    {                        
+                        steelBOMPositions = new ObservableCollection<SteelBOMPart>(TeklaDB.GetSelectedModelObjects().ToArray().Cast<Part>().Select(t=> new SteelBOMPart(t)).ToList());
+                        
+                    },
+                    (obj) => TeklaDB.ModelHasSelectedObjects()
+                 );
+            }
+        }
+
+        #endregion
+
     }
 
 

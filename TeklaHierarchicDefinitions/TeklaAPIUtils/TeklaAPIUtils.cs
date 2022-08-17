@@ -652,7 +652,9 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             string profile, 
             string position,
             string m, 
+            string m_start_reverse,
             string m_end,
+            string m_end_reverse,
             int startMomentConnection,
             int endMomentConnection,
             int startFrictionConnection,
@@ -724,8 +726,13 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     double result;
                     Double.TryParse(m, out result);
                     part.SetUserProperty("momentY1", result * 1000);
+                    Double.TryParse(m_start_reverse, out result);
+                    part.SetUserProperty("momentRY1", result * 1000);
                     Double.TryParse(m_end, out result);
                     part.SetUserProperty("momentY2", result * 1000);
+                    Double.TryParse(m_end_reverse, out result);
+                    part.SetUserProperty("momentRY2", result * 1000);
+
 
                     part.SetUserProperty("START_MOMENT_CONN", startMomentConnection);
                     part.SetUserProperty("END_MOMENT_CONN", endMomentConnection);
@@ -799,7 +806,9 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             string profile, 
             string position,
             string m,
+            string m_start_reverse,
             string m_end,
+            string m_end_reverse,
             int startMomentConnection,
             int endMomentConnection,
             int startFrictionConnection,
@@ -873,10 +882,14 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                         moment = m + "/" + m_end;
                     part.SetUserProperty("moment_M", moment);
                     double result;
-                    Double.TryParse(m,out result);
+                    Double.TryParse(m, out result);
                     part.SetUserProperty("momentY1", result * 1000);
+                    Double.TryParse(m_start_reverse, out result);
+                    part.SetUserProperty("momentRY1", result * 1000);
                     Double.TryParse(m_end, out result);
                     part.SetUserProperty("momentY2", result * 1000);
+                    Double.TryParse(m_end_reverse, out result);
+                    part.SetUserProperty("momentRY2", result * 1000);
 
 
                     part.SetUserProperty("START_MOMENT_CONN", startMomentConnection);
@@ -1032,6 +1045,21 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     return profileItemParameter.StringValue;
             }
             return "not found in library";
+        }
+
+        internal static string GetMaterialForSpec(string materialString)
+        {
+            try
+            {
+                MaterialItem materialItem = new MaterialItem();
+                materialItem.Select(materialString);
+                var res = materialItem.AliasName1.Length > 0;
+                return materialItem.AliasName1.Length > 0 ? materialItem.AliasName1 : materialItem.MaterialName;
+            }
+            catch (Exception ex)
+            {
+                return materialString;
+            }
         }
 
         internal static bool SetClass(Part part, string classficator)

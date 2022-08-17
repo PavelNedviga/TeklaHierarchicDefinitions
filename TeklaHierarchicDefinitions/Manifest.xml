@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TEP Version="2.0">
-  <Product Id="ElementList" UpgradeCode="AAF3BA07-57EB-406C-B22B-6C9254CB2502" Version="1.10" Language="1033"
+  <Product Id="ElementList" UpgradeCode="AAF3BA07-57EB-406C-B22B-6C9254CB2502" Version="1.11" Language="1033"
 		Name="Element list" Manufacturer="Pavel Nedviga"  Description= "This application operates with model and creates control bindings for parts and tables"
 		IconPath="%TEPDEFINITIONFILEFOLDER%\TSEP package input\Element list.png" Type="Extension">
     <TeklaVersions>
@@ -14,7 +14,7 @@
     <SourcePathVariable Id="TepOutputFolder" Value="%TEPDEFINITIONFILEFOLDER%\TSEP Package output" Comment="This provides the location where the package builder is to save the package."/>
     <SourcePathVariable Id="ManFolderInput" Value="%TEPDEFINITIONFILEFOLDER%\TSEP Package input" Comment="This provides the location where the package files are located."/>
     <SourcePathVariable Id="ManFolder" Value="%TEPDEFINITIONFILEFOLDER%\bin\Release" Comment="Fresh release location."/>
-    <SourcePathVariable Id="CustomProperties" Value="%TEPDEFINITIONFILEFOLDER%\..\CustomProperties\bin\Release" Comment="Custom atributes folder"/>
+    <SourcePathVariable Id="CustomProperties" Value="%TEPDEFINITIONFILEFOLDER%\..\CustomProperties\bin\Debug" Comment="Custom atributes folder"/>
 	  <SourcePathVariable Id="StatsMacro" Value="%TEPDEFINITIONFILEFOLDER%\..\StatsForTeklaProject" Comment="Macro folder"/>
 	  <SourcePathVariable Id="BinariesFolder" Value="%TEPDEFINITIONFILEFOLDER%\bin\Release"/>
   </SourcePathVariables>

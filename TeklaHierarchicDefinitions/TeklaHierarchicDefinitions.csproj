@@ -249,6 +249,7 @@
     </Compile>
     <Compile Include="Models\BuildingFragmentUtils.cs" />
     <Compile Include="Models\ClassGenerator.cs" />
+    <Compile Include="Models\SteelBOMPosition.cs" />
     <Compile Include="TeklaAPIUtils\HierarchicObjectInTekla.cs" />
     <Compile Include="Unused\ToDataTableConverter.cs" />
     <Compile Include="ViewModels\AppInfo.cs" />

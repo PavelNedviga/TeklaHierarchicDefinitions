@@ -7,6 +7,103 @@ namespace CustomPropertyHierarchicObject
 {
     /// <summary>The test plugin for father component name or number.</summary>
     [Export(typeof(ICustomPropertyPlugin))]
+    [ExportMetadata("CustomProperty", "CUSTOM.ASSEMBLY_PREFIX")]
+    public class CUSTOM_ASSEMBLY_PREFIX : ICustomPropertyPlugin
+    {
+
+        /// <summary>Returns custom property int value for object.</summary>
+        /// <param name="objectId">The object id.</param>
+        /// <returns>The <see cref="int"/>.</returns>
+        public int GetIntegerProperty(int objectId)
+        {
+            var part = TeklaHierarchicObject.GetModelObject(objectId);
+            if (part != null & part is Part)
+            {
+                var assembly = (part as Part).GetAssembly();
+                if (assembly != null)
+                    return 1;
+            }
+            return 0;
+        }
+
+        /// <summary>Returns custom property string value for object.</summary>
+        /// <param name="objectId">The object id.</param>
+        /// <returns>The <see cref="string"/>.</returns>
+        public string GetStringProperty(int objectId)
+        {
+            var part = TeklaHierarchicObject.GetModelObject(objectId);
+            if (part != null & part is Part)
+            {
+                var assembly = (part as Part).GetAssembly();
+                if (assembly != null)
+                    return assembly.AssemblyNumber.Prefix;
+                else
+                    return "error on getting the assembly";
+            }
+            else
+                return "not a part";
+        }
+
+        /// <summary>Returns custom property double value for object.</summary>
+        /// <param name="objectId">The object id.</param>
+        /// <returns>The <see cref="double"/>.</returns>
+        public double GetDoubleProperty(int objectId)
+        {
+            var part = TeklaHierarchicObject.GetModelObject(objectId);
+            if (part != null & part is Part)
+            {
+                var assembly = (part as Part).GetAssembly();
+                if (assembly != null)
+                    return 1;
+            }
+            return 0;
+        }
+    }
+
+    /// <summary>The test plugin for father component name or number.</summary>
+    [Export(typeof(ICustomPropertyPlugin))]
+    [ExportMetadata("CustomProperty", "CUSTOM.HO.CLASS_ATTR")]
+    public class CUSTOM_HO_CLASS_ATTR : ICustomPropertyPlugin
+    {
+
+        /// <summary>Returns custom property int value for object.</summary>
+        /// <param name="objectId">The object id.</param>
+        /// <returns>The <see cref="int"/>.</returns>
+        public int GetIntegerProperty(int objectId)
+        {
+            var father = TeklaHierarchicObject.GetElementListHO(objectId);
+            //var childrenCount = TeklaHierarchicObject.GetHOChildrenCount(objectId);
+            if (father != null)
+            {
+                string classAttribute = string.Empty;
+                if (father.GetUserProperty("Classificator", ref classAttribute))
+                    return Int32.Parse(classAttribute);
+                else
+                    return -1;
+            }
+            else
+                return 0;
+        }
+
+        /// <summary>Returns custom property string value for object.</summary>
+        /// <param name="objectId">The object id.</param>
+        /// <returns>The <see cref="string"/>.</returns>
+        public string GetStringProperty(int objectId)
+        {
+            return GetIntegerProperty(objectId).ToString();
+        }
+
+        /// <summary>Returns custom property double value for object.</summary>
+        /// <param name="objectId">The object id.</param>
+        /// <returns>The <see cref="double"/>.</returns>
+        public double GetDoubleProperty(int objectId)
+        {
+            return GetIntegerProperty(objectId);
+        }
+    }
+
+    /// <summary>The test plugin for father component name or number.</summary>
+    [Export(typeof(ICustomPropertyPlugin))]
     [ExportMetadata("CustomProperty", "CUSTOM.HO.IS_ROOT")]
     public class CUSTOM_HO_IS_ROOT : ICustomPropertyPlugin
     {
@@ -394,6 +491,31 @@ namespace CustomPropertyHierarchicObject
     static class TeklaHierarchicObject
     {
         private static Model model = new Model();
+
+        internal static HierarchicObject GetElementListHO(int id)
+        {
+            Part modelObject = model.SelectModelObject(new Tekla.Structures.Identifier(id)) as Part;
+            if(modelObject != null)
+            {
+                var enumHO = modelObject.GetHierarchicObjects();
+                foreach(var item in enumHO)
+                {
+                    if (item is HierarchicObject)
+                    {
+                        var ho = (item as HierarchicObject);
+                        if (ho.Select())
+                        {
+                            HierarchicDefinition hod = model.SelectModelObject(ho.Definition.Identifier) as HierarchicDefinition;
+                            if (hod.Name == "Element_list")
+                                return ho;
+                        }
+                        return null;
+                    }
+                }
+            }
+            return null;
+        }
+
 
         internal static HierarchicObject GetHOFather(int id)
         {

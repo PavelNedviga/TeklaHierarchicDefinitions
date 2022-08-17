@@ -565,12 +565,10 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 
         internal bool AddFather(HierarchicObjectInTekla newFatherItem)
         {
-            var thisHierarchicObject = this.HierarchicObject;
-            var fatherHierarchicObject = newFatherItem.HierarchicObject;
-            thisHierarchicObject.Father = fatherHierarchicObject;
-            var success = thisHierarchicObject.Modify();
-                        
-            bool res = TeklaDB.model.CommitChanges($"{thisHierarchicObject.Name} was added to {fatherHierarchicObject.Name}");
+            this.HierarchicObject.Father = newFatherItem.HierarchicObject;
+            var success = this.HierarchicObject.Modify();
+
+            bool res = true; // TeklaDB.model.CommitChanges($"{thisHierarchicObject.Name} was added to {fatherHierarchicObject.Name}");
             Name = Father;
             OnPropertyChanged("Father");
             OnPropertyChanged("Name");
@@ -623,8 +621,10 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             string mark, 
             string profile, 
             string position,
-            string m, 
+            string m,
+            string m_start_reverse,
             string m_end,
+            string m_end_reverse,
             int startMomentConnection,
             int endMomentConnection,
             int startFrictionConnection,
@@ -655,7 +655,9 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                 profile,
                 position,
                 m,
+                m_start_reverse,
                 m_end,
+                m_end_reverse,
                 startMomentConnection,
                 endMomentConnection,
                 startFrictionConnection,
@@ -685,7 +687,9 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             string profile,
             string position,
             string m,
+            string m_start_reverse,
             string m_end,
+            string m_end_reverse,
             int startMomentConnection,
             int endMomentConnection,
             int startFrictionConnection,
@@ -716,7 +720,9 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                 profile,
                 position,
                 m,
+                m_start_reverse,
                 m_end,
+                m_end_reverse,
                 startMomentConnection,
                 endMomentConnection,
                 startFrictionConnection,

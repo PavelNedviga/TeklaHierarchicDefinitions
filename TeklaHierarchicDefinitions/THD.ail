@@ -925,6 +925,26 @@ string_utf8 albl_SelectDeselectRows
     entry = ("rus", "Выделить/снять выделение");
 };
 
+string_utf8 albl_MSummary
+{
+    entry = ("enu", "M Field");
+    entry = ("chs", "M Field");
+    entry = ("cht", "M Field");
+    entry = ("csy", "M Field");
+    entry = ("deu", "M Field");
+    entry = ("esp", "M Field");
+    entry = ("fra", "M Field");
+    entry = ("hun", "M Field");
+    entry = ("ita", "M Field");
+    entry = ("jpn", "M Field");
+    entry = ("kor", "M Field");
+    entry = ("nld", "M Field");
+    entry = ("plk", "M Field");
+    entry = ("ptb", "M Field");
+    entry = ("ptg", "M Field");
+    entry = ("rus", "М Поле");
+};
+
 string_utf8 albl_
 {
     entry = ("enu", "Temp");
