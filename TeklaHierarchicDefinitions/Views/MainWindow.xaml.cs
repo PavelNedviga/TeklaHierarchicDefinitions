@@ -128,6 +128,25 @@ namespace TeklaHierarchicDefinitions
             }
         }
 
+        private void SBOMDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((bool)HightlightSBOMObjects.IsChecked)
+            {
+                var boe = (sender as System.Windows.Controls.DataGrid).SelectedItem as SteelBOMPosition;
+                //if (boe != null)
+                //    boe.GetSelectedObjects();
+                var boes = (sender as System.Windows.Controls.DataGrid).SelectedItems.Cast<SteelBOMPosition>().SelectMany(t =>
+                {
+                    var arr = new List<ModelObject>();
+                    var xx = t.Parts.Select(m=>m.Part).GetEnumerator();
+                    while (xx.MoveNext())
+                        arr.Add(xx.Current as ModelObject);
+                    return arr;
+                }).ToArray();
+                TeklaDB.SelectObjectsInModelView(new ArrayList(boes));
+            }
+        }
+
         //private void MaterialCatalog_SelectClicked(object sender, EventArgs e)
         //{
         //    var obj = (BillOfElementsViewModel)sender;

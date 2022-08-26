@@ -25,7 +25,6 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         #region Статические поля
         public static Model model = new Model();
         internal static string hierarchicDefinitionElementListName = "Element_list";
-
         internal static HierarchicDefinition CreateHierarchicDefinitionWithName(string hierarchicDefinitionName, HierarchicDefinition mainHD)
         {
             var hierarchicDefinition = new HierarchicDefinition();
@@ -873,6 +872,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                             part.Profile.ProfileString = profile;
                     }
                     part.Class = classificator;
+                    part.Modify();
                     part.SetUserProperty("PRELIM_MARK", position);
 
                     string moment;
@@ -931,6 +931,10 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 
             return res;
         }
+
+        #endregion
+
+        #region Рисование
 
         #endregion
 

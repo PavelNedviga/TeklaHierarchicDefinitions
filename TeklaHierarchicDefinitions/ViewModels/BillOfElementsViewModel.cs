@@ -18,6 +18,8 @@ using DataGrid = System.Windows.Controls.DataGrid;
 using System.Collections;
 using System.Threading;
 using System.Reflection;
+using System.Diagnostics;
+using System.IO;
 
 namespace TeklaHierarchicDefinitions.ViewModels
 {
@@ -31,7 +33,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         private List<string> _billOfElementsList;
         private string _selectedBOE = "КМ";
 
-        private bool _buttonIsEnabled = false;        
+        private bool _buttonIsEnabled = false;
         private bool _instantUpdate = false;
 
         private bool _modificationBlocked = true;
@@ -39,6 +41,46 @@ namespace TeklaHierarchicDefinitions.ViewModels
 
 
         private BillOfElements _selectedItem;
+
+        #endregion
+
+        #region События
+        //private Tekla.Structures.Model.Events _events = new Tekla.Structures.Model.Events();
+        //private object _selectionEventHandlerLock = new object();
+        //private object _changedObjectHandlerLock = new object();
+
+        //public void RegisterEventHandler()
+        //{
+        //    _events.SelectionChange += Events_SelectionChangeEvent;
+        //    _events.ModelObjectChanged += Events_ModelObjectChangedEvent;
+        //    _events.Register();
+        //}
+
+        //public void UnRegisterEventHandler()
+        //{
+        //    _events.UnRegister();
+        //}
+
+        //void Events_SelectionChangeEvent()
+        //{
+        //    /* Make sure that the inner code block is running synchronously */
+        //    lock (_selectionEventHandlerLock)
+        //    {
+
+        //        MessageBox.Show("Selection changed event received.");
+        //    }
+        //}
+
+        //void Events_ModelObjectChangedEvent(List<ChangeData> changes)
+        //{
+        //    /* Make sure that the inner code block is running synchronously */
+        //    lock (_changedObjectHandlerLock)
+        //    {
+        //        foreach (ChangeData data in changes)
+        //            MessageBox.Show("Changed event received " + ":" + data.Object.ToString() + ":" + " Type" + ":" + data.Type.ToString() + " guid: " + data.Object.Identifier.GUID.ToString());
+        //        MessageBox.Show("Changed event received for " + changes.Count.ToString() + " objects");
+        //    }
+        //}
 
         #endregion
 
@@ -71,10 +113,10 @@ namespace TeklaHierarchicDefinitions.ViewModels
 
         public MyObservableCollection<BillOfElements> BillOfElements
         {
-            get 
+            get
             {
                 MyObservableCollection<BillOfElements> billOfElements = new MyObservableCollection<BillOfElements>();
-                foreach (BillOfElements boe in _billOfElements.Where(t => t.BOE.Equals(_selectedBOE)).OrderBy(t=>t.Classificator))
+                foreach (BillOfElements boe in _billOfElements.Where(t => t.BOE.Equals(_selectedBOE)).OrderBy(t => t.Classificator))
                 {
                     billOfElements.Add(boe);
                 }
@@ -90,11 +132,11 @@ namespace TeklaHierarchicDefinitions.ViewModels
 
 
 
-        public ObservableCollection<string> BillOfElementsList
+        public List<string> BillOfElementsList
         {
-            get 
+            get
             {
-                return _billOfElements.Select(x => x.BOE).Distinct().OrderBy(t=>t).ToList(); 
+                return _billOfElements.Select(x => x.BOE).Distinct().OrderBy(t => t).ToList();
             }
             set
             {
@@ -111,6 +153,25 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 _selectedBOE = value;
                 OnPropertyChanged();
                 OnPropertyChanged("BillOfElements");
+                OnPropertyChanged("BOELChanger");
+            }
+        }
+
+        public string BOELChanger
+        {
+            get { return SelectedBOE; }
+            set
+            {
+                var BOEIterator = _billOfElements.Where(t => t.Selection.Equals(true));
+                foreach (BillOfElements boe in BOEIterator)
+                {
+                    boe.BOE = value;
+                    boe.Selection = false;
+                }
+                OnPropertyChanged("BillOfElementsList");
+                SelectedBOE = value;
+                OnPropertyChanged();
+
             }
         }
 
@@ -150,16 +211,16 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
             set
             {
-                _windowOnTop = value;                
+                _windowOnTop = value;
                 OnPropertyChanged();
             }
         }
 
         public bool ButtonIsEnabled
         {
-            get 
-            {             
-                return _buttonIsEnabled = _billOfElements.Where(x => x.Selection == true).Count() > 0 && ModificationBlocked==false; 
+            get
+            {
+                return _buttonIsEnabled = _billOfElements.Where(x => x.Selection == true).Count() > 0 && ModificationBlocked == false;
             }
             set
             {
@@ -189,28 +250,48 @@ namespace TeklaHierarchicDefinitions.ViewModels
             List<HierarchicObjectInTekla> hierarchicObjectsInTeklas = TeklaDB.GetHierarchicObjectsWithHierarchicDefinitionName(TeklaDB.hierarchicDefinitionElementListName); //TeklaDB.GetAllHierarchicObjectsInTekla();//
             _billOfElements = BillOfElementsUtils.GetHierarchicObjectsWithHierarchicDefinitionName(hierarchicObjectsInTeklas);
             buildingFragments = BuildingFragmentUtils.GetBuildingFragmentsWithHierarchicDefinitionFatherName(TeklaDB.hierarchicDefinitionFoundationListName);
+            //RegisterEventHandler();
         }
         #endregion
 
         #region Методы
         private void InstantUpbateForBOECollection(bool instantUpdateFlag)
         {
-            foreach(var boe in _billOfElements)
+            foreach (var boe in _billOfElements)
             {
                 boe.InstantUpdate = instantUpdateFlag;
             }
         }
-        
+
         #endregion
 
         #region Команды
+        public ICommand ReleaseNotes_Click
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    Process myProcess = new Process();
+                    myProcess.StartInfo.FileName = "notepad.exe"; //not the full application path
+                    string codeBase = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
+                    UriBuilder uri = new UriBuilder(codeBase);
+                    string path = Uri.UnescapeDataString(uri.Path);
+                    string folderPath = Path.GetDirectoryName(path);
+                    string relNotesPath = Path.Combine(folderPath, "ReleaseNotes.txt");
+                    myProcess.StartInfo.Arguments = $"{relNotesPath}";
+                    myProcess.Start();
+                }, (obj) => true);
+            }
+        }
+
         public ICommand AddModelObjectToHierarchicObject_Click
         {
             get
             {
                 return new DelegateCommand((obj) =>
                 {
-                    var boe = ((DataGrid)obj).SelectedItem as BillOfElements;                      
+                    var boe = ((DataGrid)obj).SelectedItem as BillOfElements;
                     if (boe.AttachSelectedObjects())
                     {
                         TeklaDB.model.CommitChanges();
@@ -220,8 +301,8 @@ namespace TeklaHierarchicDefinitions.ViewModels
                         }
                         MessageBox.Show("Objects successfully attached to " + boe.Mark + " " + boe.Position);
                     }
-                }, (obj) => (obj == null | SelectedItem == null) ? false : (TeklaDB.ModelHasSelectedObjects() && TeklaDB.ProfileIsAllowed(SelectedItem.Profile) && TeklaDB.MaterialIsAllowed(SelectedItem.Material) && ((DataGrid)obj).SelectedIndex !=-1));
-            }            
+                }, (obj) => (obj == null | SelectedItem == null) ? false : (TeklaDB.ModelHasSelectedObjects() && TeklaDB.ProfileIsAllowed(SelectedItem.Profile) && TeklaDB.MaterialIsAllowed(SelectedItem.Material) && ((DataGrid)obj).SelectedIndex != -1));
+            }
         }
 
         public ICommand RemoveModelObjectFromHierarchicObject_Click
@@ -232,20 +313,20 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 {
                     List<BillOfElements> boes = new List<BillOfElements>();
 
-                    foreach(object row in ((DataGrid)obj).SelectedItems)
+                    foreach (object row in ((DataGrid)obj).SelectedItems)
                     {
                         boes.Add(row as BillOfElements);
                     }
                     boes = BillOfElements.ToList();
                     if (boes.Count > 0 && TeklaDB.ModelHasSelectedObjects())
                     {
-                        foreach(BillOfElements boe in boes)
+                        foreach (BillOfElements boe in boes)
                         {
                             if (boe.HierarchicObjectInTekla.RemoveSelectedModedlObjectsFromHierarchicObject())
                             {
                                 boe.OnPropertyChanged("ObjectsCount");
                                 MessageBox.Show("Objects were successfully removed from " + boe.Mark);
-                            }                            
+                            }
                         }
                         TeklaDB.model.CommitChanges();
                     }
@@ -258,7 +339,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 }, (obj) => obj == null ? true : (TeklaDB.ModelHasSelectedObjects())); // && ((DataGrid)obj).SelectedIndex != -1
             }
         }
-                   
+
         public ICommand SetOnTop
         {
             get
@@ -272,18 +353,18 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 }, (obj) => obj == null ? true : true);
             }
         }
-        
+
         public ICommand AddHierarchicObject_Click
         {
             get
             {
                 return new DelegateCommand((obj) =>
                 {
-                    var boe = ((DataGrid)obj).SelectedItem as BillOfElements;                    
+                    var boe = ((DataGrid)obj).SelectedItem as BillOfElements;
                     _billOfElements.Add(new BillOfElements(boe, _billOfElements, _selectedBOE));
                     OnPropertyChanged("BillOfElements");
                     OnPropertyChanged("BillOfElementsList");
-                }, (obj) => obj == null ? true : (ModificationBlocked==false));
+                }, (obj) => obj == null ? true : (ModificationBlocked == false));
             }
         }
 
@@ -294,7 +375,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 return new DelegateCommand((obj) =>
                 {
                     var boes = ((DataGrid)obj).SelectedItems.Cast<BillOfElements>().ToList();
-                    foreach(var boe in boes)
+                    foreach (var boe in boes)
                     {
                         boe.DeleteHierarchicObject();
                         _billOfElements.Remove(boe);
@@ -302,7 +383,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     OnPropertyChanged("BillOfElements");
                     OnPropertyChanged("BillOfElementsList");
 
-                }, (obj) => obj == null ? true : ((DataGrid)obj).SelectedIndex != -1 && ModificationBlocked ==false);
+                }, (obj) => obj == null ? true : ((DataGrid)obj).SelectedIndex != -1 && ModificationBlocked == false);
             }
         }
 
@@ -315,19 +396,19 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     List<string> upd = new List<string>();
                     bool updated = false;
                     var elementsList = _billOfElements.Where(x => x.Selection == true & TeklaDB.MaterialIsAllowed(x.Material) & TeklaDB.ProfileIsAllowed(x.Profile)).ToArray();
-                    foreach(var boe in elementsList)
+                    foreach (var boe in elementsList)
                     {
                         bool res = boe.UpdateAssociatedObjects();
                         updated = updated | res;
-                        if(res)
-                            upd.Add(boe.Mark);                        
+                        if (res)
+                            upd.Add(boe.Mark);
                     }
                     if (updated)
                     {
                         TeklaDB.model.CommitChanges();
                         MessageBox.Show($"Properties successfully updated for {string.Join(", ", upd)}");
                     }
-                }, (obj) => _billOfElements.Where(x => x.Selection == true & x.Profile.Length>0).Count() > 0);
+                }, (obj) => _billOfElements.Where(x => x.Selection == true & x.Profile.Length > 0).Count() > 0);
             }
         }
 
@@ -337,7 +418,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
-                    Array listOfHierarchicObjects = _billOfElements.Select(t => t.HierarchicObjectInTekla).Select(t=>t.HierarchicObject).ToArray();
+                    Array listOfHierarchicObjects = _billOfElements.Select(t => t.HierarchicObjectInTekla).Select(t => t.HierarchicObject).ToArray();
                     TeklaDB.SelectObjectsInModelView(TeklaDB.GetUnboundModelObjects(listOfHierarchicObjects));
                 }, (obj) => obj == null ? true : true);
             }
@@ -378,7 +459,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     attachTo.AddAsChildHO(attachedHierarchicObjects);
                     OnPropertyChanged("BillOfElements");
                     OnPropertyChanged("BillOfElementsList");
-                }, (obj) => (ModificationBlocked == false & SelectedItem != null & BillOfElements.Where(t=>t.Selection).Any(k=>k != SelectedItem)));
+                }, (obj) => (ModificationBlocked == false & SelectedItem != null & BillOfElements.Where(t => t.Selection).Any(k => k != SelectedItem)));
             }
         }
 
@@ -388,8 +469,8 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
-                    var RemoveFromHOChildren = BillOfElements.Where(t=>t.Selection).ToList();
-                    foreach(var removingHO in RemoveFromHOChildren)
+                    var RemoveFromHOChildren = BillOfElements.Where(t => t.Selection).ToList();
+                    foreach (var removingHO in RemoveFromHOChildren)
                     {
                         removingHO.RemoveFather();
                         removingHO.OnPropertyChanged("Father");
@@ -397,7 +478,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
 
                     OnPropertyChanged("BillOfElements");
                     OnPropertyChanged("BillOfElementsList");
-                }, (obj) => (ModificationBlocked == false & BillOfElements.Any(t => (t.Selection & t.FatherHierarchicObject.HierarchicObject.Father !=null))));
+                }, (obj) => (ModificationBlocked == false & BillOfElements.Any(t => (t.Selection & t.FatherHierarchicObject.HierarchicObject.Father != null))));
             }
         }
 
@@ -406,7 +487,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             get
             {
                 return new DelegateCommand((obj) =>
-                {                    
+                {
                     var new_boe = new BillOfElements(null, _billOfElements, _selectedBOE);
                     foreach (PropertyInfo prop in new_boe.GetType().GetProperties())
                     {
@@ -440,7 +521,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     }
                     else
                     {
-                        foreach(var item in BillOfElements)
+                        foreach (var item in BillOfElements)
                         {
                             item.Selection = false;
                         }
@@ -458,12 +539,12 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 return new DelegateCommand((obj) =>
                 {
                     var selectedBOEPos = ((DataGrid)obj).SelectedItem as BillOfElements;
-                    var hoit = _billOfElements.Select(t=>t.HierarchicObjectInTekla).ToList();
+                    var hoit = _billOfElements.Select(t => t.HierarchicObjectInTekla).ToList();
                     selectedBOEPos.GetSimilardObjects(hoit, FilterByMark, FilterByProfile, FilterByMaterial);
                 }, (obj) => SelectedItem != null & TeklaDB.ModelHasSelectedObjects());
             }
         }
-        
+
         public ICommand BorrowProperties_Click
         {
             get
@@ -524,13 +605,14 @@ namespace TeklaHierarchicDefinitions.ViewModels
         //    //(this.HODataGrid.SelectedItem as BillOfElements).Material = ((sender as Button) as Tekla.Structures.Dialog.UIControls.WpfMaterialCatalog).SelectedMaterial;
         //}
 
-        #region Задания на фудаменты
+        #region Задания на фундаменты
         #region Параметры        
         private string newBuildingFragmentName = string.Empty;
         private MyObservableCollection<BuildingFragment> buildingFragments;
         private BuildingFragment _selectedBuildingFragment;
         private string _selectedFoundationMark;
         private bool _attaching = false;
+        private ObservableCollection<SteelBOMPosition> steelBOMPositions;
 
         #endregion
 
@@ -548,14 +630,17 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
-        public BuildingFragment SelectedBuildingFragment { get => _selectedBuildingFragment; 
-            set 
-            { 
+        public BuildingFragment SelectedBuildingFragment
+        {
+            get => _selectedBuildingFragment;
+            set
+            {
                 _selectedBuildingFragment = value;
                 OnPropertyChanged();
                 OnPropertyChanged("FoundationGroups");
                 OnPropertyChanged("FoundationMarksList");
-            } }
+            }
+        }
 
         public MyObservableCollection<BuildingFragment> BuildingFragments
         {
@@ -578,7 +663,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
             set
             {
-                _selectedFoundationMark = value;                
+                _selectedFoundationMark = value;
                 if (_selectedBuildingFragment != null && _selectedBuildingFragment.FoundationGroups.Count > 0)
                     if (_selectedFoundationMark != null)
                         _selectedBuildingFragment.FoundationGroups.Where(t => t.BasementMark.Equals(_selectedFoundationMark)).FirstOrDefault().GetSelectedObjects();
@@ -591,13 +676,13 @@ namespace TeklaHierarchicDefinitions.ViewModels
         {
             get
             {
-                if(_selectedBuildingFragment == null) return null;
+                if (_selectedBuildingFragment == null) return null;
                 if (_selectedFoundationMark == null) return _selectedBuildingFragment.FoundationGroups;
                 else
                 {
                     return new ObservableCollection<FoundationGroup>(_selectedBuildingFragment.FoundationGroups.Where(t => t.BasementMark.Equals(_selectedFoundationMark)).ToArray());
                 }
-                    
+
             }
         }
 
@@ -619,7 +704,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             set
             {
                 _attaching = value;
-                OnPropertyChanged("Attaching");                
+                OnPropertyChanged("Attaching");
             }
 
         }
@@ -637,13 +722,13 @@ namespace TeklaHierarchicDefinitions.ViewModels
                         OnPropertyChanged("FoundationGroups");
                         OnPropertyChanged("BuildingFragments");
                         OnPropertyChanged("FoundationMarksList");
-                    }, 
-                    (obj) => 
+                    },
+                    (obj) =>
                     {
                         if (NewBuildingFragmentName.Length > 0)
                             if (!BuildingFragments.Select(t => t.BuildingFragmentMark).Contains(NewBuildingFragmentName))
                                 return true;
-                        return false; 
+                        return false;
                     }
                 );
             }
@@ -668,15 +753,15 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
-                        try
-                        {
-                            Attaching = true;
-                            SelectedBuildingFragment.ImportFoundationGroups();
-                            OnPropertyChanged("FoundationMarksList");
-                            OnPropertyChanged("FoundationGroups");
-                            Attaching = false;
-                        }
-                        catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+                    try
+                    {
+                        Attaching = true;
+                        SelectedBuildingFragment.ImportFoundationGroups();
+                        OnPropertyChanged("FoundationMarksList");
+                        OnPropertyChanged("FoundationGroups");
+                        Attaching = false;
+                    }
+                    catch (Exception ex) { MessageBox.Show(ex.ToString()); }
 
                 }, (obj) => SelectedBuildingFragment == null ? false : true);
             }
@@ -688,7 +773,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
-                    
+
                     Thread thread = new Thread(() =>
                     {
                         try
@@ -697,7 +782,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                             var selectedComponents = TeklaDB.ModelGetSelectedComponents();
                             SelectedBuildingFragment.RemoveAllBasements();
                             foreach (var currentFoundationGroup in FoundationGroups)
-                            {                                
+                            {
                                 currentFoundationGroup.AddBasements();
                             }
                             TeklaDB.model.CommitChanges();
@@ -707,7 +792,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
 
                     });
                     thread.IsBackground = true;
-                    thread.Start(); 
+                    thread.Start();
                 }, (obj) => obj == null ? false : (TeklaDB.ModelHasSelectedObjects() && ((ListBox)obj).SelectedIndex != -1) && !Attaching);
             }
         }
@@ -736,7 +821,39 @@ namespace TeklaHierarchicDefinitions.ViewModels
         #endregion
 
         #region ТСС
-        ObservableCollection<SteelBOMPart> steelBOMPositions;
+        public ObservableCollection<SteelBOMPosition> SteelBOMPositions { get => steelBOMPositions; set 
+            { 
+                steelBOMPositions = value;
+                OnPropertyChanged();
+            } 
+        }
+
+        public ObservableCollection<SteelBOMPosition> SteelBOMPositionsByMaterial { get; set; }
+
+        public ObservableCollection<SteelBOMPosition> SteelBOMPositionsByProfile { get; set; }
+
+        public ObservableCollection<SteelBOMPosition> SteelBOMPositionsByCategory { get; set; }
+
+        public string SummarySBOMParts 
+        {
+            get 
+            {
+                if (steelBOMPositions == null)
+                    return null;
+                return steelBOMPositions.SelectMany(t => t.Parts).Select(w => w.Weight).Sum().ToString("F");  
+            }
+        }
+
+        public string SummaryGrossSBOMParts
+        {
+            get
+            {
+                if (steelBOMPositions == null)
+                    return null;
+                return steelBOMPositions.SelectMany(t => t.Parts).Select(w => w.WeightGross).Sum().ToString("F");
+            }
+        }
+        
 
         public ICommand AddSBOMParts
         {
@@ -744,9 +861,23 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 return new DelegateCommand(
                     (obj) =>
-                    {                        
-                        steelBOMPositions = new ObservableCollection<SteelBOMPart>(TeklaDB.GetSelectedModelObjects().ToArray().Cast<Part>().Select(t=> new SteelBOMPart(t)).ToList());
-                        
+                    {
+                        SteelBOMPositions = new ObservableCollection<SteelBOMPosition>(
+                            TeklaDB.GetSelectedModelObjects()
+                            .ToArray()
+                            .Cast<Part>()
+                            .Select(t => new SteelBOMPart(t))
+                            .GroupBy(k=>k.GroupingCode)
+                            .Select(t=> new SteelBOMPosition(t.ToList()))
+                            .ToList());
+                        SteelBOMPositionsByMaterial = new ObservableCollection<SteelBOMPosition>(SteelBOMPositions.GroupBy(t=>t.Material).Select(k=>new SteelBOMPosition(k.SelectMany(m=>m.Parts).ToList())).OrderBy(t => t.Material));
+                        OnPropertyChanged("SteelBOMPositionsByMaterial");
+                        SteelBOMPositionsByProfile = new ObservableCollection<SteelBOMPosition>(SteelBOMPositions.GroupBy(t => t.Profile).Select(k => new SteelBOMPosition(k.SelectMany(m => m.Parts).ToList())).OrderBy(t => t.Profile));
+                        OnPropertyChanged("SteelBOMPositionsByProfile");
+                        SteelBOMPositionsByCategory = new ObservableCollection<SteelBOMPosition>(SteelBOMPositions.GroupBy(t => t.Category).Select(k => new SteelBOMPosition(k.SelectMany(m => m.Parts).ToList())).OrderBy(t => t.Category));
+                        OnPropertyChanged("SteelBOMPositionsByCategory");
+                        OnPropertyChanged("SummarySBOMParts");
+                        OnPropertyChanged("SummaryGrossSBOMParts");
                     },
                     (obj) => TeklaDB.ModelHasSelectedObjects()
                  );

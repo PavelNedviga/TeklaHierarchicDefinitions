@@ -945,6 +945,167 @@ string_utf8 albl_MSummary
     entry = ("rus", "М Поле");
 };
 
+
+string_utf8 albl_MaterialLabel
+{
+    entry = ("enu", "Material in EL");
+    entry = ("chs", "Material in EL");
+    entry = ("cht", "Material in EL");
+    entry = ("csy", "Material in EL");
+    entry = ("deu", "Material in EL");
+    entry = ("esp", "Material in EL");
+    entry = ("fra", "Material in EL");
+    entry = ("hun", "Material in EL");
+    entry = ("ita", "Material in EL");
+    entry = ("jpn", "Material in EL");
+    entry = ("kor", "Material in EL");
+    entry = ("nld", "Material in EL");
+    entry = ("plk", "Material in EL");
+    entry = ("ptb", "Material in EL");
+    entry = ("ptg", "Material in EL");
+    entry = ("rus", "Материал в ВЭ");
+};
+
+string_utf8 albl_SBOM
+{
+    entry = ("enu", "Steel BOM");
+    entry = ("chs", "Steel BOM");
+    entry = ("cht", "Steel BOM");
+    entry = ("csy", "Steel BOM");
+    entry = ("deu", "Steel BOM");
+    entry = ("esp", "Steel BOM");
+    entry = ("fra", "Steel BOM");
+    entry = ("hun", "Steel BOM");
+    entry = ("ita", "Steel BOM");
+    entry = ("jpn", "Steel BOM");
+    entry = ("kor", "Steel BOM");
+    entry = ("nld", "Steel BOM");
+    entry = ("plk", "Steel BOM");
+    entry = ("ptb", "Steel BOM");
+    entry = ("ptg", "Steel BOM");
+    entry = ("rus", "ТСС");
+};
+
+string_utf8 albl_AddSBOMParts
+{
+    entry = ("enu", "Add parts");
+    entry = ("chs", "Add parts");
+    entry = ("cht", "Add parts");
+    entry = ("csy", "Add parts");
+    entry = ("deu", "Add parts");
+    entry = ("esp", "Add parts");
+    entry = ("fra", "Add parts");
+    entry = ("hun", "Add parts");
+    entry = ("ita", "Add parts");
+    entry = ("jpn", "Add parts");
+    entry = ("kor", "Add parts");
+    entry = ("nld", "Add parts");
+    entry = ("plk", "Add parts");
+    entry = ("ptb", "Add parts");
+    entry = ("ptg", "Add parts");
+    entry = ("rus", "Добавить детали");
+};
+
+string_utf8 albl_Net
+{
+    entry = ("enu", "Net");
+    entry = ("chs", "Net");
+    entry = ("cht", "Net");
+    entry = ("csy", "Net");
+    entry = ("deu", "Net");
+    entry = ("esp", "Net");
+    entry = ("fra", "Net");
+    entry = ("hun", "Net");
+    entry = ("ita", "Net");
+    entry = ("jpn", "Net");
+    entry = ("kor", "Net");
+    entry = ("nld", "Net");
+    entry = ("plk", "Net");
+    entry = ("ptb", "Net");
+    entry = ("ptg", "Net");
+    entry = ("rus", "Нетто");
+};
+
+string_utf8 albl_Gross
+{
+    entry = ("enu", "Gross");
+    entry = ("chs", "Gross");
+    entry = ("cht", "Gross");
+    entry = ("csy", "Gross");
+    entry = ("deu", "Gross");
+    entry = ("esp", "Gross");
+    entry = ("fra", "Gross");
+    entry = ("hun", "Gross");
+    entry = ("ita", "Gross");
+    entry = ("jpn", "Gross");
+    entry = ("kor", "Gross");
+    entry = ("nld", "Gross");
+    entry = ("plk", "Gross");
+    entry = ("ptb", "Gross");
+    entry = ("ptg", "Gross");
+    entry = ("rus", "Брутто");
+};
+
+string_utf8 albl_Weight
+{
+    entry = ("enu", "Weight net");
+    entry = ("chs", "Weight net");
+    entry = ("cht", "Weight net");
+    entry = ("csy", "Weight net");
+    entry = ("deu", "Weight net");
+    entry = ("esp", "Weight net");
+    entry = ("fra", "Weight net");
+    entry = ("hun", "Weight net");
+    entry = ("ita", "Weight net");
+    entry = ("jpn", "Weight net");
+    entry = ("kor", "Weight net");
+    entry = ("nld", "Weight net");
+    entry = ("plk", "Weight net");
+    entry = ("ptb", "Weight net");
+    entry = ("ptg", "Weight net");
+    entry = ("rus", "Масса нетто");
+};
+
+string_utf8 albl_WeightGross
+{
+    entry = ("enu", "Weight gross");
+    entry = ("chs", "Weight gross");
+    entry = ("cht", "Weight gross");
+    entry = ("csy", "Weight gross");
+    entry = ("deu", "Weight gross");
+    entry = ("esp", "Weight gross");
+    entry = ("fra", "Weight gross");
+    entry = ("hun", "Weight gross");
+    entry = ("ita", "Weight gross");
+    entry = ("jpn", "Weight gross");
+    entry = ("kor", "Weight gross");
+    entry = ("nld", "Weight gross");
+    entry = ("plk", "Weight gross");
+    entry = ("ptb", "Weight gross");
+    entry = ("ptg", "Weight gross");
+    entry = ("rus", "Масса брутто");
+};
+
+string_utf8 albl_ProfileGost
+{
+    entry = ("enu", "Profile code");
+    entry = ("chs", "Profile code");
+    entry = ("cht", "Profile code");
+    entry = ("csy", "Profile code");
+    entry = ("deu", "Profile code");
+    entry = ("esp", "Profile code");
+    entry = ("fra", "Profile code");
+    entry = ("hun", "Profile code");
+    entry = ("ita", "Profile code");
+    entry = ("jpn", "Profile code");
+    entry = ("kor", "Profile code");
+    entry = ("nld", "Profile code");
+    entry = ("plk", "Profile code");
+    entry = ("ptb", "Profile code");
+    entry = ("ptg", "Profile code");
+    entry = ("rus", "Стандарт профиля");
+};
+
 string_utf8 albl_
 {
     entry = ("enu", "Temp");

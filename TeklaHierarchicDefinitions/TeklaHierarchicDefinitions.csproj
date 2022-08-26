@@ -285,9 +285,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Resource Include="ReleaseNotes.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    <AdditionalFiles Include="ReleaseNotes.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AdditionalFiles>
     <Resource Include="Resources\Element list.png" />
     <Resource Include="TSEP package input\Element list.png" />
     <Resource Include="TSEP package input\Ведомость элементов.png" />

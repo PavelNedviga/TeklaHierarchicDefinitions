@@ -10,7 +10,7 @@ using Tekla.Structures.Model;
 
 namespace TeklaHierarchicDefinitions.Models
 {
-    internal class SteelBOMPart : INotifyPropertyChanged
+    public class SteelBOMPart : INotifyPropertyChanged
     {
         #region Параметры
         private Part part;
@@ -40,7 +40,27 @@ namespace TeklaHierarchicDefinitions.Models
 
         public string Profile
         {
-            get { return part.Profile.ProfileString; }
+            get 
+            { 
+                string profileType = string.Empty;
+                double profileWidth = 0;
+                var ct = part as ContourPlate;
+                var bt = part as BentPlate;
+                if (ct != null | bt != null)
+                    return part.Profile.ProfileString;
+                if (part.GetReportProperty("PROFILE_TYPE", ref profileType))
+                {
+                    if (profileType.Equals("B"))
+                    {
+                        if (part.GetReportProperty("PROFILE.WIDTH", ref profileWidth))
+                            return "t"+profileWidth.ToString("F");
+                    }
+                }
+                string profileTplName = string.Empty;
+                //if (part.GetReportProperty("PROFILE.TPL_NAME", ref profileTplName) && profileTplName.Length>0)
+                //    return profileTplName;
+                return part.Profile.ProfileString; 
+            }
         }
 
         public double Weight
@@ -53,14 +73,37 @@ namespace TeklaHierarchicDefinitions.Models
             }
         }
 
+        public double WeightGross
+        {
+            get
+            {
+                double weight = 0;
+                part.GetReportProperty("WEIGHT_GROSS", ref weight);
+                return weight;
+            }
+        }
+
         public string ProfileGost
         {
             get
             {
                 string profileName = string.Empty;
                 string profileNameGost = string.Empty;
-                part.GetReportProperty("PROFILE.USERDEFINED.GOST_NOTE", ref profileNameGost);
-                part.GetReportProperty("PROFILE.USERDEFINED.GOST_NAME", ref profileName);
+                if (part.GetReportProperty("PROFILE.GOST_NOTE", ref profileName))
+                {
+                    part.GetReportProperty("PROFILE.GOST_NAME", ref profileNameGost);
+                }
+                string profileType = string.Empty;
+                part.GetReportProperty("PROFILE_TYPE", ref profileType);
+                if (profileType.Equals("B"))
+                {
+                    string elementType = string.Empty;
+                    part.GetReportProperty("USERDEFINED.ru_tip_elementa", ref elementType);
+                    if (elementType == "Настил")
+                        return "ГОСТ 8568-77. Листы стальные с ромбическим и чечевичным рифлением";
+                    else
+                        return "ГОСТ 19903-2015. Сталь листовая горячекатанная";
+                }
                 return profileNameGost + ". " + profileName;
             }
         }
@@ -70,7 +113,7 @@ namespace TeklaHierarchicDefinitions.Models
             get
             {
                 string profileName = string.Empty;
-                part.GetReportProperty("USERDEFINED.RU_BOM_CTG", ref profileName);
+                part.GetReportProperty("ASSEMBLY.MAINPART.USERDEFINED.RU_BOM_CTG", ref profileName);
                 return profileName;
             }
         }
@@ -85,6 +128,11 @@ namespace TeklaHierarchicDefinitions.Models
                 part.GetReportProperty("MATERIAL.USERDEFINED.GOST_NAME", ref materialGost);
                 return material + ". " + materialGost;
             }
+        }
+        
+        public string GroupingCode
+        {
+            get { return Material + Category + Profile; }
         }
         #endregion
 
@@ -101,7 +149,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
         #endregion
     }
-    internal class SteelBOMPosition : INotifyPropertyChanged
+    public class SteelBOMPosition : INotifyPropertyChanged
     {
         #region Параметры
         ObservableCollection<SteelBOMPart> parts= new ObservableCollection<SteelBOMPart>();
@@ -141,6 +189,27 @@ namespace TeklaHierarchicDefinitions.Models
             get { return parts.Select(t =>t.Weight).Sum(); } 
         }
 
+        public double WeightGross
+        {
+            get { return parts.Select(t => t.WeightGross).Sum(); }
+        }
+
+        public string WeightRounded
+        {
+            get
+            {
+                return Weight.ToString("F");
+            }
+        }
+
+        public string WeightGrossRounded
+        {
+            get
+            {
+                return WeightGross.ToString("F");
+            }
+        }
+
         public string ProfileGost 
         { 
             get {return parts.FirstOrDefault().ProfileGost; } 
@@ -148,7 +217,14 @@ namespace TeklaHierarchicDefinitions.Models
 
         public string Category
         {
-            get => parts.FirstOrDefault().Category;
+            get 
+            {
+                string cat = parts.FirstOrDefault().Category;
+                if (cat.Length > 0)
+                    return cat;
+                else
+                    return "-";
+            }
         }
 
         public string MaterialGost
