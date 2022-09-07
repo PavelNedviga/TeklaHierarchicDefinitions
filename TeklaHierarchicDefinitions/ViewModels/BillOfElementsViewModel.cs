@@ -20,12 +20,17 @@ using System.Threading;
 using System.Reflection;
 using System.Diagnostics;
 using System.IO;
+using System.Windows.Threading;
+using Task = System.Threading.Tasks.Task;
+using Tekla.Structures.Drawing;
+using Part = Tekla.Structures.Model.Part;
 
 namespace TeklaHierarchicDefinitions.ViewModels
 {
 
     public class BillOfElementsViewModel : INotifyPropertyChanged
     {
+        #region Ведомость элементов
         //internal WpfMaterialCatalog mc;
         #region Параметры
         private MyObservableCollection<BillOfElements> _billOfElements;
@@ -250,6 +255,8 @@ namespace TeklaHierarchicDefinitions.ViewModels
             List<HierarchicObjectInTekla> hierarchicObjectsInTeklas = TeklaDB.GetHierarchicObjectsWithHierarchicDefinitionName(TeklaDB.hierarchicDefinitionElementListName); //TeklaDB.GetAllHierarchicObjectsInTekla();//
             _billOfElements = BillOfElementsUtils.GetHierarchicObjectsWithHierarchicDefinitionName(hierarchicObjectsInTeklas);
             buildingFragments = BuildingFragmentUtils.GetBuildingFragmentsWithHierarchicDefinitionFatherName(TeklaDB.hierarchicDefinitionFoundationListName);
+            SelectedSBOMMaterial = selectedSBOMMaterial;
+            AddDrawingInformationToDrawingListTreeView();
             //RegisterEventHandler();
         }
         #endregion
@@ -604,6 +611,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         //{
         //    //(this.HODataGrid.SelectedItem as BillOfElements).Material = ((sender as Button) as Tekla.Structures.Dialog.UIControls.WpfMaterialCatalog).SelectedMaterial;
         //}
+#endregion
 
         #region Задания на фундаменты
         #region Параметры        
@@ -612,7 +620,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         private BuildingFragment _selectedBuildingFragment;
         private string _selectedFoundationMark;
         private bool _attaching = false;
-        private ObservableCollection<SteelBOMPosition> steelBOMPositions;
+
 
         #endregion
 
@@ -761,7 +769,11 @@ namespace TeklaHierarchicDefinitions.ViewModels
                         OnPropertyChanged("FoundationGroups");
                         Attaching = false;
                     }
-                    catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
+                        Attaching = false;
+                    }
 
                 }, (obj) => SelectedBuildingFragment == null ? false : true);
             }
@@ -821,11 +833,39 @@ namespace TeklaHierarchicDefinitions.ViewModels
         #endregion
 
         #region ТСС
-        public ObservableCollection<SteelBOMPosition> SteelBOMPositions { get => steelBOMPositions; set 
-            { 
+        #region Параметры
+        private ObservableCollection<SteelBOMPosition> steelBOMPositions;
+        bool isLoadingSBOM = false;
+        private string selectedAttachmentsToEL;
+        private SteelBOMPosition selectedSBOMMaterial;
+        private SteelBOMPosition selectedSBOMCategory;
+        private SteelBOMPosition selectedSBOMProfile;
+        private ObservableCollection<string> selectedSBOMMaterials;
+        #endregion
+
+        #region Свойства
+        public ObservableCollection<SteelBOMPosition> SteelBOMPositions
+        {
+            get
+            {
+                IEnumerable<SteelBOMPosition> visibleSteelBOMPositions = steelBOMPositions;
+                if (SBOMMaterials != null && SBOMMaterials.Count > 0)
+                    visibleSteelBOMPositions = visibleSteelBOMPositions.Where(s => SBOMMaterials.Contains(s.Material));
+                if (SBOMCategories != null && SBOMCategories.Count > 0)
+                    visibleSteelBOMPositions = visibleSteelBOMPositions.Where(s => SBOMCategories.Contains(s.Category));
+                if (SBOMProfiles != null && SBOMProfiles.Count > 0)
+                    visibleSteelBOMPositions = visibleSteelBOMPositions.Where(s => SBOMProfiles.Contains(s.Profile));
+                if (SelectedAttachmentToEL != null && visibleSteelBOMPositions != null)
+                    visibleSteelBOMPositions = visibleSteelBOMPositions.Where(s => SelectedAttachmentToEL == s.AttachedToEL);
+                if (visibleSteelBOMPositions == null)
+                    return null;
+                return new ObservableCollection<SteelBOMPosition>(visibleSteelBOMPositions);
+            }
+            set
+            {
                 steelBOMPositions = value;
                 OnPropertyChanged();
-            } 
+            }
         }
 
         public ObservableCollection<SteelBOMPosition> SteelBOMPositionsByMaterial { get; set; }
@@ -834,26 +874,94 @@ namespace TeklaHierarchicDefinitions.ViewModels
 
         public ObservableCollection<SteelBOMPosition> SteelBOMPositionsByCategory { get; set; }
 
-        public string SummarySBOMParts 
-        {
-            get 
-            {
-                if (steelBOMPositions == null)
-                    return null;
-                return steelBOMPositions.SelectMany(t => t.Parts).Select(w => w.Weight).Sum().ToString("F");  
-            }
-        }
-
-        public string SummaryGrossSBOMParts
+        public double SummarySBOMParts
         {
             get
             {
                 if (steelBOMPositions == null)
-                    return null;
-                return steelBOMPositions.SelectMany(t => t.Parts).Select(w => w.WeightGross).Sum().ToString("F");
+                    return 0;
+                return double.Parse(steelBOMPositions.SelectMany(t => t.Parts).Select(w => w.Weight).Sum().ToString("F"));
             }
         }
-        
+
+        public double SummaryGrossSBOMParts
+        {
+            get
+            {
+                if (steelBOMPositions == null)
+                    return 0;
+                return double.Parse(steelBOMPositions.SelectMany(t => t.Parts).Select(w => w.WeightGross).Sum().ToString("F"));
+            }
+        }
+
+        public List<string> SBOMMaterials { get; set; }
+
+        //public ObservableCollection<string> SelectedSBOMMaterials { get=> selectedSBOMMaterials; set 
+        //    {
+        //        selectedSBOMMaterials = value;
+        //        OnPropertyChanged();
+        //    } 
+        //}
+
+        public SteelBOMPosition SelectedSBOMMaterial { get => selectedSBOMMaterial; set { selectedSBOMMaterial = value; OnPropertyChanged(); } }
+
+        public List<string> SBOMCategories { get; set; }
+
+        public SteelBOMPosition SelectedSBOMCategory { get => selectedSBOMCategory; set { selectedSBOMCategory = value; OnPropertyChanged(); } }
+
+        public List<string> SBOMProfiles { get; set; }
+
+        public SteelBOMPosition SelectedSBOMProfile { get => selectedSBOMProfile; set { selectedSBOMProfile = value; OnPropertyChanged(); } }
+
+        public ObservableCollection<string> AttachmentsToVE { get => new ObservableCollection<string>() { "Нет", "Частично", "Все" }; }
+
+        public bool SelectPartlyAttachedObjects { get; set; }
+
+        public string SelectedAttachmentToEL
+        {
+            get => selectedAttachmentsToEL;
+            set
+            {
+                selectedAttachmentsToEL = value;
+                OnPropertyChanged();
+                OnPropertyChanged("SteelBOMPositions");
+            }
+        }
+
+        public bool IsLoadingSBOM
+        {
+            get => isLoadingSBOM;
+            set
+            {
+                isLoadingSBOM = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
+        #region Команды
+        public ICommand SelectedSBOMMaterials
+        {
+            get
+            {
+                return new DelegateCommand(
+                    (obj) =>
+                    {
+                        try
+                        {
+
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.ToString());
+                            IsLoadingSBOM = false;
+                        }
+                    },
+                    (obj) => true
+                 );
+            }
+        }
+
 
         public ICommand AddSBOMParts
         {
@@ -862,28 +970,194 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 return new DelegateCommand(
                     (obj) =>
                     {
-                        SteelBOMPositions = new ObservableCollection<SteelBOMPosition>(
-                            TeklaDB.GetSelectedModelObjects()
-                            .ToArray()
-                            .Cast<Part>()
-                            .Select(t => new SteelBOMPart(t))
-                            .GroupBy(k=>k.GroupingCode)
-                            .Select(t=> new SteelBOMPosition(t.ToList()))
-                            .ToList());
-                        SteelBOMPositionsByMaterial = new ObservableCollection<SteelBOMPosition>(SteelBOMPositions.GroupBy(t=>t.Material).Select(k=>new SteelBOMPosition(k.SelectMany(m=>m.Parts).ToList())).OrderBy(t => t.Material));
-                        OnPropertyChanged("SteelBOMPositionsByMaterial");
-                        SteelBOMPositionsByProfile = new ObservableCollection<SteelBOMPosition>(SteelBOMPositions.GroupBy(t => t.Profile).Select(k => new SteelBOMPosition(k.SelectMany(m => m.Parts).ToList())).OrderBy(t => t.Profile));
-                        OnPropertyChanged("SteelBOMPositionsByProfile");
-                        SteelBOMPositionsByCategory = new ObservableCollection<SteelBOMPosition>(SteelBOMPositions.GroupBy(t => t.Category).Select(k => new SteelBOMPosition(k.SelectMany(m => m.Parts).ToList())).OrderBy(t => t.Category));
-                        OnPropertyChanged("SteelBOMPositionsByCategory");
-                        OnPropertyChanged("SummarySBOMParts");
-                        OnPropertyChanged("SummaryGrossSBOMParts");
+                        try
+                        {
+                            IsLoadingSBOM = true;
+                            var task = Task.Run(() => GetSBOMParts());
+                            Action unblock = delegate ()
+                            {
+                                IsLoadingSBOM = false;
+                            };
+                            task.GetAwaiter().OnCompleted(unblock);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.ToString());
+                            IsLoadingSBOM = false;
+                        }
                     },
-                    (obj) => TeklaDB.ModelHasSelectedObjects()
+                    (obj) => TeklaDB.ModelHasSelectedObjects() & !IsLoadingSBOM
                  );
             }
         }
 
+
+        public ICommand UnselectAll
+        {
+            get
+            {
+                return new DelegateCommand(
+                    (obj) =>
+                    {
+                        try
+                        {
+                            //(obj as TabItem).;
+                            IsLoadingSBOM = true;
+                            var task = Task.Run(() =>
+                            {
+                                SBOMMaterials = null;
+                                SBOMCategories = null;
+                                SBOMProfiles = null;
+                                SelectedAttachmentToEL = null;
+                            });
+                            Action unblock = delegate ()
+                            {
+                                IsLoadingSBOM = false;
+                            };
+                            task.GetAwaiter().OnCompleted(unblock);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.ToString());
+                            IsLoadingSBOM = false;
+                        }
+                    },
+                    (obj) => TeklaDB.ModelHasSelectedObjects() & !IsLoadingSBOM
+                 );
+            }
+        }
+        #endregion
+
+        #region Методы
+        private void GetSBOMParts()
+        {
+            SteelBOMPositions = new ObservableCollection<SteelBOMPosition>(
+                TeklaDB.GetSelectedModelObjects()
+                .ToArray()
+                .Cast<Part>()
+                .Select(t => new SteelBOMPart(t))
+                .GroupBy(k => k.GroupingCode)
+                .Select(t => new SteelBOMPosition(t.ToList()))
+                .ToList());
+            SteelBOMPositionsByMaterial = new ObservableCollection<SteelBOMPosition>(steelBOMPositions.GroupBy(t => t.Material).Select(k => new SteelBOMPosition(k.SelectMany(m => m.Parts).ToList())).OrderBy(t => t.Material));
+            OnPropertyChanged("SteelBOMPositionsByMaterial");
+            SteelBOMPositionsByProfile = new ObservableCollection<SteelBOMPosition>(steelBOMPositions.GroupBy(t => t.Profile).Select(k => new SteelBOMPosition(k.SelectMany(m => m.Parts).ToList())).OrderBy(t => t.Profile));
+            OnPropertyChanged("SteelBOMPositionsByProfile");
+            SteelBOMPositionsByCategory = new ObservableCollection<SteelBOMPosition>(steelBOMPositions.GroupBy(t => t.Category).Select(k => new SteelBOMPosition(k.SelectMany(m => m.Parts).ToList())).OrderBy(t => t.Category));
+            OnPropertyChanged("SteelBOMPositionsByCategory");
+            OnPropertyChanged("SummarySBOMParts");
+            OnPropertyChanged("SummaryGrossSBOMParts");
+        }
+        #endregion
+
+        #endregion
+
+        #region Чертежи
+        #region Поля
+        private string selectedDrawingAlbum = null;
+        #endregion
+
+        #region Свойства
+        public ObservableCollection<DrawingManipulator> Drawings { get; set; } = new ObservableCollection<DrawingManipulator>();
+
+        public List<string> Albums
+        {
+            get => Drawings.Select(t => t.Album).ToList();
+        }
+
+        public string SelectedDrawingAlbum
+        {
+            get => selectedDrawingAlbum;
+            set
+            {
+                selectedDrawingAlbum = value;
+
+                OnPropertyChanged();
+                OnPropertyChanged("VisibleDrawingManipulators");
+            }
+        }
+        public ObservableCollection<string> DrawingAlbums
+        {
+            get { return new ObservableCollection<string>(Drawings.Select(t => t.Album).Distinct()); }
+        }
+
+        public ObservableCollection<DrawingManipulator> VisibleDrawingManipulators
+        {
+            get
+            {
+                if (SelectedDrawingAlbum == null)
+                {
+                    DrawingGroup.DrawingManipulators = new List<DrawingManipulator>(Drawings);
+                    DrawingGroup.Filler = PropertyRooting.Model;
+                    OnPropertyChanged("PropertyFillers");
+                    return new ObservableCollection<DrawingManipulator>(Drawings);
+                }
+                else
+                {
+                    DrawingGroup.DrawingManipulators = new List<DrawingManipulator>(Drawings.ToList().FindAll(t => t.Album == selectedDrawingAlbum));
+                    DrawingGroup.Filler = PropertyRooting.Album;
+                    OnPropertyChanged("PropertyFillers");
+                    return new ObservableCollection<DrawingManipulator>(Drawings.ToList().FindAll(t => t.Album == selectedDrawingAlbum));
+                }
+            }
+        }
+
+        public ObservableCollection<PropertyFillers> PropertyFillers
+        {
+            get => DrawingGroup.PropertyFillersList;
+        }
+
+        #endregion
+        #region Команды
+
+        public ICommand UpdateAlbum
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    var tb = (obj as TextBox);
+                    if(obj != null)
+                    {
+                        var value = tb.Text;
+                        foreach (var item in VisibleDrawingManipulators)
+                        {
+                            if (value != null)
+                                item.Album = value;
+                        }
+                        AddDrawingInformationToDrawingListTreeView();
+                    }
+                }, (obj) => true);
+            }
+        }
+
+        public ICommand UpdateDrawingList
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    AddDrawingInformationToDrawingListTreeView();
+                }, (obj) => true);
+            }
+        }
+
+        #endregion
+        #region Методы
+        private void AddDrawingInformationToDrawingListTreeView()
+        {
+            Drawings.Clear();
+            DrawingEnumerator drawingListEnumerator = TeklaDB.DrawingHandler.GetDrawings(); // Get drawing list
+
+            while (drawingListEnumerator.MoveNext())
+            {
+                Drawing myDrawing = drawingListEnumerator.Current;
+                Drawings.Add(new DrawingManipulator() { Drawing = myDrawing });
+            }
+            OnPropertyChanged("VisibleDrawingManipulators");
+            OnPropertyChanged("DrawingAlbums");
+        }
+        #endregion
         #endregion
 
     }

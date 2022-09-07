@@ -393,7 +393,8 @@ namespace CustomPropertyHierarchicObject
                     var mobj = mobjenum.Current as HierarchicObject;
                     if (mobj != null)
                     {
-                        return mobj.Name;
+                        if(TeklaHierarchicObject.GetHORootHierarchicDefinitionName(mobj.Identifier.ID) == "Element_list")
+                            return mobj.Name;
                     }
 
                 }
@@ -590,6 +591,25 @@ namespace CustomPropertyHierarchicObject
                                     return rootFatherHierarchicDefinition;
                             }
                         }
+                    }
+                }
+            }
+            return null;
+        }
+
+        internal static string GetHORootHierarchicDefinitionName(int id)
+        {
+            ModelObject modelObject = model.SelectModelObject(new Tekla.Structures.Identifier(id));
+            var ho = (modelObject as HierarchicObject);
+            if (ho!=null)
+            {
+                if (ho.Definition != null)
+                {
+                    HierarchicDefinition fatherHierarchicDefinition = new HierarchicDefinition();   
+                    fatherHierarchicDefinition.Identifier = ho.Definition.Identifier;
+                    if (fatherHierarchicDefinition.Select())
+                    {
+                        return fatherHierarchicDefinition.Name;
                     }
                 }
             }

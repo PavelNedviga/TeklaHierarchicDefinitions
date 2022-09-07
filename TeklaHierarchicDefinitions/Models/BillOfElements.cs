@@ -625,32 +625,32 @@ namespace TeklaHierarchicDefinitions.Models
             }
         }
 
-        public string Q_min
+        public string Q_y
         {
-            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("Q_min"); }
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("Q_y"); }
             set
             {
-                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_min", value);
-                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_end_min", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_y", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_end_y", value);
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_summary", GetQSummary());
                 if (_instantUpdate)
                     _hierarchicObjectInTekla.PartsSetAttr("reakciya_A", Q_summary);
-                OnPropertyChanged("Q_min");
-                OnPropertyChanged("Q_end_min");
+                OnPropertyChanged("Q_y");
+                OnPropertyChanged("Q_end_y");
                 OnPropertyChanged("Q_summary");
             }
         }
 
-        public string Q_end_min
+        public string Q_end_y
         {
-            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("Q_end_min"); }
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("Q_end_y"); }
             set
             {
-                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_end_min", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_end_y", value);
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_summary", GetQSummary());
                 if (_instantUpdate)
                     _hierarchicObjectInTekla.PartsSetAttr("reakciya_A", Q_summary);
-                OnPropertyChanged("Q_end_min");
+                OnPropertyChanged("Q_end_y");
                 OnPropertyChanged("Q_summary");
             }
         }
@@ -1004,21 +1004,21 @@ namespace TeklaHierarchicDefinitions.Models
         {
             string Q_startF;
             string Q_endF;
-            if (Q == Q_min)
+            if (Q == Q_y | Q_y == "0" | Q_y == String.Empty)
             {
                 Q_startF = Q;
             }
             else
             {
-                Q_startF = Q + ";" + Q_min;
+                Q_startF = Q + ";" + Q_y;
             }
-            if (Q_end == Q_end_min)
+            if (Q_end == Q_end_y | Q_end_y == "0" | Q_end_y == String.Empty)
             {
                 Q_endF = Q_end;
             }
             else
             {
-                Q_endF = Q_end + ";" + Q_end_min;
+                Q_endF = Q_end + ";" + Q_end_y;
             }
 
             string q_F;
@@ -1059,8 +1059,8 @@ namespace TeklaHierarchicDefinitions.Models
                 N_summary,
                 Q,
                 Q_end,
-                Q_min,
-                Q_end_min,
+                Q_y,
+                Q_end_y,
                 Q_summary,
                 Material,
                 Notes,
@@ -1131,8 +1131,8 @@ namespace TeklaHierarchicDefinitions.Models
                 N_summary,
                 Q,
                 Q_end,
-                Q_min,
-                Q_end_min,
+                Q_y,
+                Q_end_y,
                 Q_summary,
                 Material,
                 Notes,

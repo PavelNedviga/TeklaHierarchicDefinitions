@@ -1106,6 +1106,66 @@ string_utf8 albl_ProfileGost
     entry = ("rus", "Стандарт профиля");
 };
 
+string_utf8 albl_AttachedToEL
+{
+    entry = ("enu", "Attached to EL");
+    entry = ("chs", "Attached to EL");
+    entry = ("cht", "Attached to EL");
+    entry = ("csy", "Attached to EL");
+    entry = ("deu", "Attached to EL");
+    entry = ("esp", "Attached to EL");
+    entry = ("fra", "Attached to EL");
+    entry = ("hun", "Attached to EL");
+    entry = ("ita", "Attached to EL");
+    entry = ("jpn", "Attached to EL");
+    entry = ("kor", "Attached to EL");
+    entry = ("nld", "Attached to EL");
+    entry = ("plk", "Attached to EL");
+    entry = ("ptb", "Attached to EL");
+    entry = ("ptg", "Attached to EL");
+    entry = ("rus", "Прикрепление к ВЭ");
+};
+
+string_utf8 albl_SelectUnattachedObjectsOnly
+{
+    entry = ("enu", "Select unattached only");
+    entry = ("chs", "Select unattached only");
+    entry = ("cht", "Select unattached only");
+    entry = ("csy", "Select unattached only");
+    entry = ("deu", "Select unattached only");
+    entry = ("esp", "Select unattached only");
+    entry = ("fra", "Select unattached only");
+    entry = ("hun", "Select unattached only");
+    entry = ("ita", "Select unattached only");
+    entry = ("jpn", "Select unattached only");
+    entry = ("kor", "Select unattached only");
+    entry = ("nld", "Select unattached only");
+    entry = ("plk", "Select unattached only");
+    entry = ("ptb", "Select unattached only");
+    entry = ("ptg", "Select unattached only");
+    entry = ("rus", "Только открепленные");
+};
+
+string_utf8 albl_UnselectAll
+{
+    entry = ("enu", "Unselect all");
+    entry = ("chs", "Unselect all");
+    entry = ("cht", "Unselect all");
+    entry = ("csy", "Unselect all");
+    entry = ("deu", "Unselect all");
+    entry = ("esp", "Unselect all");
+    entry = ("fra", "Unselect all");
+    entry = ("hun", "Unselect all");
+    entry = ("ita", "Unselect all");
+    entry = ("jpn", "Unselect all");
+    entry = ("kor", "Unselect all");
+    entry = ("nld", "Unselect all");
+    entry = ("plk", "Unselect all");
+    entry = ("ptb", "Unselect all");
+    entry = ("ptg", "Unselect all");
+    entry = ("rus", "Сброс выделения");
+};
+
 string_utf8 albl_
 {
     entry = ("enu", "Temp");

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Tekla.Structures.Model;
 
@@ -48,12 +49,13 @@ namespace TeklaHierarchicDefinitions.Models
                 var bt = part as BentPlate;
                 if (ct != null | bt != null)
                     return part.Profile.ProfileString;
+                string pattern = @"^[a-zA-Z\-]*";
                 if (part.GetReportProperty("PROFILE_TYPE", ref profileType))
                 {
                     if (profileType.Equals("B"))
                     {
                         if (part.GetReportProperty("PROFILE.WIDTH", ref profileWidth))
-                            return "t"+profileWidth.ToString("F");
+                            return Regex.Match(part.Profile.ProfileString, pattern).Value + profileWidth.ToString();
                     }
                 }
                 string profileTplName = string.Empty;
@@ -105,6 +107,17 @@ namespace TeklaHierarchicDefinitions.Models
                         return "ГОСТ 19903-2015. Сталь листовая горячекатанная";
                 }
                 return profileNameGost + ". " + profileName;
+            }
+        }
+
+        public float IsInElementList
+        {
+            get
+            {
+                if (TeklaAPIUtils.TeklaDB.IsModelObjectBoundToEL(Part))
+                    return 1;
+                else
+                    return 0;
             }
         }
 
@@ -174,6 +187,19 @@ namespace TeklaHierarchicDefinitions.Models
             }
         }
 
+        public string AttachedToEL
+        {
+            get
+            {
+                var proportion = Parts.Select(t=>t.IsInElementList).Sum()/ Parts.Count;
+                if (proportion == 0)
+                    return "Нет";
+                if (proportion < 1)
+                    return "Частично";
+                return "Все";
+            }
+        }
+
         public string Material 
         { 
             get { return parts.FirstOrDefault().Material; } 
@@ -194,19 +220,19 @@ namespace TeklaHierarchicDefinitions.Models
             get { return parts.Select(t => t.WeightGross).Sum(); }
         }
 
-        public string WeightRounded
+        public double WeightRounded
         {
             get
             {
-                return Weight.ToString("F");
+                return double.Parse( Weight.ToString("F"));
             }
         }
 
-        public string WeightGrossRounded
+        public double WeightGrossRounded
         {
             get
             {
-                return WeightGross.ToString("F");
+                return double.Parse(WeightGross.ToString("F"));
             }
         }
 

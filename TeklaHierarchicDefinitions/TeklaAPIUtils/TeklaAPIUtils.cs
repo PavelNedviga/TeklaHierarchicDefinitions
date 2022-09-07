@@ -13,6 +13,10 @@ using ctlg = Tekla.Structures.Catalogs;
 using NLog;
 using System.Windows;
 using System.Text.RegularExpressions;
+using Tekla.Structures.Geometry3d;
+using Tekla.Structures.Drawing;
+using ModelObject = Tekla.Structures.Model.ModelObject;
+using Part = Tekla.Structures.Model.Part;
 
 namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 {
@@ -40,6 +44,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         public static Tekla.Structures.Model.UI.ModelObjectSelector modelObjectSelector = new Tekla.Structures.Model.UI.ModelObjectSelector();
         private static Logger logger = LogManager.GetCurrentClassLogger();
         internal static CatalogHandler ch = new CatalogHandler();
+        public static DrawingHandler DrawingHandler = new DrawingHandler();
         #endregion
 
         #region Выведение списков иерархических объектов-определений
@@ -472,6 +477,43 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             }
 
             return arrayList;
+        }
+        
+        public static bool IsModelObjectBoundToEL(ModelObject mo)
+        {
+            if (mo.GetHierarchicObjects().GetSize() > 0)
+            {
+                string res = string.Empty;
+                var mobjenum = mo.GetHierarchicObjects();
+                while (mobjenum.MoveNext())
+                {
+                    var mobj = mobjenum.Current as HierarchicObject;
+                    if (mobj != null)
+                    {
+                        if (GetHORootHierarchicDefinitionName(mobj.Identifier.ID) == "Element_list")
+                            return true;
+                    }
+                }
+            }
+            return false;
+        }
+        internal static string GetHORootHierarchicDefinitionName(int id)
+        {
+            ModelObject modelObject = model.SelectModelObject(new Tekla.Structures.Identifier(id));
+            var ho = (modelObject as HierarchicObject);
+            if (ho != null)
+            {
+                if (ho.Definition != null)
+                {
+                    HierarchicDefinition fatherHierarchicDefinition = new HierarchicDefinition();
+                    fatherHierarchicDefinition.Identifier = ho.Definition.Identifier;
+                    if (fatherHierarchicDefinition.Select())
+                    {
+                        return fatherHierarchicDefinition.Name;
+                    }
+                }
+            }
+            return null;
         }
 
         /// <summary>

@@ -5,13 +5,13 @@
                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                             xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-                            xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                            xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"                            
                             xmlns:UIControls="clr-namespace:Tekla.Structures.Dialog.UIControls;assembly=Tekla.Structures.Dialog" 
                             xmlns:tsd="clr-namespace:Tekla.Structures.Dialog;assembly=Tekla.Structures.Dialog"
                             xmlns:Convertors="clr-namespace:TeklaHierarchicDefinitions"
                             Icon="pack://application:,,,/THD;component/Resources/Element list.png"
                             xmlns:local="clr-namespace:TeklaHierarchicDefinitions"
-                            xmlns:vm="clr-namespace:TeklaHierarchicDefinitions.ViewModels"
+                            xmlns:vm="clr-namespace:TeklaHierarchicDefinitions.ViewModels" 
                             mc:Ignorable="d"
                             Title="{tsd:Loc albl_WindowName}"
                             Height="650" Width="1250" MinWidth="1080" MinHeight="680" Topmost="True">
@@ -22,7 +22,7 @@
         <vm:BillOfElementsViewModel/>
     </Window.DataContext>
     <Grid>
-        
+
         <TabControl>
             <TabItem Header="{tsd:Loc albl_ElementList}">
                 <Grid Background="#FFE5E5E5">
@@ -252,12 +252,12 @@
                                                 <RowDefinition/>
                                             </Grid.RowDefinitions>
                                             <DockPanel Grid.Row="0">
-                                                <TextBox Text="{Binding Q_min, UpdateSourceTrigger=PropertyChanged}" 
+                                                <TextBox Text="{Binding Q_y, UpdateSourceTrigger=PropertyChanged}" 
                                                  IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
 
                                             </DockPanel>
                                             <DockPanel Grid.Row="1">
-                                                <TextBox Text="{Binding Q_end_min, UpdateSourceTrigger=PropertyChanged}" 
+                                                <TextBox Text="{Binding Q_end_y, UpdateSourceTrigger=PropertyChanged}" 
                                                  IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
                                             </DockPanel>
                                         </Grid>
@@ -611,7 +611,8 @@
                                  >
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBox Text="{Binding BuildingFragmentMark, Mode=TwoWay, UpdateSourceTrigger=Default}" Style="{DynamicResource MahApps.Styles.TextBox}" HorizontalAlignment="Left" Margin="20,0"/>
+                                    <TextBox Text="{Binding BuildingFragmentMark, Mode=TwoWay, UpdateSourceTrigger=Default}" 
+                                             Style="{DynamicResource MahApps.Styles.TextBox}" HorizontalAlignment="Left" Margin="20,0"/>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
@@ -698,7 +699,7 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="{tsd:Loc albl_SBOM}">
+            <TabItem x:Name="tabItem" Header="{tsd:Loc albl_SBOM}">
                 <Grid Background="#FFE5E5E5" >
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -711,26 +712,29 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <DataGrid Grid.Column="1" 
+                    <DataGrid Grid.Column="1"
                              ItemsSource="{Binding SteelBOMPositions}" AutoGenerateColumns="False"
                              d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,10,10,10" Grid.RowSpan="2" 
-                              SelectionChanged="SBOMDataGrid_SelectionChanged">
+                              SelectionChanged="SBOMDataGridSimple_SelectionChanged">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="{tsd:Loc albl_Material}" 
                                         Binding="{Binding Material, Mode =OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                        FontWeight="Bold"/>
+                                        />
                             <DataGridTextColumn Header="{tsd:Loc albl_Categories}" 
                                         Binding="{Binding Category, Mode =OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                        FontWeight="Bold"/>
+                                        />
                             <DataGridTextColumn Header="{tsd:Loc albl_Profile}" 
                                         Binding="{Binding Profile, Mode =OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                        FontWeight="Bold" MaxWidth="400"/>
+                                        MaxWidth="400"/>
                             <DataGridTextColumn Header="{tsd:Loc albl_Weight}" 
                                         Binding="{Binding WeightRounded, Mode =OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                        FontWeight="Bold"/>
+                                        />
                             <DataGridTextColumn Header="{tsd:Loc albl_WeightGross}" 
                                         Binding="{Binding WeightGrossRounded, Mode =OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                        FontWeight="Bold"/>
+                                        />
+                            <DataGridTextColumn Header="{tsd:Loc albl_AttachedToEL}" 
+                                                Binding="{Binding AttachedToEL, Mode =OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                FontWeight="Bold"/>
                             <DataGridTextColumn Header="{tsd:Loc albl_ProfileGost}" 
                                         Binding="{Binding ProfileGost, Mode =OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                         MaxWidth="350">
@@ -743,8 +747,8 @@
                         </DataGrid.Columns>
                     </DataGrid>
 
-                    <DataGrid Grid.Column="5" Grid.Row="0" HorizontalAlignment="Stretch"
-                              ItemsSource="{Binding SteelBOMPositionsByProfile}" AutoGenerateColumns="False"
+                    <DataGrid Name="Profiles" Grid.Column="5" Grid.Row="0" HorizontalAlignment="Stretch"
+                              ItemsSource="{Binding SteelBOMPositionsByProfile}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedSBOMProfile, Mode=TwoWay, UpdateSourceTrigger=Default}"
                               d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,10,10,10" Grid.RowSpan="2" SelectionChanged="SBOMDataGrid_SelectionChanged">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="{tsd:Loc albl_Profile}" 
@@ -758,9 +762,16 @@
                                         FontWeight="Bold"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <DataGrid Grid.Column="3" Grid.Row="0" HorizontalAlignment="Stretch" SelectionChanged="SBOMDataGrid_SelectionChanged"
-                              ItemsSource="{Binding SteelBOMPositionsByMaterial}" AutoGenerateColumns="False"
+                    <DataGrid Name="Materials" Grid.Column="3" Grid.Row="0" HorizontalAlignment="Stretch" SelectionChanged="SBOMDataGrid_SelectionChanged"
+                              ItemsSource="{Binding SteelBOMPositionsByMaterial}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedSBOMMaterial, Mode=TwoWay, UpdateSourceTrigger=Default}"
+                              mah:MultiSelectorHelper.SelectedItems="{Binding SelectedSBOMMaterials,UpdateSourceTrigger=PropertyChanged}"
                               d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,10,10,10" Grid.RowSpan="1">
+                        <!--<i1:Interaction.Triggers >
+                            <i1:EventTrigger EventName="SelectionChanged">
+                                <i1:InvokeCommandAction Command="{Binding SelectedSBOMMaterials}" 
+                                           CommandParameter="{Binding SelectedItems, ElementName=Materials}"/>
+                            </i1:EventTrigger>
+                        </i1:Interaction.Triggers>-->
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="{tsd:Loc albl_Material}" 
                                         Binding="{Binding Material, Mode =OneWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -773,10 +784,8 @@
                                         FontWeight="Bold"/>
                         </DataGrid.Columns>
                     </DataGrid>
-
-
-                    <DataGrid Grid.Column="3" Grid.Row="1" HorizontalAlignment="Stretch"
-                            ItemsSource="{Binding SteelBOMPositionsByCategory}" AutoGenerateColumns="False"
+                    <DataGrid Name="Categories" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding SteelBOMPositionsByCategory}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedSBOMCategory, Mode=TwoWay, UpdateSourceTrigger=Default}"
                             d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10" Grid.RowSpan="1" SelectionChanged="SBOMDataGrid_SelectionChanged">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="{tsd:Loc albl_Categories}" 
@@ -790,8 +799,7 @@
                                         FontWeight="Bold"/>
                         </DataGrid.Columns>
                     </DataGrid>
-
-                    <StackPanel Grid.Column="0" Orientation="Vertical">
+                    <StackPanel Grid.Column="0" Orientation="Vertical" Grid.RowSpan="2">
                         <Button Content="{tsd:Loc albl_AddSBOMParts}" Margin="10" VerticalAlignment="Top" Height="30"
                                 Command="{Binding AddSBOMParts}"/>
                         <Label Content="{tsd:Loc albl_Net}" Margin="10,10,10,5"/>
@@ -801,15 +809,86 @@
                         <CheckBox x:Name="HightlightSBOMObjects" Content="{tsd:Loc albl_Highlight_objects_in_model_view}" 
                                   HorizontalAlignment="Left" Margin="10"  
                                   VerticalAlignment="Center" Height="30" Width="210" IsChecked="True"/>
+                        <CheckBox x:Name="SelectUnattachedObjectsOnly" Content="{tsd:Loc albl_SelectUnattachedObjectsOnly}" 
+                                  HorizontalAlignment="Left" Margin="10"  
+                                  VerticalAlignment="Center" Height="30" Width="210" IsChecked="True"/>
+                        <ListBox ItemsSource ="{Binding AttachmentsToVE}"                                  
+                                 SelectedItem ="{Binding SelectedAttachmentToEL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="10"/>
+                        <Button Content="{tsd:Loc albl_UnselectAll}" Margin="10" VerticalAlignment="Top" Height="30"
+                                Command="{Binding UnselectAll}" >
+                        </Button>
+                            <!--<Button.CommandParameter>
+                                <MultiBinding Converter="{StaticResource MyMultiConverter}">
+                                    <Binding Path="..." ElementName="MyTextBox"/>
+                                    <Binding Path="..." ElementName="MySomethingElse"/>
+                                </MultiBinding>
+                            </Button.CommandParameter>-->
+                        <mah:ProgressRing Margin="10" IsActive="{Binding IsLoadingSBOM, UpdateSourceTrigger=Explicit}" Visibility="Visible" VerticalAlignment="Top" Width="60" Height="60"/>
                     </StackPanel>
                     <GridSplitter Grid.Column="2" HorizontalAlignment="Stretch" Grid.RowSpan="2" VerticalAlignment="Stretch" Width="10" ResizeBehavior="PreviousAndNext" ResizeDirection="Columns"/>
 
                 </Grid>
             </TabItem>
-        
+            <TabItem x:Name="Album" Header="{tsd:Loc albl_AlbumDefinition}">
+                <Grid Background="LightBlue">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="320"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <GridSplitter Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" 
+                                  Grid.RowSpan="1" VerticalAlignment="Stretch" 
+                                  ResizeBehavior="PreviousAndNext" ResizeDirection="Rows"/>
+
+                    <DataGrid Margin="10" d:ItemsSource="{d:SampleData ItemCount=5}" CanUserAddRows="False" CanUserDeleteRows="False"
+                              ItemsSource="{Binding VisibleDrawingManipulators, Mode=OneWay, UpdateSourceTrigger=Default}" 
+                              Grid.Column="1" Grid.RowSpan="1" Grid.Row="2"/>
+                    <StackPanel Grid.Column="1" Grid.RowSpan="1" Grid.Row="0" Orientation="Horizontal">
+                        <DataGrid Margin="10" HorizontalAlignment="Stretch" d:ItemsSource="{d:SampleData ItemCount=5}"
+                                  ItemsSource="{Binding PropertyFillers, Mode=OneWay, UpdateSourceTrigger=Default}"/>
+                        <DataGrid Margin="10" HorizontalAlignment="Stretch" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+                        
+                    </StackPanel>
+                    <StackPanel Grid.Column="0" Grid.RowSpan="3">
+                        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Grid.RowSpan="1"
+                                 ItemsSource="{Binding DrawingAlbums, UpdateSourceTrigger=Default}"
+                                 SelectedItem="{Binding SelectedDrawingAlbum,Mode=OneWayToSource, UpdateSourceTrigger=Default}" Margin="10"
+                                 MaxHeight="300">
+                            <!--<ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>-->
+                        </ListBox>
+                        <TextBox Name="AlbumRenaming"  Text="{Binding SelectedDrawingAlbum, UpdateSourceTrigger=LostFocus}" Margin="10">
+                            <TextBox.InputBindings>
+                                <KeyBinding Command="{Binding Path=UpdateAlbum}" 
+                                            CommandParameter="{Binding ElementName=AlbumRenaming}" 
+                                            Key="Enter" />
+                            </TextBox.InputBindings>
+                        </TextBox>
+                        <Button Content="{tsd:Loc albl_UpdDrawingList}"
+                                Command="{Binding UpdateDrawingList}" Margin="10"/>
+                        <ListBox Height="150" Margin="10">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
         </TabControl>
         <Button Content="?" Width="30" Height="30" 
-                HorizontalAlignment="Right" VerticalAlignment="Top" Command="{Binding ReleaseNotes_Click}"
+                HorizontalAlignment="Right" VerticalAlignment="Top" 
+                Command="{Binding ReleaseNotes_Click}"
                 Margin="5" Style="{DynamicResource MahApps.Styles.Button.ToolBar}" />
     </Grid>
 

@@ -130,22 +130,79 @@ namespace TeklaHierarchicDefinitions
 
         private void SBOMDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            var boe = (sender as System.Windows.Controls.DataGrid).SelectedItem as SteelBOMPosition;
+            var dc = (this.DataContext as BillOfElementsViewModel);
+            var si = (sender as System.Windows.Controls.DataGrid).SelectedItems;
+            var filtered = si.Cast<SteelBOMPosition>().SelectMany(t =>
+            {
+                var arr = new List<ModelObject>();
+                IEnumerator<Part> xx = t.Parts.Where(m=>m.IsInElementList < 1).Select(m=>m.Part).GetEnumerator();
+                while (xx.MoveNext())
+                    arr.Add(xx.Current as ModelObject);
+                return arr;
+            }).ToArray();
+
+            var all = si.Cast<SteelBOMPosition>().SelectMany(t =>
+            {
+                var arr = new List<ModelObject>();
+                IEnumerator<Part> xx = t.Parts.Select(m => m.Part).GetEnumerator();
+                while (xx.MoveNext())
+                    arr.Add(xx.Current as ModelObject);
+                return arr;
+            }).ToArray();
+
+            if ((sender as System.Windows.Controls.DataGrid).Name == "Materials")
+                dc.SBOMMaterials = si.Cast<SteelBOMPosition>().Select(t => t.Material).Distinct().ToList();
+
+            if ((sender as System.Windows.Controls.DataGrid).Name == "Categories")
+                dc.SBOMCategories = si.Cast<SteelBOMPosition>().Select(t => t.Category).Distinct().ToList();
+
+            if ((sender as System.Windows.Controls.DataGrid).Name == "Profiles")
+                dc.SBOMProfiles = si.Cast<SteelBOMPosition>().Select(t => t.Profile).Distinct().ToList();
+
+            dc.OnPropertyChanged("SteelBOMPositions");
+
             if ((bool)HightlightSBOMObjects.IsChecked)
             {
-                var boe = (sender as System.Windows.Controls.DataGrid).SelectedItem as SteelBOMPosition;
-                //if (boe != null)
-                //    boe.GetSelectedObjects();
-                var boes = (sender as System.Windows.Controls.DataGrid).SelectedItems.Cast<SteelBOMPosition>().SelectMany(t =>
-                {
-                    var arr = new List<ModelObject>();
-                    var xx = t.Parts.Select(m=>m.Part).GetEnumerator();
-                    while (xx.MoveNext())
-                        arr.Add(xx.Current as ModelObject);
-                    return arr;
-                }).ToArray();
-                TeklaDB.SelectObjectsInModelView(new ArrayList(boes));
+                if ((bool)SelectUnattachedObjectsOnly.IsChecked)
+                    TeklaDB.SelectObjectsInModelView(new ArrayList(filtered));
+                else
+                    TeklaDB.SelectObjectsInModelView(new ArrayList(all));
             }
         }
+
+        private void SBOMDataGridSimple_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var boe = (sender as System.Windows.Controls.DataGrid).SelectedItem as SteelBOMPosition;
+            var dc = (this.DataContext as BillOfElementsViewModel);
+            var si = (sender as System.Windows.Controls.DataGrid).SelectedItems;
+            var filtered = si.Cast<SteelBOMPosition>().SelectMany(t =>
+            {
+                var arr = new List<ModelObject>();
+                IEnumerator<Part> xx = t.Parts.Where(m => m.IsInElementList < 1).Select(m => m.Part).GetEnumerator();
+                while (xx.MoveNext())
+                    arr.Add(xx.Current as ModelObject);
+                return arr;
+            }).ToArray();
+
+            var all = si.Cast<SteelBOMPosition>().SelectMany(t =>
+            {
+                var arr = new List<ModelObject>();
+                IEnumerator<Part> xx = t.Parts.Select(m => m.Part).GetEnumerator();
+                while (xx.MoveNext())
+                    arr.Add(xx.Current as ModelObject);
+                return arr;
+            }).ToArray();
+
+            if ((bool)HightlightSBOMObjects.IsChecked)
+            {
+                if ((bool)SelectUnattachedObjectsOnly.IsChecked)
+                    TeklaDB.SelectObjectsInModelView(new ArrayList(filtered));
+                else
+                    TeklaDB.SelectObjectsInModelView(new ArrayList(all));
+            }
+        }
+        
 
         //private void MaterialCatalog_SelectClicked(object sender, EventArgs e)
         //{
