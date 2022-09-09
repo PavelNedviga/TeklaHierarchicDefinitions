@@ -1055,6 +1055,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         #region Чертежи
         #region Поля
         private string selectedDrawingAlbum = null;
+        private DrawingManipulator selectedDrawingManipulator;
         #endregion
 
         #region Свойства
@@ -1074,8 +1075,22 @@ namespace TeklaHierarchicDefinitions.ViewModels
 
                 OnPropertyChanged();
                 OnPropertyChanged("VisibleDrawingManipulators");
+                OnPropertyChanged("AlbumDesigners");
+                OnPropertyChanged("PropertyFillersList");
             }
         }
+
+        public DrawingManipulator SelectedDrawingManipulator
+        {
+            get => selectedDrawingManipulator;
+            set
+            {
+                selectedDrawingManipulator = value;
+                OnPropertyChanged();
+
+            }
+        }
+
         public ObservableCollection<string> DrawingAlbums
         {
             get { return new ObservableCollection<string>(Drawings.Select(t => t.Album).Distinct()); }
@@ -1089,29 +1104,60 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 {
                     DrawingGroup.DrawingManipulators = new List<DrawingManipulator>(Drawings);
                     DrawingGroup.Filler = PropertyRooting.Model;
-                    OnPropertyChanged("PropertyFillers");
                     return new ObservableCollection<DrawingManipulator>(Drawings);
+                    
                 }
                 else
                 {
                     DrawingGroup.DrawingManipulators = new List<DrawingManipulator>(Drawings.ToList().FindAll(t => t.Album == selectedDrawingAlbum));
                     DrawingGroup.Filler = PropertyRooting.Album;
-                    OnPropertyChanged("PropertyFillers");
                     return new ObservableCollection<DrawingManipulator>(Drawings.ToList().FindAll(t => t.Album == selectedDrawingAlbum));
                 }
+                OnPropertyChanged("PropertyFillersList");
             }
         }
 
-        public ObservableCollection<PropertyFillers> PropertyFillers
+        public ObservableCollection<PropertyFillers> PropertyFillersList
         {
             get => DrawingGroup.PropertyFillersList;
         }
 
+        public ObservableCollection<PropertyFillers> ModelPropertyFillers
+        {
+            get => DrawingGroup.ModelPropertyFillersList;
+        }
+
+        public ObservableCollection<PropertyFillers> AlbumDesigners
+        {
+            get => DrawingGroup.AlbumDesigners;
+        }
+
+
         #endregion
+
+        public void UpdateProps()
+        {
+            DrawingGroup.Filler = PropertyRooting.Drawing;
+            OnPropertyChanged("PropertyFillersList");
+            OnPropertyChanged("AlbumDesigners");
+        }
+
         #region Команды
 
-        public ICommand UpdateAlbum
+        public ICommand CreateCsv
         {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    DrawingGroup.CsvExport(Drawings);
+                }
+                , (obj) => true);
+            }
+        }
+
+        public ICommand UpdateAlbum
+{
             get
             {
                 return new DelegateCommand((obj) =>
@@ -1127,6 +1173,17 @@ namespace TeklaHierarchicDefinitions.ViewModels
                         }
                         AddDrawingInformationToDrawingListTreeView();
                     }
+                }, (obj) => true);
+            }
+        }
+
+        public ICommand UpdateAlbumList
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    OnPropertyChanged("DrawingAlbums");
                 }, (obj) => true);
             }
         }

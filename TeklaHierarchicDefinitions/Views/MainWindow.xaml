@@ -846,17 +846,49 @@
 
                     <DataGrid Margin="10" d:ItemsSource="{d:SampleData ItemCount=5}" CanUserAddRows="False" CanUserDeleteRows="False"
                               ItemsSource="{Binding VisibleDrawingManipulators, Mode=OneWay, UpdateSourceTrigger=Default}" 
-                              Grid.Column="1" Grid.RowSpan="1" Grid.Row="2"/>
+                              SelectedItem="{Binding SelectedDrawingManipulator, Mode=TwoWay, UpdateSourceTrigger=Default}"
+                              Grid.Column="1" Grid.RowSpan="1" Grid.Row="2"
+                              mah:MultiSelectorHelper.SelectedItems="{Binding SelectedDrawingManipulators, Mode=OneWayToSource, UpdateSourceTrigger=Default}" SelectionChanged="DataGrid_SelectionChanged"
+                              >
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="IsSelected"
+                                        Value="{Binding IsSelected}" />
+                            </Style>
+                        </DataGrid.Resources>
+
+
+                    </DataGrid>
                     <StackPanel Grid.Column="1" Grid.RowSpan="1" Grid.Row="0" Orientation="Horizontal">
-                        <DataGrid Margin="10" HorizontalAlignment="Stretch" d:ItemsSource="{d:SampleData ItemCount=5}"
-                                  ItemsSource="{Binding PropertyFillers, Mode=OneWay, UpdateSourceTrigger=Default}"/>
-                        <DataGrid Margin="10" HorizontalAlignment="Stretch" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+                        <DataGrid Name="drawingProps" Margin="10" HorizontalAlignment="Stretch" d:ItemsSource="{d:SampleData ItemCount=5}"
+                                  ItemsSource="{Binding PropertyFillersList, Mode=OneWay, UpdateSourceTrigger=Default}"
+                                  CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{tsd:Loc albl_Property}" Binding="{Binding PropertyName, Mode =TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridTextColumn Header="{tsd:Loc albl_Value}" Binding="{Binding PropertyValue, Mode =TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataGrid.Columns>
+                            <DataGrid.InputBindings>
+                                <KeyBinding Command="{Binding UpdateAlbumList}" 
+                                            
+                                            Key="Enter" />
+                            </DataGrid.InputBindings>
+                        </DataGrid>
+                        <DataGrid Margin="10" HorizontalAlignment="Stretch" 
+                                  d:ItemsSource="{d:SampleData ItemCount=5}"
+                                  ItemsSource="{Binding AlbumDesigners, Mode=OneWay, UpdateSourceTrigger=Default}"
+                                  CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{tsd:Loc albl_Number}" Binding="{Binding PropertyName, Mode =OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridTextColumn Header="{tsd:Loc albl_PersonPosition}" Binding="{Binding PropertyValue, Mode =TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridTextColumn Header="{tsd:Loc albl_Surname}" Binding="{Binding PropertyValue2, Mode =TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
                         
                     </StackPanel>
                     <StackPanel Grid.Column="0" Grid.RowSpan="3">
                         <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Grid.RowSpan="1"
                                  ItemsSource="{Binding DrawingAlbums, UpdateSourceTrigger=Default}"
-                                 SelectedItem="{Binding SelectedDrawingAlbum,Mode=OneWayToSource, UpdateSourceTrigger=Default}" Margin="10"
+                                 SelectedItem="{Binding SelectedDrawingAlbum,Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Margin="10"
                                  MaxHeight="300">
                             <!--<ListBox.ItemTemplate>
                                 <DataTemplate>
@@ -873,15 +905,16 @@
                         </TextBox>
                         <Button Content="{tsd:Loc albl_UpdDrawingList}"
                                 Command="{Binding UpdateDrawingList}" Margin="10"/>
-                        <ListBox Height="150" Margin="10">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel>
-                                        
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                        <DataGrid VerticalAlignment="Stretch" Margin="10" ItemsSource="{Binding ModelPropertyFillers, Mode=Default, UpdateSourceTrigger=LostFocus}" 
+                                  CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{tsd:Loc albl_Property}" Binding="{Binding PropertyName, Mode =OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridTextColumn Header="{tsd:Loc albl_Value}" Binding="{Binding PropertyValue, Mode =TwoWay, UpdateSourceTrigger=PropertyChanged}"/>                                
+                            </DataGrid.Columns>
+
+                        </DataGrid>
+                        <Button Content="{tsd:Loc albl_CreateCSV}"
+                                Command="{Binding CreateCsv}"/>
                     </StackPanel>
                 </Grid>
             </TabItem>

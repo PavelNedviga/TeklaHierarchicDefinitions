@@ -27,6 +27,7 @@ using Tekla.Structures;
 using TeklaHierarchicDefinitions.TeklaAPIUtils;
 using System.Collections;
 using Tekla.Structures.Model;
+using DrawingGroup = TeklaHierarchicDefinitions.Models.DrawingGroup;
 
 namespace TeklaHierarchicDefinitions
 {
@@ -282,6 +283,14 @@ namespace TeklaHierarchicDefinitions
         {
             var initialCollection = (BillOfElementsViewModel)DataContext;
             initialCollection.BillOfElementsList = null;
+        }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var dms = (sender as System.Windows.Controls.DataGrid).SelectedItems.Cast<DrawingManipulator>().ToList();
+            DrawingGroup.DrawingManipulators = dms;
+            if(this.DataContext != null)
+                (this.DataContext as BillOfElementsViewModel).UpdateProps();
         }
     }
 
