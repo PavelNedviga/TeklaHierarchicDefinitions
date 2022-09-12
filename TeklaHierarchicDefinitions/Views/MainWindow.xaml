@@ -913,7 +913,7 @@
                             </DataGrid.Columns>
 
                         </DataGrid>
-                        <Button Content="{tsd:Loc albl_CreateCSV}"
+                        <Button Content="{tsd:Loc albl_CreateCSV}" Margin="10"
                                 Command="{Binding CreateCsv}"/>
                     </StackPanel>
                 </Grid>

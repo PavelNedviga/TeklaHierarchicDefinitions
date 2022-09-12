@@ -1166,6 +1166,175 @@ string_utf8 albl_UnselectAll
     entry = ("rus", "Сброс выделения");
 };
 
+
+string_utf8 albl_AlbumDefinition
+{
+    entry = ("enu", "Album");
+    entry = ("chs", "Album");
+    entry = ("cht", "Album");
+    entry = ("csy", "Album");
+    entry = ("deu", "Album");
+    entry = ("esp", "Album");
+    entry = ("fra", "Album");
+    entry = ("hun", "Album");
+    entry = ("ita", "Album");
+    entry = ("jpn", "Album");
+    entry = ("kor", "Album");
+    entry = ("nld", "Album");
+    entry = ("plk", "Album");
+    entry = ("ptb", "Album");
+    entry = ("ptg", "Album");
+    entry = ("rus", "Комплект");
+};
+
+
+string_utf8 albl_Property
+{
+    entry = ("enu", "Property");
+    entry = ("chs", "Property");
+    entry = ("cht", "Property");
+    entry = ("csy", "Property");
+    entry = ("deu", "Property");
+    entry = ("esp", "Property");
+    entry = ("fra", "Property");
+    entry = ("hun", "Property");
+    entry = ("ita", "Property");
+    entry = ("jpn", "Property");
+    entry = ("kor", "Property");
+    entry = ("nld", "Property");
+    entry = ("plk", "Property");
+    entry = ("ptb", "Property");
+    entry = ("ptg", "Property");
+    entry = ("rus", "Свойство");
+};
+
+string_utf8 albl_Value
+{
+    entry = ("enu", "Value");
+    entry = ("chs", "Value");
+    entry = ("cht", "Value");
+    entry = ("csy", "Value");
+    entry = ("deu", "Value");
+    entry = ("esp", "Value");
+    entry = ("fra", "Value");
+    entry = ("hun", "Value");
+    entry = ("ita", "Value");
+    entry = ("jpn", "Value");
+    entry = ("kor", "Value");
+    entry = ("nld", "Value");
+    entry = ("plk", "Value");
+    entry = ("ptb", "Value");
+    entry = ("ptg", "Value");
+    entry = ("rus", "Значение");
+};
+
+
+string_utf8 albl_Number
+{
+    entry = ("enu", "Pos.");
+    entry = ("chs", "Pos.");
+    entry = ("cht", "Pos.");
+    entry = ("csy", "Pos.");
+    entry = ("deu", "Pos.");
+    entry = ("esp", "Pos.");
+    entry = ("fra", "Pos.");
+    entry = ("hun", "Pos.");
+    entry = ("ita", "Pos.");
+    entry = ("jpn", "Pos.");
+    entry = ("kor", "Pos.");
+    entry = ("nld", "Pos.");
+    entry = ("plk", "Pos.");
+    entry = ("ptb", "Pos.");
+    entry = ("ptg", "Pos.");
+    entry = ("rus", "Номер");
+};
+
+
+string_utf8 albl_PersonPosition
+{
+    entry = ("enu", "Position");
+    entry = ("chs", "Position");
+    entry = ("cht", "Position");
+    entry = ("csy", "Position");
+    entry = ("deu", "Position");
+    entry = ("esp", "Position");
+    entry = ("fra", "Position");
+    entry = ("hun", "Position");
+    entry = ("ita", "Position");
+    entry = ("jpn", "Position");
+    entry = ("kor", "Position");
+    entry = ("nld", "Position");
+    entry = ("plk", "Position");
+    entry = ("ptb", "Position");
+    entry = ("ptg", "Position");
+    entry = ("rus", "Должность");
+};
+
+
+string_utf8 albl_Surname
+{
+    entry = ("enu", "Surname");
+    entry = ("chs", "Surname");
+    entry = ("cht", "Surname");
+    entry = ("csy", "Surname");
+    entry = ("deu", "Surname");
+    entry = ("esp", "Surname");
+    entry = ("fra", "Surname");
+    entry = ("hun", "Surname");
+    entry = ("ita", "Surname");
+    entry = ("jpn", "Surname");
+    entry = ("kor", "Surname");
+    entry = ("nld", "Surname");
+    entry = ("plk", "Surname");
+    entry = ("ptb", "Surname");
+    entry = ("ptg", "Surname");
+    entry = ("rus", "Фамилия");
+};
+
+
+string_utf8 albl_UpdDrawingList
+{
+    entry = ("enu", "Update drawing list");
+    entry = ("chs", "Update drawing list");
+    entry = ("cht", "Update drawing list");
+    entry = ("csy", "Update drawing list");
+    entry = ("deu", "Update drawing list");
+    entry = ("esp", "Update drawing list");
+    entry = ("fra", "Update drawing list");
+    entry = ("hun", "Update drawing list");
+    entry = ("ita", "Update drawing list");
+    entry = ("jpn", "Update drawing list");
+    entry = ("kor", "Update drawing list");
+    entry = ("nld", "Update drawing list");
+    entry = ("plk", "Update drawing list");
+    entry = ("ptb", "Update drawing list");
+    entry = ("ptg", "Update drawing list");
+    entry = ("rus", "Обновить сп.черт.");
+};
+
+
+string_utf8 albl_CreateCSV
+{
+    entry = ("enu", "Create MDR");
+    entry = ("chs", "Create MDR");
+    entry = ("cht", "Create MDR");
+    entry = ("csy", "Create MDR");
+    entry = ("deu", "Create MDR");
+    entry = ("esp", "Create MDR");
+    entry = ("fra", "Create MDR");
+    entry = ("hun", "Create MDR");
+    entry = ("ita", "Create MDR");
+    entry = ("jpn", "Create MDR");
+    entry = ("kor", "Create MDR");
+    entry = ("nld", "Create MDR");
+    entry = ("plk", "Create MDR");
+    entry = ("ptb", "Create MDR");
+    entry = ("ptg", "Create MDR");
+    entry = ("rus", "Создать MDR");
+};
+
+
+
 string_utf8 albl_
 {
     entry = ("enu", "Temp");

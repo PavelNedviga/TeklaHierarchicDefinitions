@@ -257,11 +257,28 @@ namespace TeklaHierarchicDefinitions.ViewModels
             buildingFragments = BuildingFragmentUtils.GetBuildingFragmentsWithHierarchicDefinitionFatherName(TeklaDB.hierarchicDefinitionFoundationListName);
             SelectedSBOMMaterial = selectedSBOMMaterial;
             AddDrawingInformationToDrawingListTreeView();
+            var path = Path.Combine(TeklaDB.model.GetInfo().ModelPath, "#ClassConversion.csv");
+            if (!File.Exists(path))
+            {
+                var sourcePath = Path.Combine(AssemblyDirectory, "#ClassConversion.csv");
+                File.Copy(sourcePath, path, false);
+            }
             //RegisterEventHandler();
         }
         #endregion
 
         #region Методы
+        public string AssemblyDirectory
+        {
+            get
+            {
+                string codeBase = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
+                UriBuilder uri = new UriBuilder(codeBase);
+                string path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
+            }
+        }
+
         private void InstantUpbateForBOECollection(bool instantUpdateFlag)
         {
             foreach (var boe in _billOfElements)

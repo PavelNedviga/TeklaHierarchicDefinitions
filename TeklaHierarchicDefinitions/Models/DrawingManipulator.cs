@@ -48,7 +48,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_objekt_stroit_1", ref s);
                 return s;
             }
@@ -65,7 +65,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_objekt_stroit_2", ref s);
                 return s;
             }
@@ -82,7 +82,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_objekt_stroit_3", ref s);
                 return s;
             }
@@ -99,7 +99,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_objekt_stroit_4", ref s);
                 return s;
             }
@@ -116,7 +116,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_naimen_stroit_1", ref s);
                 return s;
             }
@@ -133,7 +133,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_naimen_stroit_2", ref s);
                 return s;
             }
@@ -150,7 +150,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_naimen_stroit_3", ref s);
                 return s;
             }
@@ -167,7 +167,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_naimen_stroit_4", ref s);
                 return s;
             }
@@ -184,7 +184,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_naimen_stroit_5", ref s);
                 return s;
             }
@@ -201,7 +201,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("lists", ref s);
                 return s;
             }
@@ -218,7 +218,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_stadiya", ref s);
                 return s;
             }
@@ -233,7 +233,13 @@ namespace TeklaHierarchicDefinitions.Models
         [Name("Лист")]
         public string List
         {
-            get => Drawing.Name;
+            get 
+            {
+                if (Drawing.Name.Length == 0)
+                    return " ";
+                else
+                    return Drawing.Name;
+            }
             set
             {
                 Drawing.Name = value;
@@ -248,7 +254,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var album = string.Empty;
+                var album = " ";
                 Drawing.GetUserProperty("ru_marka_komp_chert", ref album);
                 return album;
             }
@@ -312,7 +318,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_6_dop", ref s);
                 return s;
             }
@@ -329,7 +335,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_6_fam_dop", ref s);
                 return s;
             }
@@ -346,7 +352,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_7_dop", ref s);
                 return s;
             }
@@ -363,7 +369,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_7_fam_dop", ref s);
                 return s;
             }
@@ -380,7 +386,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_8_dop", ref s);
                 return s;
             }
@@ -397,7 +403,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_8_fam_dop", ref s);
                 return s;
             }
@@ -414,7 +420,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_9_dop", ref s);
                 return s;
             }
@@ -431,7 +437,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_9_fam_dop", ref s);
                 return s;
             }
@@ -448,7 +454,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_10_dop", ref s);
                 return s;
             }
@@ -465,7 +471,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_10_fam_dop", ref s);
                 return s;
             }
@@ -482,7 +488,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_11_dop", ref s);
                 return s;
             }
@@ -499,7 +505,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var s = string.Empty;
+                var s = " ";
                 Drawing.GetUserProperty("ru_11_fam_dop", ref s);
                 return s;
             }
@@ -808,17 +814,26 @@ namespace TeklaHierarchicDefinitions.Models
                 var project = TeklaDB.model.GetInfo();
                 var tt = Path.Combine(project.ModelPath, "#"+Path.GetFileNameWithoutExtension(project.ModelName));
                 var path = $"{tt}.csv";
-                using (var writer = new StreamWriter(path,false, Encoding.UTF8))
+                using (var writer = new StreamWriter(path,false, Encoding.GetEncoding(1251)))
                 {
-                    var config = new CsvConfiguration(CultureInfo.CurrentCulture) { Delimiter = ";", Encoding = Encoding.UTF8 };
-                using (var csv = new CsvWriter(writer, config) )
-                {
-                    csv.Context.RegisterClassMap<DrawingManipulatorMap>();
-                    
-                    csv.WriteRecords(drawings);
-                }
+                    var config = new CsvConfiguration(CultureInfo.CurrentCulture) 
+                    { 
+                        ShouldQuote = args => false, 
+                        Delimiter = ";", 
+                        Encoding = Encoding.GetEncoding(1251)
+                };
+                    using (var csv = new CsvWriter(writer, config) )
+                    {
+                        csv.Context.RegisterClassMap<DrawingManipulatorMap>();
+
+                        csv.WriteRecords(drawings);
+                    }
 
                 }
+                //if (File.Exists(path))
+                //{                    
+                //    File.WriteAllText(path, File.ReadAllText(path), Encoding.GetEncoding(1251));
+                //}
                 return true;
             }
             catch (Exception ex)
