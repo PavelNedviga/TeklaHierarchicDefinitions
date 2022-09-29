@@ -517,6 +517,51 @@ namespace TeklaHierarchicDefinitions.Models
             }
         }
 
+        [Name("Дата утверждения чертежа")]
+        public string DrawingDate        
+        {
+            get
+            {
+                var s = " ";
+                Drawing.GetUserProperty("DR_APPROVAL_DATE", ref s);
+                return s;
+            }
+            set
+            {
+                Drawing.SetUserProperty("DR_APPROVAL_DATE", value);
+                Drawing.CommitChanges();
+                OnPropertyChanged();
+            }
+        }
+
+        public void BorrowProperties(DrawingManipulator otherDrawingManipulator)
+        {
+            this.Album = otherDrawingManipulator.Album;
+            this.ConstructionObject1 = otherDrawingManipulator.ConstructionObject1;
+            this.ConstructionObject2 = otherDrawingManipulator.ConstructionObject2;
+            this.ConstructionObject3 = otherDrawingManipulator.ConstructionObject3;
+            this.ConstructionObject4 = otherDrawingManipulator.ConstructionObject4;
+            this.ObjectName1 = otherDrawingManipulator.ObjectName1;
+            this.ObjectName2 = otherDrawingManipulator.ObjectName2;
+            this.ObjectName3 = otherDrawingManipulator.ObjectName3;
+            this.ObjectName4 = otherDrawingManipulator.ObjectName4;
+            this.ObjectName5 = otherDrawingManipulator.ObjectName5;
+            this.Stage = otherDrawingManipulator.Stage;
+            this.ru_11 = otherDrawingManipulator.ru_11;
+            this.ru_11_fam = otherDrawingManipulator.ru_11_fam;
+            this.ru_10 = otherDrawingManipulator.ru_10;
+            this.ru_10_fam = otherDrawingManipulator.ru_10_fam;
+            this.ru_9 = otherDrawingManipulator.ru_9;
+            this.ru_9_fam = otherDrawingManipulator.ru_9_fam;
+            this.ru_8 = otherDrawingManipulator.ru_8;
+            this.ru_8_fam = otherDrawingManipulator.ru_8_fam;
+            this.ru_7 = otherDrawingManipulator.ru_7;
+            this.ru_7_fam = otherDrawingManipulator.ru_7_fam;
+            this.ru_6 = otherDrawingManipulator.ru_6;
+            this.ru_6_fam = otherDrawingManipulator.ru_6_fam;
+
+        }
+
         #region Обработка изменения свойств
         /// <summary>
         /// Отслеживает изменения свойств
@@ -547,6 +592,8 @@ namespace TeklaHierarchicDefinitions.Models
 
         public static List<DrawingManipulator> DrawingManipulators { get; set; } = new List<DrawingManipulator>();
 
+        public static List<DrawingManipulator> BorrowedListFromCsv { get; set; } = new List<DrawingManipulator>();
+
         public static List<ModelManipulator> ModelManipulators
         {
             get
@@ -557,9 +604,76 @@ namespace TeklaHierarchicDefinitions.Models
             }
         }
 
-        public static string album { get; set; }
+        public static PropertyFillers DrawingsAlbum
+        { get
+            {
+                var objectList = DrawingGroup.DrawingManipulators.Cast<object>().ToList();
+                return new PropertyFillers() { InternalPropertyName = "Album", PropertyName = "Комплект", ReferencedObjectList = objectList };
+            }
+        }
 
-        public static ObservableCollection<PropertyFillers> PropertyFillersList
+        public static PropertyFillers AlbumPhase
+        {
+            get
+            {
+                var objectList = DrawingGroup.DrawingManipulators.Cast<object>().ToList();
+                if (Filler == PropertyRooting.Model)
+                {
+                    return new PropertyFillers() { InternalPropertyName = "Stage", PropertyName = "Стадия комплекта", ReferencedObjectList = objectList };
+                }
+                else if (Filler == PropertyRooting.Album)
+                {
+                    return new PropertyFillers() { InternalPropertyName = "Stage", PropertyName = "Стадия комплекта", ReferencedObjectList = objectList };
+                }
+                else
+                {
+                    return new PropertyFillers() { InternalPropertyName = "Stage", PropertyName = "Стадия чертежа", ReferencedObjectList = objectList };
+                }
+            }
+        }
+
+        
+        public static PropertyFillers ListNumber
+        {
+            get
+            {
+                var objectList = DrawingGroup.DrawingManipulators.Cast<object>().ToList();
+                if (Filler == PropertyRooting.Model)
+                {
+                    return new PropertyFillers() { InternalPropertyName = "List", PropertyName = "Лист", ReferencedObjectList = objectList };
+                }
+                else if (Filler == PropertyRooting.Album)
+                {
+                    return new PropertyFillers() { InternalPropertyName = "List", PropertyName = "Лист", ReferencedObjectList = objectList };
+                }
+                else
+                {
+                    return new PropertyFillers() { InternalPropertyName = "List", PropertyName = "Лист", ReferencedObjectList = objectList };
+                }
+            }
+        }
+                
+        public static PropertyFillers ListsInAlbumTotal
+        {
+            get
+            {
+                var objectList = DrawingGroup.DrawingManipulators.Cast<object>().ToList();
+                if (Filler == PropertyRooting.Model)
+                {
+                    return new PropertyFillers() { InternalPropertyName = "Lists", PropertyName = "Листов", ReferencedObjectList = objectList };
+                }
+                else if (Filler == PropertyRooting.Album)
+                {
+                    return new PropertyFillers() { InternalPropertyName = "Lists", PropertyName = "Листов", ReferencedObjectList = objectList };
+                }
+                else
+                {
+                    return new PropertyFillers() { InternalPropertyName = "Lists", PropertyName = "Листов", ReferencedObjectList = objectList };
+                }
+            }
+        }
+
+        public static ObservableCollection<PropertyFillers> ObjectPropertyFillersList
         {
             get
             {
@@ -567,25 +681,42 @@ namespace TeklaHierarchicDefinitions.Models
                 var objectList = DrawingGroup.DrawingManipulators.Cast<object>().ToList();
                 if (objectList.Count > 0)
                 {
-                    res.Add(new PropertyFillers() { InternalPropertyName = "Album", PropertyName = "Комплект", ReferencedObjectList = objectList });
-                    if (Filler == PropertyRooting.Model)
-                    {
-                        res.Add(new PropertyFillers() { InternalPropertyName = "Stage", PropertyName = "Стадия комплекта", ReferencedObjectList = objectList });
-                    }
-                    else if(Filler == PropertyRooting.Album)
-                    {
-                        res.Add(new PropertyFillers() { InternalPropertyName = "Stage", PropertyName = "Стадия комплекта", ReferencedObjectList = objectList });
-                    }
-                    else 
-                    {
-                        res.Add(new PropertyFillers() { InternalPropertyName = "Stage", PropertyName = "Стадия чертежа", ReferencedObjectList = objectList });
-                    }
-                    res.Add(new PropertyFillers() { InternalPropertyName = "Lists", PropertyName = "Листов", ReferencedObjectList = objectList });
-                    res.Add(new PropertyFillers() { InternalPropertyName = "ObjectName1", PropertyName = "Имя объекта: 1" , ReferencedObjectList = objectList });
+                    //res.Add(new PropertyFillers() { InternalPropertyName = "Album", PropertyName = "Комплект", ReferencedObjectList = objectList });
+                    //if (Filler == PropertyRooting.Model)
+                    //{
+                    //    res.Add(new PropertyFillers() { InternalPropertyName = "Stage", PropertyName = "Стадия комплекта", ReferencedObjectList = objectList });
+                    //}
+                    //else if (Filler == PropertyRooting.Album)
+                    //{
+                    //    res.Add(new PropertyFillers() { InternalPropertyName = "Stage", PropertyName = "Стадия комплекта", ReferencedObjectList = objectList });
+                    //}
+                    //else
+                    //{
+                    //    res.Add(new PropertyFillers() { InternalPropertyName = "Stage", PropertyName = "Стадия чертежа", ReferencedObjectList = objectList });
+                    //}
+                    //res.Add(new PropertyFillers() { InternalPropertyName = "Lists", PropertyName = "Листов", ReferencedObjectList = objectList });
+                    res.Add(new PropertyFillers() { InternalPropertyName = "ObjectName1", PropertyName = "Имя объекта: 1", ReferencedObjectList = objectList });
                     res.Add(new PropertyFillers() { InternalPropertyName = "ObjectName2", PropertyName = "Имя объекта: 2", ReferencedObjectList = objectList });
                     res.Add(new PropertyFillers() { InternalPropertyName = "ObjectName3", PropertyName = "Имя объекта: 3", ReferencedObjectList = objectList });
                     res.Add(new PropertyFillers() { InternalPropertyName = "ObjectName4", PropertyName = "Имя объекта: 4", ReferencedObjectList = objectList });
                     res.Add(new PropertyFillers() { InternalPropertyName = "ObjectName5", PropertyName = "Имя объекта: 5", ReferencedObjectList = objectList });
+                    //res.Add(new PropertyFillers() { InternalPropertyName = "ConstructionObject1", PropertyName = "Объект строительства: 1", ReferencedObjectList = objectList });
+                    //res.Add(new PropertyFillers() { InternalPropertyName = "ConstructionObject2", PropertyName = "Объект строительства: 2", ReferencedObjectList = objectList });
+                    //res.Add(new PropertyFillers() { InternalPropertyName = "ConstructionObject3", PropertyName = "Объект строительства: 3", ReferencedObjectList = objectList });
+                    //res.Add(new PropertyFillers() { InternalPropertyName = "ConstructionObject4", PropertyName = "Объект строительства: 4", ReferencedObjectList = objectList });
+                }
+                return res;
+            }
+        }
+
+        public static ObservableCollection<PropertyFillers> ConstructionObjectPropertyFillersList
+        {
+            get
+            {
+                var res = new ObservableCollection<PropertyFillers>();
+                var objectList = DrawingGroup.DrawingManipulators.Cast<object>().ToList();
+                if (objectList.Count > 0)
+                {
                     res.Add(new PropertyFillers() { InternalPropertyName = "ConstructionObject1", PropertyName = "Объект строительства: 1", ReferencedObjectList = objectList });
                     res.Add(new PropertyFillers() { InternalPropertyName = "ConstructionObject2", PropertyName = "Объект строительства: 2", ReferencedObjectList = objectList });
                     res.Add(new PropertyFillers() { InternalPropertyName = "ConstructionObject3", PropertyName = "Объект строительства: 3", ReferencedObjectList = objectList });
@@ -595,19 +726,55 @@ namespace TeklaHierarchicDefinitions.Models
             }
         }
 
+        
+        public static ObservableCollection<PropertyFillers> TitleFillerList
+        {
+            get
+            {
+                var res = new ObservableCollection<PropertyFillers>();
+                var objectList = DrawingGroup.DrawingManipulators.Cast<object>().ToList();
+
+                if (objectList.Count == 1)
+                {
+                    res.Add(new PropertyFillers() { InternalPropertyName = "Title1", PropertyName = "Заголовок 1", ReferencedObjectList = objectList });
+                    res.Add(new PropertyFillers() { InternalPropertyName = "Title2", PropertyName = "Заголовок 2", ReferencedObjectList = objectList });
+                    res.Add(new PropertyFillers() { InternalPropertyName = "Title3", PropertyName = "Заголовок 3", ReferencedObjectList = objectList });
+                }
+                return res;
+            }
+        }
+
+        public static PropertyFillers ModelCode
+        {
+            get  
+            {
+                var objectList = DrawingGroup.ModelManipulators.Cast<object>().ToList();
+                return new PropertyFillers() { InternalPropertyName = "ProjectCode", PropertyName = "Код проекта", ReferencedObjectList = objectList };
+            }
+        }
+
+        public static PropertyFillers DrawingsDates
+        {
+            get
+            {
+                var objectList = DrawingGroup.DrawingManipulators.Cast<object>().ToList();
+                return new PropertyFillers() { InternalPropertyName = "DrawingDate", PropertyName = "Дата утверждения", ReferencedObjectList = objectList };
+            }
+        }
+
         public static ObservableCollection<PropertyFillers> ModelPropertyFillersList
         {
             get
             {
                 var res = new ObservableCollection<PropertyFillers>();
                 var objectList = DrawingGroup.ModelManipulators.Cast<object>().ToList();
-                res.Add(new PropertyFillers() { InternalPropertyName = "ProjectCode", PropertyName = "Код проекта", ReferencedObjectList = objectList });
+                //res.Add(new PropertyFillers() { InternalPropertyName = "ProjectCode", PropertyName = "Код проекта", ReferencedObjectList = objectList });
                 res.Add(new PropertyFillers() { InternalPropertyName = "Description", PropertyName = "Описание", ReferencedObjectList = objectList });
                 res.Add(new PropertyFillers() { InternalPropertyName = "Object", PropertyName = "Объект", ReferencedObjectList = objectList });
                 res.Add(new PropertyFillers() { InternalPropertyName = "Designer", PropertyName = "Компания-разработчик", ReferencedObjectList = objectList });
-                res.Add(new PropertyFillers() { InternalPropertyName = "DesignerCompany1", PropertyName = "Компания строка 1", ReferencedObjectList = objectList });
-                res.Add(new PropertyFillers() { InternalPropertyName = "DesignerCompany2", PropertyName = "Компания строка 2", ReferencedObjectList = objectList });
-                res.Add(new PropertyFillers() { InternalPropertyName = "DesignerCompany3", PropertyName = "Компания строка 3", ReferencedObjectList = objectList });
+                //res.Add(new PropertyFillers() { InternalPropertyName = "DesignerCompany1", PropertyName = "Компания строка 1", ReferencedObjectList = objectList });
+                //res.Add(new PropertyFillers() { InternalPropertyName = "DesignerCompany2", PropertyName = "Компания строка 2", ReferencedObjectList = objectList });
+                //res.Add(new PropertyFillers() { InternalPropertyName = "DesignerCompany3", PropertyName = "Компания строка 3", ReferencedObjectList = objectList });
                 
                 return res;
             }
@@ -853,6 +1020,21 @@ namespace TeklaHierarchicDefinitions.Models
             }
         }
 
+        public static ObservableCollection<PropertyFillers> CompanyNamePropertyFillers 
+        {
+            get
+            {
+                var res = new ObservableCollection<PropertyFillers>();
+                var objectList = DrawingGroup.ModelManipulators.Cast<object>().ToList();
+                res.Add(new PropertyFillers() { InternalPropertyName = "DesignerCompany1", PropertyName = "Компания строка 1", ReferencedObjectList = objectList });
+                res.Add(new PropertyFillers() { InternalPropertyName = "DesignerCompany2", PropertyName = "Компания строка 2", ReferencedObjectList = objectList });
+                res.Add(new PropertyFillers() { InternalPropertyName = "DesignerCompany3", PropertyName = "Компания строка 3", ReferencedObjectList = objectList });
+
+                return res;
+                
+            }
+        }
+
         #region Обработка изменения свойств
         /// <summary>
         /// Отслеживает изменения свойств
@@ -865,6 +1047,11 @@ namespace TeklaHierarchicDefinitions.Models
             GlobalPropertyChanged(
                 typeof(DrawingGroup),
                 new PropertyChangedEventArgs(propertyName));
+        }
+
+        internal static void LoadCsv(string path)
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }
@@ -1222,17 +1409,22 @@ namespace TeklaHierarchicDefinitions.Models
             get
             {
                 object obj = ReferencedObjectList.FirstOrDefault();
-                PropertyInfo prop = obj.GetType().GetProperty(InternalPropertyName, BindingFlags.Public | BindingFlags.Instance);
-                if (null != prop && prop.CanRead)
+                if (null != obj)
                 {
-                    var sv = ReferencedObjectList.Select(x => prop.GetValue(x).ToString()).Distinct().Where(t=>t.Length > 0).ToList();
-                    if (sv.Count > 1)
-                        return $"[{string.Join("; ", sv)}]";
-                    else
-                        return sv.FirstOrDefault();
+                    PropertyInfo prop = obj.GetType().GetProperty(InternalPropertyName, BindingFlags.Public | BindingFlags.Instance);
+                    if (null != prop && prop.CanRead)
+                    {
+                        var sv = ReferencedObjectList.Select(x => prop.GetValue(x).ToString())
+                            .Distinct()
+                            //.Where(t => t.Length > 0)
+                            .ToList();
+                        if (sv.Count > 1)
+                            return $"[{string.Join("; ", sv)}]";
+                        else
+                            return sv.FirstOrDefault();
+                    }
                 }
-                else
-                    return null;
+                return null;
             }
             set
             {

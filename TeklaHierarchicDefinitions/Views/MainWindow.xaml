@@ -14,7 +14,7 @@
                             xmlns:vm="clr-namespace:TeklaHierarchicDefinitions.ViewModels" 
                             mc:Ignorable="d"
                             Title="{tsd:Loc albl_WindowName}"
-                            Height="650" Width="1250" MinWidth="1080" MinHeight="680" Topmost="True">
+                            Height="650" Width="1250" MinWidth="1320" MinHeight="680" Topmost="True">
     <Window.Resources>
         <Convertors:LevelToIndentConverter x:Key="LevelToIndentConverter"/>
     </Window.Resources>
@@ -830,60 +830,186 @@
                 </Grid>
             </TabItem>
             <TabItem x:Name="Album" Header="{tsd:Loc albl_AlbumDefinition}">
-                <Grid Background="LightBlue">
+                <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="10"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="320"/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <GridSplitter Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" 
+                    <!--<GridSplitter Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" 
                                   Grid.RowSpan="1" VerticalAlignment="Stretch" 
-                                  ResizeBehavior="PreviousAndNext" ResizeDirection="Rows"/>
+                                  ResizeBehavior="PreviousAndNext" ResizeDirection="Rows"/>-->
+
 
                     <DataGrid Margin="10" d:ItemsSource="{d:SampleData ItemCount=5}" CanUserAddRows="False" CanUserDeleteRows="False"
                               ItemsSource="{Binding VisibleDrawingManipulators, Mode=OneWay, UpdateSourceTrigger=Default}" 
                               SelectedItem="{Binding SelectedDrawingManipulator, Mode=TwoWay, UpdateSourceTrigger=Default}"
                               Grid.Column="1" Grid.RowSpan="1" Grid.Row="2"
-                              mah:MultiSelectorHelper.SelectedItems="{Binding SelectedDrawingManipulators, Mode=OneWayToSource, UpdateSourceTrigger=Default}" SelectionChanged="DataGrid_SelectionChanged"
-                              >
-                        <DataGrid.Resources>
+                               
+                              SelectionChanged="DataGrid_SelectionChanged">
+                        <!--<DataGrid.Resources>
+                        mah:MultiSelectorHelper.SelectedItems="{Binding SelectedDrawingManipulators, Mode=OneWayToSource, UpdateSourceTrigger=Default}"
                             <Style TargetType="DataGridRow">
                                 <Setter Property="IsSelected"
                                         Value="{Binding IsSelected}" />
                             </Style>
-                        </DataGrid.Resources>
+                        </DataGrid.Resources>-->
 
 
                     </DataGrid>
-                    <StackPanel Grid.Column="1" Grid.RowSpan="1" Grid.Row="0" Orientation="Horizontal">
-                        <DataGrid Name="drawingProps" Margin="10" HorizontalAlignment="Stretch" d:ItemsSource="{d:SampleData ItemCount=5}"
-                                  ItemsSource="{Binding PropertyFillersList, Mode=OneWay, UpdateSourceTrigger=Default}"
-                                  CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="{tsd:Loc albl_Property}" Binding="{Binding PropertyName, Mode =TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                <DataGridTextColumn Header="{tsd:Loc albl_Value}" Binding="{Binding PropertyValue, Mode =TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataGrid.Columns>
-                            <DataGrid.InputBindings>
-                                <KeyBinding Command="{Binding UpdateAlbumList}" 
-                                            
-                                            Key="Enter" />
-                            </DataGrid.InputBindings>
-                        </DataGrid>
-                        <DataGrid Margin="10" HorizontalAlignment="Stretch" 
-                                  d:ItemsSource="{d:SampleData ItemCount=5}"
-                                  ItemsSource="{Binding AlbumDesigners, Mode=OneWay, UpdateSourceTrigger=Default}"
-                                  CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="{tsd:Loc albl_Number}" Binding="{Binding PropertyName, Mode =OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                <DataGridTextColumn Header="{tsd:Loc albl_PersonPosition}" Binding="{Binding PropertyValue, Mode =TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                <DataGridTextColumn Header="{tsd:Loc albl_Surname}" Binding="{Binding PropertyValue2, Mode =TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                        
+                    <StackPanel Grid.Column="1" 
+                                Grid.RowSpan="1" 
+                                Grid.Row="0" Orientation="Horizontal">
+                        <Grid Height="290" Width="990" Margin="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="13*"/>
+                                <ColumnDefinition Width="14*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="4*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="3*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Margin="5"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"/>
+                            <Image x:Name="image1" Margin="-5"
+                                   Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" Grid.ColumnSpan="5"
+                                   
+                                   Source="/Resources/rus_Forma_F3_drawing.bmp"/>
+                            <StackPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" Orientation="Horizontal"
+                                        HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBox Text="{Binding ModelCode.PropertyValue, Mode=Default, UpdateSourceTrigger=Default}"/>
+                                <Label Content="-"/>
+                                <TextBox Text="{Binding DrawingsAlbum.PropertyValue, Mode=TwoWay, UpdateSourceTrigger=Default}"/>
+                            </StackPanel>
+                            <DataGrid x:Name="drawingProps"
+                                      Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4"
+                                      Margin="10,2"  HeadersVisibility="None"
+                                      HorizontalAlignment="Stretch" d:ItemsSource="{d:SampleData ItemCount=5}"
+                                      ItemsSource="{Binding ObjectPropertyFillersList, Mode=OneWay, UpdateSourceTrigger=Default}"
+                                      TextBlock.TextAlignment="Center"
+                                      CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
+                                <DataGrid.Columns>
+                                    <!--<DataGridTextColumn Header="{tsd:Loc albl_Property}" Binding="{Binding PropertyName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
+                                    <DataGridTextColumn  Header="{tsd:Loc albl_Value}" 
+                                                         Binding="{Binding PropertyValue, Mode=TwoWay,
+                                        UpdateSourceTrigger=PropertyChanged}"
+                                                         Width="600"/>
+                                </DataGrid.Columns>
+                                <DataGrid.InputBindings>
+                                    <KeyBinding Command="{Binding UpdateAlbumList}"                                             
+                                                Key="Enter" />
+                                </DataGrid.InputBindings>
+                            </DataGrid>
+
+                            <DataGrid x:Name="drawingObjectProps"  
+                                      Grid.Row="2" Grid.Column="1" Margin="10,2"  HeadersVisibility="None"
+                                      HorizontalAlignment="Stretch" d:ItemsSource="{d:SampleData ItemCount=4}"
+                                      ItemsSource="{Binding ConstructionObjectPropertyFillersList, Mode=OneWay, UpdateSourceTrigger=Default}"
+                                      TextBlock.TextAlignment="Center"
+                                      HorizontalScrollBarVisibility="Disabled"
+                                      CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" >
+                                <!--<DataGrid.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Style.Setters>
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        </Style.Setters>
+                                    </Style>
+                                </DataGrid.CellStyle>-->
+                                <!--<DataGrid.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Background" Value="Green"/>
+                                                <Setter Property="Foreground" Value="Yellow"/>
+                                                <Setter Property="BorderBrush" Value="Aqua"/>
+                                            </Trigger>
+                                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                                <Setter Property="BorderBrush" Value="Red" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.CellStyle>-->
+                                <DataGrid.Columns>
+                                    <!--<DataGridTextColumn Header="{tsd:Loc albl_Property}" Binding="{Binding PropertyName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
+                                    <DataGridTextColumn  Header="{tsd:Loc albl_Value}" 
+                                                         Binding="{Binding PropertyValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         Width="340" CanUserResize="True" CanUserReorder="False"/>
+                                </DataGrid.Columns>
+                                <DataGrid.InputBindings>
+                                    <KeyBinding Command="{Binding UpdateAlbumList}"                                             
+                                                Key="Enter" />
+                                </DataGrid.InputBindings>
+                            </DataGrid>
+                            <DataGrid Height="150" HorizontalAlignment="Left" Grid.Row="2" Grid.RowSpan="2"
+                                      ScrollViewer.VerticalScrollBarVisibility ="Hidden"
+                                      VerticalAlignment="Center" Width="210"
+                                      d:ItemsSource="{d:SampleData ItemCount=6}" HeadersVisibility="None"
+                                      ItemsSource="{Binding AlbumDesigners, Mode=OneWay, UpdateSourceTrigger=Default}"
+                                      CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
+                                <DataGrid.Columns>
+
+                                    <DataGridTextColumn Width="100"  Header="{tsd:Loc albl_PersonPosition}" Binding="{Binding PropertyValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <DataGridTextColumn Width="95"  Header="{tsd:Loc albl_Surname}" Binding="{Binding PropertyValue2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <StackPanel Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right">
+                                <!--<TextBox Margin="5" HorizontalContentAlignment="Right" Width="50"
+                                         Text="{Binding AlbumPhase.PropertyValue, Mode=TwoWay, UpdateSourceTrigger=Default}" 
+                                         />
+                                <DatePicker 
+                                    Text="{Binding DrawingsDates.PropertyValue, Mode=TwoWay, UpdateSourceTrigger=Default}"
+                                    IsTodayHighlighted="True" FirstDayOfWeek="Monday" SelectedDateFormat="Short"/>-->
+                            </StackPanel>
+                            <DataGrid Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="3" Margin="3"
+                                      d:ItemsSource="{d:SampleData ItemCount=3}" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False"
+                                      ItemsSource="{Binding CompanyNamePropertyFillers, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                      VerticalAlignment="Center" HeadersVisibility="None" 
+                                      TextBlock.TextAlignment="Center" ScrollViewer.VerticalScrollBarVisibility ="Hidden"
+                                      RowHeight="9">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Width="260" Binding="{Binding PropertyValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <StackPanel Grid.Column="2" Grid.Row="2">
+                                <TextBox Margin="10,40" HorizontalContentAlignment="Center"
+                                         Text="{Binding AlbumPhase.PropertyValue, Mode=TwoWay, UpdateSourceTrigger=Default}" 
+                                         />
+                            </StackPanel>
+                            <StackPanel  Grid.Column="3" Grid.Row="2">
+                                <TextBox Margin="10,40" HorizontalContentAlignment="Center"
+                                         Text="{Binding ListNumber.PropertyValue, Mode=TwoWay, UpdateSourceTrigger=Default}" />
+                            </StackPanel>
+                            <StackPanel  Grid.Column="4" Grid.Row="2">
+                                <TextBox Margin="10,40" HorizontalContentAlignment="Center"
+                                         Text="{Binding ListsInAlbumTotal.PropertyValue, Mode=TwoWay, UpdateSourceTrigger=Default}"/>
+                            </StackPanel>
+
+                            <DataGrid Grid.Row="3" Grid.Column="1" Margin="10,2"  HeadersVisibility="None"
+                                      HorizontalAlignment="Stretch" d:ItemsSource="{d:SampleData ItemCount=3}"
+                                      HorizontalScrollBarVisibility="Disabled"
+                                      VerticalScrollBarVisibility="Disabled"
+                                      ItemsSource="{Binding TitleFillerList, Mode=OneWay, UpdateSourceTrigger=Default}"
+                                      TextBlock.TextAlignment="Center"
+                                      CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" >
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn  Header="{tsd:Loc albl_Value}" 
+                                                         Binding="{Binding PropertyValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         Width="340" CanUserResize="False" CanUserReorder="False"/>
+                                </DataGrid.Columns>
+                                <DataGrid.InputBindings>
+                                    <KeyBinding Command="{Binding UpdateAlbumList}"                                             
+                                                Key="Enter" />
+                                </DataGrid.InputBindings>
+                            </DataGrid>
+                        </Grid>
                     </StackPanel>
                     <StackPanel Grid.Column="0" Grid.RowSpan="3">
                         <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Grid.RowSpan="1"
@@ -909,13 +1035,32 @@
                                   CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="{tsd:Loc albl_Property}" Binding="{Binding PropertyName, Mode =OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                <DataGridTextColumn Header="{tsd:Loc albl_Value}" Binding="{Binding PropertyValue, Mode =TwoWay, UpdateSourceTrigger=PropertyChanged}"/>                                
+                                <DataGridTextColumn Header="{tsd:Loc albl_Value}" Binding="{Binding PropertyValue, Mode =TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    Width="150">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style>
+                                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
                             </DataGrid.Columns>
 
                         </DataGrid>
                         <Button Content="{tsd:Loc albl_CreateCSV}" Margin="10"
                                 Command="{Binding CreateCsv}"/>
+                        <Button x:Name="loadFromOtherMDR" 
+                                Content="{tsd:Loc albl_LoadFromOtherMDR}" Margin="10"
+                                Command="{Binding LoadFromCsv}"/>
+                        <ListBox Name="CsvData" d:ItemsSource="{d:SampleData ItemCount=5}" 
+                                 Margin="10" Height="80" ItemsSource="{Binding BorrowedListFromCsv}"
+                                 />
+                        <Button x:Name="applyToSelectedDrawings" 
+                                Command="{Binding BorrowFromCsv}"
+                                CommandParameter="{Binding ElementName=CsvData, Path=SelectedItem}"
+                                Content="{tsd:Loc albl_ApplyToSelectedDrawings}" 
+                                Margin="10"/>
                     </StackPanel>
+
                 </Grid>
             </TabItem>
         </TabControl>
