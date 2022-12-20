@@ -25,6 +25,7 @@ using Task = System.Threading.Tasks.Task;
 using Tekla.Structures.Drawing;
 using Part = Tekla.Structures.Model.Part;
 
+
 namespace TeklaHierarchicDefinitions.ViewModels
 {
 
@@ -1094,6 +1095,11 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 OnPropertyChanged("VisibleDrawingManipulators");
                 OnPropertyChanged("AlbumDesigners");
                 OnPropertyChanged("PropertyFillersList");
+                OnPropertyChanged("DrawingsAlbum");
+                OnPropertyChanged("AlbumPhase");
+                OnPropertyChanged("ListNumber");
+                OnPropertyChanged("ListsInAlbumTotal");
+                OnPropertyChanged("TitleFillerList");
             }
         }
 
@@ -1104,7 +1110,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 selectedDrawingManipulator = value;
                 OnPropertyChanged();
-
+                UpdateProps();
             }
         }
 
@@ -1133,15 +1139,69 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 OnPropertyChanged("PropertyFillersList");
             }
         }
-
-        public ObservableCollection<PropertyFillers> PropertyFillersList
+             
+        public ObservableCollection<DrawingManipulator> BorrowedListFromCsv
         {
-            get => DrawingGroup.PropertyFillersList;
+            get
+            {
+                return new ObservableCollection<DrawingManipulator>(DrawingGroup.BorrowedListFromCsv);
+            }
+            set
+            {
+                DrawingGroup.BorrowedListFromCsv = value.ToList();
+                OnPropertyChanged();
+            }
         }
+
+        public ObservableCollection<PropertyFillers> ObjectPropertyFillersList
+        {
+            get => DrawingGroup.ObjectPropertyFillersList;
+        }
+
+        public ObservableCollection<PropertyFillers> ConstructionObjectPropertyFillersList
+        {
+            get => DrawingGroup.ConstructionObjectPropertyFillersList;
+        }
+
+        public ObservableCollection<PropertyFillers> TitleFillerList
+        {
+            get => DrawingGroup.TitleFillerList;
+        }
+
+        public PropertyFillers ModelCode
+        {
+            get => DrawingGroup.ModelCode;
+        }
+
+        public PropertyFillers DrawingsAlbum
+        {
+            get => DrawingGroup.DrawingsAlbum;
+        }
+
+        public PropertyFillers AlbumPhase
+        {
+            get => DrawingGroup.AlbumPhase;
+        }
+                
+        public PropertyFillers ListNumber
+        {
+            get => DrawingGroup.ListNumber;
+        }
+
+        public PropertyFillers ListsInAlbumTotal
+        {
+            get => DrawingGroup.ListsInAlbumTotal;
+        }
+        
 
         public ObservableCollection<PropertyFillers> ModelPropertyFillers
         {
             get => DrawingGroup.ModelPropertyFillersList;
+        }
+
+        public ObservableCollection<PropertyFillers> CompanyNamePropertyFillers
+        {
+            get => DrawingGroup.CompanyNamePropertyFillers;           
         }
 
         public ObservableCollection<PropertyFillers> AlbumDesigners
@@ -1150,16 +1210,70 @@ namespace TeklaHierarchicDefinitions.ViewModels
         }
 
 
+        public PropertyFillers DrawingsDates
+        {
+            get => DrawingGroup.DrawingsDates;
+        }
         #endregion
+
 
         public void UpdateProps()
         {
             DrawingGroup.Filler = PropertyRooting.Drawing;
             OnPropertyChanged("PropertyFillersList");
             OnPropertyChanged("AlbumDesigners");
+            OnPropertyChanged("DrawingsAlbum");
+            OnPropertyChanged("ModelCode");
+            OnPropertyChanged("AlbumPhase");
+            OnPropertyChanged("ListNumber");
+            OnPropertyChanged("ListsInAlbumTotal");
+            OnPropertyChanged("TitleFillerList");
         }
 
         #region Команды
+        public ICommand BorrowFromCsv
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    var borrowedDM = obj as DrawingManipulator;
+                    if(borrowedDM != null)
+                    {
+                        foreach (var dm in DrawingGroup.DrawingManipulators)
+                        {
+                            dm.BorrowProperties(borrowedDM);
+                        }
+                        AddDrawingInformationToDrawingListTreeView();
+                    }
+                }
+                , (obj) => true);
+            }
+        }
+
+        public ICommand LoadFromCsv
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    System.Windows.Forms.OpenFileDialog choofdlog = new System.Windows.Forms.OpenFileDialog();
+                    choofdlog.Filter = "CSV Files (*.csv)|*.csv";
+                    choofdlog.FilterIndex = 1;
+                    choofdlog.Multiselect = false;
+
+                    if (choofdlog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        string sFileName = choofdlog.FileName;
+                        //string[] arrAllFiles = choofdlog.FileNames; //used when Multiselect = true           
+                        DrawingGroup.LoadCsv(sFileName);
+                        OnPropertyChanged("BorrowedListFromCsv");
+                    }
+                }
+                , (obj) => true);
+            }
+        }
+        
 
         public ICommand CreateCsv
         {

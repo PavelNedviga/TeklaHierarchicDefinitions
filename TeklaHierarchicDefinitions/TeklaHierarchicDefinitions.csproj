@@ -305,6 +305,7 @@
     <AdditionalFiles Include="ReleaseNotes.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AdditionalFiles>
+    <Resource Include="Resources\rus_Forma_F3_drawing.bmp" />
     <Resource Include="Resources\Element list.png" />
     <Resource Include="TSEP package input\Element list.png" />
     <Resource Include="TSEP package input\Ведомость элементов.png" />
