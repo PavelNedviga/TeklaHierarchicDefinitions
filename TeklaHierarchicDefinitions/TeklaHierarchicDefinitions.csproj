@@ -99,6 +99,8 @@
     <Reference Include="Microsoft.CodeAnalysis.Workspaces, Version=4.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.Common.4.2.0\lib\netstandard2.0\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.DesignTools.Extensibility, Version=17.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.DesignTools.Interaction, Version=17.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.39\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
@@ -210,30 +212,30 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="Tekla.BIM.DirectManipulation, Version=2021.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=AMD64">
-      <HintPath>..\packages\Tekla.BIM.DirectManipulation.2021.0.0\lib\net472\Tekla.BIM.DirectManipulation.dll</HintPath>
+    <Reference Include="Tekla.BIM.DirectManipulation, Version=2022.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=AMD64">
+      <HintPath>..\packages\Tekla.BIM.DirectManipulation.2022.0.10718\lib\net472\Tekla.BIM.DirectManipulation.dll</HintPath>
     </Reference>
-    <Reference Include="Tekla.Structures, Version=2021.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tekla.Structures.2021.0.0\lib\net40\Tekla.Structures.dll</HintPath>
+    <Reference Include="Tekla.Structures, Version=2022.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tekla.Structures.2022.0.10715\lib\net40\Tekla.Structures.dll</HintPath>
     </Reference>
-    <Reference Include="Tekla.Structures.Catalogs, Version=2021.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tekla.Structures.Catalogs.2021.0.0\lib\net40\Tekla.Structures.Catalogs.dll</HintPath>
+    <Reference Include="Tekla.Structures.Catalogs, Version=2022.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tekla.Structures.Catalogs.2022.0.10715\lib\net40\Tekla.Structures.Catalogs.dll</HintPath>
     </Reference>
-    <Reference Include="Tekla.Structures.Datatype, Version=2021.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tekla.Structures.Datatype.2021.0.0\lib\net40\Tekla.Structures.Datatype.dll</HintPath>
+    <Reference Include="Tekla.Structures.Datatype, Version=2022.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tekla.Structures.Datatype.2022.0.10715\lib\net40\Tekla.Structures.Datatype.dll</HintPath>
     </Reference>
-    <Reference Include="Tekla.Structures.Dialog, Version=2021.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tekla.Structures.Dialog.2021.0.0\lib\net40\Tekla.Structures.Dialog.dll</HintPath>
+    <Reference Include="Tekla.Structures.Dialog, Version=2022.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tekla.Structures.Dialog.2022.0.10715\lib\net40\Tekla.Structures.Dialog.dll</HintPath>
     </Reference>
     <Reference Include="Tekla.Structures.Drawing, Version=2021.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL" />
-    <Reference Include="Tekla.Structures.Model, Version=2021.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tekla.Structures.Model.2021.0.0\lib\net40\Tekla.Structures.Model.dll</HintPath>
+    <Reference Include="Tekla.Structures.Model, Version=2022.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tekla.Structures.Model.2022.0.10715\lib\net40\Tekla.Structures.Model.dll</HintPath>
     </Reference>
-    <Reference Include="Tekla.Structures.Plugins, Version=2021.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tekla.Structures.Plugins.2021.0.0\lib\net40\Tekla.Structures.Plugins.dll</HintPath>
+    <Reference Include="Tekla.Structures.Plugins, Version=2022.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tekla.Structures.Plugins.2022.0.10715\lib\net40\Tekla.Structures.Plugins.dll</HintPath>
     </Reference>
-    <Reference Include="Tekla.Structures.Plugins.DirectManipulation, Version=2021.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=AMD64">
-      <HintPath>..\packages\Tekla.Structures.Plugins.DirectManipulation.2021.0.0\lib\net472\Tekla.Structures.Plugins.DirectManipulation.dll</HintPath>
+    <Reference Include="Tekla.Structures.Plugins.DirectManipulation, Version=2022.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=AMD64">
+      <HintPath>..\packages\Tekla.Structures.Plugins.DirectManipulation.2022.0.10718\lib\net472\Tekla.Structures.Plugins.DirectManipulation.dll</HintPath>
     </Reference>
     <Reference Include="Tekla.Technology.MsgLib, Version=2.1.0.18312, Culture=neutral, PublicKeyToken=a70cba4ef557ee03, processorArchitecture=MSIL">
       <HintPath>..\packages\Tekla.Technology.Msglib.2.1.18312\lib\net40\Tekla.Technology.MsgLib.dll</HintPath>
@@ -271,6 +273,7 @@
     <Compile Include="Models\FoundationGroup.cs" />
     <Compile Include="Models\BuildingFragment.cs" />
     <Compile Include="Models\DrawingManipulator.cs" />
+    <Compile Include="Models\CheckResult.cs" />
     <Compile Include="ViewModels\MyObserverableCollection.cs" />
     <Compile Include="TeklaAPIUtils\TeklaAPIUtils.cs" />
     <AdditionalFiles Include="#ClassConversion.csv">
@@ -305,6 +308,22 @@
     <AdditionalFiles Include="ReleaseNotes.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AdditionalFiles>
+    <Resource Include="Resources\element_catalog_cross_section.bmp" />
+    <Resource Include="Resources\element_catalog_cross_section_sketch.bmp" />
+    <Resource Include="Resources\element_catalog_cross_section_user.bmp" />
+    <Resource Include="Resources\prtyp_tree_1.bmp" />
+    <Resource Include="Resources\prtyp_tree_10.bmp" />
+    <Resource Include="Resources\prtyp_tree_11.bmp" />
+    <Resource Include="Resources\prtyp_tree_13.bmp" />
+    <Resource Include="Resources\prtyp_tree_15.bmp" />
+    <Resource Include="Resources\prtyp_tree_2.bmp" />
+    <Resource Include="Resources\prtyp_tree_3.bmp" />
+    <Resource Include="Resources\prtyp_tree_4.bmp" />
+    <Resource Include="Resources\prtyp_tree_5.bmp" />
+    <Resource Include="Resources\prtyp_tree_6.bmp" />
+    <Resource Include="Resources\prtyp_tree_7.bmp" />
+    <Resource Include="Resources\prtyp_tree_8.bmp" />
+    <Resource Include="Resources\prtyp_tree_9.bmp" />
     <Resource Include="Resources\rus_Forma_F3_drawing.bmp" />
     <Resource Include="Resources\Element list.png" />
     <Resource Include="TSEP package input\Element list.png" />
@@ -343,54 +362,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\prtyp_tree_9.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\prtyp_tree_8.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\prtyp_tree_7.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\prtyp_tree_6.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\prtyp_tree_5.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\prtyp_tree_4.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\prtyp_tree_3.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\prtyp_tree_2.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\prtyp_tree_15.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\prtyp_tree_13.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\prtyp_tree_11.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\prtyp_tree_10.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\prtyp_tree_1.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\element_catalog_cross_section_user.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\element_catalog_cross_section_sketch.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\element_catalog_cross_section.bmp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TSEP package output\" />

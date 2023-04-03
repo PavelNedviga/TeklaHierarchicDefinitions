@@ -1309,7 +1309,7 @@ string_utf8 albl_UpdDrawingList
     entry = ("plk", "Update drawing list");
     entry = ("ptb", "Update drawing list");
     entry = ("ptg", "Update drawing list");
-    entry = ("rus", "Обновить сп.черт.");
+    entry = ("rus", "Обновить список чертежей");
 };
 
 
@@ -1333,6 +1333,353 @@ string_utf8 albl_CreateCSV
     entry = ("rus", "Создать MDR");
 };
 
+
+string_utf8 albl_LoadFromOtherMDR
+{
+    entry = ("enu", "Get data from other MDR");
+    entry = ("chs", "Get data from other MDR");
+    entry = ("cht", "Get data from other MDR");
+    entry = ("csy", "Get data from other MDR");
+    entry = ("deu", "Get data from other MDR");
+    entry = ("esp", "Get data from other MDR");
+    entry = ("fra", "Get data from other MDR");
+    entry = ("hun", "Get data from other MDR");
+    entry = ("ita", "Get data from other MDR");
+    entry = ("jpn", "Get data from other MDR");
+    entry = ("kor", "Get data from other MDR");
+    entry = ("nld", "Get data from other MDR");
+    entry = ("plk", "Get data from other MDR");
+    entry = ("ptb", "Get data from other MDR");
+    entry = ("ptg", "Get data from other MDR");
+    entry = ("rus", "Получить данные из MDR");
+};
+
+string_utf8 albl_ApplyToSelectedDrawings
+{
+    entry = ("enu", "Apply to selected drawings");
+    entry = ("chs", "Apply to selected drawings");
+    entry = ("cht", "Apply to selected drawings");
+    entry = ("csy", "Apply to selected drawings");
+    entry = ("deu", "Apply to selected drawings");
+    entry = ("esp", "Apply to selected drawings");
+    entry = ("fra", "Apply to selected drawings");
+    entry = ("hun", "Apply to selected drawings");
+    entry = ("ita", "Apply to selected drawings");
+    entry = ("jpn", "Apply to selected drawings");
+    entry = ("kor", "Apply to selected drawings");
+    entry = ("nld", "Apply to selected drawings");
+    entry = ("plk", "Apply to selected drawings");
+    entry = ("ptb", "Apply to selected drawings");
+    entry = ("ptg", "Apply to selected drawings");
+    entry = ("rus", "Применить к выделенным чертежам");
+};
+
+string_utf8 albl_Complex
+{
+    entry = ("enu", "Key");
+    entry = ("chs", "Key");
+    entry = ("cht", "Key");
+    entry = ("csy", "Key");
+    entry = ("deu", "Key");
+    entry = ("esp", "Key");
+    entry = ("fra", "Key");
+    entry = ("hun", "Key");
+    entry = ("ita", "Key");
+    entry = ("jpn", "Key");
+    entry = ("kor", "Key");
+    entry = ("nld", "Key");
+    entry = ("plk", "Key");
+    entry = ("ptb", "Key");
+    entry = ("ptg", "Key");
+    entry = ("rus", "Ключ");
+};
+
+string_utf8 albl_List
+{
+    entry = ("enu", "List");
+    entry = ("chs", "List");
+    entry = ("cht", "List");
+    entry = ("csy", "List");
+    entry = ("deu", "List");
+    entry = ("esp", "List");
+    entry = ("fra", "List");
+    entry = ("hun", "List");
+    entry = ("ita", "List");
+    entry = ("jpn", "List");
+    entry = ("kor", "List");
+    entry = ("nld", "List");
+    entry = ("plk", "List");
+    entry = ("ptb", "List");
+    entry = ("ptg", "List");
+    entry = ("rus", "Лист");
+};
+
+string_utf8 albl_Lists
+{
+    entry = ("enu", "Lists");
+    entry = ("chs", "Lists");
+    entry = ("cht", "Lists");
+    entry = ("csy", "Lists");
+    entry = ("deu", "Lists");
+    entry = ("esp", "Lists");
+    entry = ("fra", "Lists");
+    entry = ("hun", "Lists");
+    entry = ("ita", "Lists");
+    entry = ("jpn", "Lists");
+    entry = ("kor", "Lists");
+    entry = ("nld", "Lists");
+    entry = ("plk", "Lists");
+    entry = ("ptb", "Lists");
+    entry = ("ptg", "Lists");
+    entry = ("rus", "Листов");
+};
+
+string_utf8 albl_Album
+{
+    entry = ("enu", "Album");
+    entry = ("chs", "Album");
+    entry = ("cht", "Album");
+    entry = ("csy", "Album");
+    entry = ("deu", "Album");
+    entry = ("esp", "Album");
+    entry = ("fra", "Album");
+    entry = ("hun", "Album");
+    entry = ("ita", "Album");
+    entry = ("jpn", "Album");
+    entry = ("kor", "Album");
+    entry = ("nld", "Album");
+    entry = ("plk", "Album");
+    entry = ("ptb", "Album");
+    entry = ("ptg", "Album");
+    entry = ("rus", "Марка");
+};
+
+string_utf8 albl_Title1
+{
+    entry = ("enu", "Title 1");
+    entry = ("chs", "Title 1");
+    entry = ("cht", "Title 1");
+    entry = ("csy", "Title 1");
+    entry = ("deu", "Title 1");
+    entry = ("esp", "Title 1");
+    entry = ("fra", "Title 1");
+    entry = ("hun", "Title 1");
+    entry = ("ita", "Title 1");
+    entry = ("jpn", "Title 1");
+    entry = ("kor", "Title 1");
+    entry = ("nld", "Title 1");
+    entry = ("plk", "Title 1");
+    entry = ("ptb", "Title 1");
+    entry = ("ptg", "Title 1");
+    entry = ("rus", "Заголовок 1");
+};
+
+string_utf8 albl_Title2
+{
+    entry = ("enu", "Title 2");
+    entry = ("chs", "Title 2");
+    entry = ("cht", "Title 2");
+    entry = ("csy", "Title 2");
+    entry = ("deu", "Title 2");
+    entry = ("esp", "Title 2");
+    entry = ("fra", "Title 2");
+    entry = ("hun", "Title 2");
+    entry = ("ita", "Title 2");
+    entry = ("jpn", "Title 2");
+    entry = ("kor", "Title 2");
+    entry = ("nld", "Title 2");
+    entry = ("plk", "Title 2");
+    entry = ("ptb", "Title 2");
+    entry = ("ptg", "Title 2");
+    entry = ("rus", "Заголовок 2");
+};
+
+string_utf8 albl_Title3
+{
+    entry = ("enu", "Title 3");
+    entry = ("chs", "Title 3");
+    entry = ("cht", "Title 3");
+    entry = ("csy", "Title 3");
+    entry = ("deu", "Title 3");
+    entry = ("esp", "Title 3");
+    entry = ("fra", "Title 3");
+    entry = ("hun", "Title 3");
+    entry = ("ita", "Title 3");
+    entry = ("jpn", "Title 3");
+    entry = ("kor", "Title 3");
+    entry = ("nld", "Title 3");
+    entry = ("plk", "Title 3");
+    entry = ("ptb", "Title 3");
+    entry = ("ptg", "Title 3");
+    entry = ("rus", "Заголовок 3");
+};
+
+string_utf8 albl_CheckResults
+{
+    entry = ("enu", "Check results");
+    entry = ("chs", "Check results");
+    entry = ("cht", "Check results");
+    entry = ("csy", "Check results");
+    entry = ("deu", "Check results");
+    entry = ("esp", "Check results");
+    entry = ("fra", "Check results");
+    entry = ("hun", "Check results");
+    entry = ("ita", "Check results");
+    entry = ("jpn", "Check results");
+    entry = ("kor", "Check results");
+    entry = ("nld", "Check results");
+    entry = ("plk", "Check results");
+    entry = ("ptb", "Check results");
+    entry = ("ptg", "Check results");
+    entry = ("rus", "Результаты проверки");
+};
+
+
+string_utf8 albl_LoadCheckResults
+{
+    entry = ("enu", "Load check results");
+    entry = ("chs", "Load check results");
+    entry = ("cht", "Load check results");
+    entry = ("csy", "Load check results");
+    entry = ("deu", "Load check results");
+    entry = ("esp", "Load check results");
+    entry = ("fra", "Load check results");
+    entry = ("hun", "Load check results");
+    entry = ("ita", "Load check results");
+    entry = ("jpn", "Load check results");
+    entry = ("kor", "Load check results");
+    entry = ("nld", "Load check results");
+    entry = ("plk", "Load check results");
+    entry = ("ptb", "Load check results");
+    entry = ("ptg", "Load check results");
+    entry = ("rus", "Загрузить результаты проверки");
+};
+
+
+string_utf8 albl_CheckName
+{
+    entry = ("enu", "Check name");
+    entry = ("chs", "Check name");
+    entry = ("cht", "Check name");
+    entry = ("csy", "Check name");
+    entry = ("deu", "Check name");
+    entry = ("esp", "Check name");
+    entry = ("fra", "Check name");
+    entry = ("hun", "Check name");
+    entry = ("ita", "Check name");
+    entry = ("jpn", "Check name");
+    entry = ("kor", "Check name");
+    entry = ("nld", "Check name");
+    entry = ("plk", "Check name");
+    entry = ("ptb", "Check name");
+    entry = ("ptg", "Check name");
+    entry = ("rus", "Имя проверки");
+};
+
+
+string_utf8 albl_Result
+{
+    entry = ("enu", "Result");
+    entry = ("chs", "Result");
+    entry = ("cht", "Result");
+    entry = ("csy", "Result");
+    entry = ("deu", "Result");
+    entry = ("esp", "Result");
+    entry = ("fra", "Result");
+    entry = ("hun", "Result");
+    entry = ("ita", "Result");
+    entry = ("jpn", "Result");
+    entry = ("kor", "Result");
+    entry = ("nld", "Result");
+    entry = ("plk", "Result");
+    entry = ("ptb", "Result");
+    entry = ("ptg", "Result");
+    entry = ("rus", "Результат");
+};
+
+
+string_utf8 albl_Description
+{
+    entry = ("enu", "Description");
+    entry = ("chs", "Description");
+    entry = ("cht", "Description");
+    entry = ("csy", "Description");
+    entry = ("deu", "Description");
+    entry = ("esp", "Description");
+    entry = ("fra", "Description");
+    entry = ("hun", "Description");
+    entry = ("ita", "Description");
+    entry = ("jpn", "Description");
+    entry = ("kor", "Description");
+    entry = ("nld", "Description");
+    entry = ("plk", "Description");
+    entry = ("ptb", "Description");
+    entry = ("ptg", "Description");
+    entry = ("rus", "Описание");
+};
+
+
+string_utf8 albl_TotalChecks
+{
+    entry = ("enu", "Totaal checks");
+    entry = ("chs", "Totaal checks");
+    entry = ("cht", "Totaal checks");
+    entry = ("csy", "Totaal checks");
+    entry = ("deu", "Totaal checks");
+    entry = ("esp", "Totaal checks");
+    entry = ("fra", "Totaal checks");
+    entry = ("hun", "Totaal checks");
+    entry = ("ita", "Totaal checks");
+    entry = ("jpn", "Totaal checks");
+    entry = ("kor", "Totaal checks");
+    entry = ("nld", "Totaal checks");
+    entry = ("plk", "Totaal checks");
+    entry = ("ptb", "Totaal checks");
+    entry = ("ptg", "Totaal checks");
+    entry = ("rus", "Всего проверок");
+};
+
+
+string_utf8 albl_Errornumber
+{
+    entry = ("enu", "Error number");
+    entry = ("chs", "Error number");
+    entry = ("cht", "Error number");
+    entry = ("csy", "Error number");
+    entry = ("deu", "Error number");
+    entry = ("esp", "Error number");
+    entry = ("fra", "Error number");
+    entry = ("hun", "Error number");
+    entry = ("ita", "Error number");
+    entry = ("jpn", "Error number");
+    entry = ("kor", "Error number");
+    entry = ("nld", "Error number");
+    entry = ("plk", "Error number");
+    entry = ("ptb", "Error number");
+    entry = ("ptg", "Error number");
+    entry = ("rus", "Число ошибок");
+};
+
+
+string_utf8 albl_ErrorRate
+{
+    entry = ("enu", "Error rate");
+    entry = ("chs", "Error rate");
+    entry = ("cht", "Error rate");
+    entry = ("csy", "Error rate");
+    entry = ("deu", "Error rate");
+    entry = ("esp", "Error rate");
+    entry = ("fra", "Error rate");
+    entry = ("hun", "Error rate");
+    entry = ("ita", "Error rate");
+    entry = ("jpn", "Error rate");
+    entry = ("kor", "Error rate");
+    entry = ("nld", "Error rate");
+    entry = ("plk", "Error rate");
+    entry = ("ptb", "Error rate");
+    entry = ("ptg", "Error rate");
+    entry = ("rus", "Процент ошибок");
+};
 
 
 string_utf8 albl_

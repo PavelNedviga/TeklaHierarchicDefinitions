@@ -23,7 +23,7 @@ namespace TeklaHierarchicDefinitions.Models
     public class DrawingManipulator : INotifyPropertyChanged
     {
         [Ignore]
-        internal Drawing Drawing { get; set; }
+        internal DrawingEnvelop Drawing { get; set; } = new DrawingEnvelop(); 
 
         [Ignore]
         public string Mark
@@ -32,18 +32,21 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Ключ документа")]
+        [Index(0)]
         public string Code
         {
             get => $"{ModelManipulator.projectInfo.ProjectNumber}-{Album}_{Drawing.Name}";
         }
 
         [Name("Комплект")]
+        [Index(1)]
         public string Complex
         {
             get => ModelManipulator.projectInfo.ProjectNumber + "-" + Album;
         }
 
         [Name("Объект строительства 1")]
+        [Index(2)]
         public string ConstructionObject1
         {
             get
@@ -61,6 +64,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Объект строительства 2")]
+        [Index(3)]
         public string ConstructionObject2
         {
             get
@@ -78,6 +82,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Объект строительства 3")]
+        [Index(4)]
         public string ConstructionObject3
         {
             get
@@ -95,6 +100,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Объект строительства 4")]
+        [Index(5)]
         public string ConstructionObject4
         {
             get
@@ -112,6 +118,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Название объекта 1")]
+        [Index(6)]
         public string ObjectName1
         {
             get
@@ -129,6 +136,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Название объекта 2")]
+        [Index(7)]
         public string ObjectName2
         {
             get
@@ -146,6 +154,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Название объекта 3")]
+        [Index(8)]
         public string ObjectName3
         {
             get
@@ -163,6 +172,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Название объекта 4")]
+        [Index(9)]
         public string ObjectName4
         {
             get
@@ -179,24 +189,25 @@ namespace TeklaHierarchicDefinitions.Models
             }
         }
 
-        [Ignore]
-        public string ObjectName5
-        {
-            get
-            {
-                var s = " ";
-                Drawing.GetUserProperty("ru_naimen_stroit_5", ref s);
-                return s;
-            }
-            set
-            {
-                Drawing.SetUserProperty("ru_naimen_stroit_5", value);
-                Drawing.CommitChanges();
-                OnPropertyChanged();
-            }
-        }
+        //[Ignore]
+        //public string ObjectName5
+        //{
+        //    get
+        //    {
+        //        var s = " ";
+        //        Drawing.GetUserProperty("ru_naimen_stroit_5", ref s);
+        //        return s;
+        //    }
+        //    set
+        //    {
+        //        Drawing.SetUserProperty("ru_naimen_stroit_5", value);
+        //        Drawing.CommitChanges();
+        //        OnPropertyChanged();
+        //    }
+        //}
 
         [Name("Листов")]
+        [Index(10)]
         public string Lists
         {
             get
@@ -214,6 +225,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Стадия")]
+        [Index(11)]
         public string Stage
         {
             get
@@ -231,6 +243,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
         
         [Name("Лист")]
+        [Index(12)]
         public string List
         {
             get 
@@ -250,6 +263,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Альбом")]
+        [Index(14)]
         public string Album
         {
             get
@@ -268,11 +282,13 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Название")]
+        [Index(13)]
         public string Name
         {
             get
             {
-                return $"{Title1} {Title2} {Title3}";
+                string[] vs = { Title1, Title2, Title3 };
+                return string.Join(" ",vs);
             }
         }
 
@@ -314,6 +330,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Должность 1")]
+        [Index(15)]
         public string ru_6
         {
             get
@@ -331,6 +348,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Фамилия 1")]
+        [Index(16)]
         public string ru_6_fam
         {
             get
@@ -348,6 +366,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Должность 2")]
+        [Index(17)]
         public string ru_7
         {
             get
@@ -365,6 +384,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Фамилия 2")]
+        [Index(18)]
         public string ru_7_fam
         {
             get
@@ -382,6 +402,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Должность 3")]
+        [Index(19)]
         public string ru_8
         {
             get
@@ -399,6 +420,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Фамилия 3")]
+        [Index(20)]
         public string ru_8_fam
         {
             get
@@ -416,6 +438,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Должность 4")]
+        [Index(21)]
         public string ru_9
         {
             get
@@ -433,6 +456,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Фамилия 4")]
+        [Index(22)]
         public string ru_9_fam
         {
             get
@@ -450,6 +474,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Должность 5")]
+        [Index(23)]
         public string ru_10
         {
             get
@@ -467,6 +492,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Фамилия 5")]
+        [Index(24)]
         public string ru_10_fam
         {
             get
@@ -484,6 +510,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Должность 6")]
+        [Index(25)]
         public string ru_11
         {
             get
@@ -501,6 +528,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Фамилия 6")]
+        [Index(26)]
         public string ru_11_fam
         {
             get
@@ -518,6 +546,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         [Name("Дата утверждения чертежа")]
+        [Index(27)]
         public string DrawingDate        
         {
             get
@@ -534,6 +563,16 @@ namespace TeklaHierarchicDefinitions.Models
             }
         }
 
+        [Ignore]
+        public string Tooltip
+        {
+            get
+            {
+                var propInfos = GetType().GetProperties().Where(n=>n.Name != "Tooltip").Select(t => t.Name + " : " + t.GetValue(this, null)).ToList();
+                return string.Join("\r\n", propInfos);
+            }
+        }
+
         public void BorrowProperties(DrawingManipulator otherDrawingManipulator)
         {
             this.Album = otherDrawingManipulator.Album;
@@ -545,7 +584,6 @@ namespace TeklaHierarchicDefinitions.Models
             this.ObjectName2 = otherDrawingManipulator.ObjectName2;
             this.ObjectName3 = otherDrawingManipulator.ObjectName3;
             this.ObjectName4 = otherDrawingManipulator.ObjectName4;
-            this.ObjectName5 = otherDrawingManipulator.ObjectName5;
             this.Stage = otherDrawingManipulator.Stage;
             this.ru_11 = otherDrawingManipulator.ru_11;
             this.ru_11_fam = otherDrawingManipulator.ru_11_fam;
@@ -573,6 +611,166 @@ namespace TeklaHierarchicDefinitions.Models
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
+
+        internal class DrawingEnvelop
+        {
+            public DrawingEnvelop()  {}
+
+            public DrawingEnvelop(Drawing myDrawing)
+            {
+                Drawing = myDrawing;
+            }
+
+            private Dictionary<string, string> drawingData = new Dictionary<string, string>();
+            private string mark;
+            private string name;
+            private string title1;
+            private string title2;
+            private string title3;
+
+            public string Mark 
+            { 
+                get 
+                {
+                    if (Drawing != null)
+                        return Drawing.Mark;
+                    else
+                        return mark;
+                } 
+            } 
+            public string Name
+            {
+                get
+                {
+                    if (Drawing != null)
+                        return Drawing.Name;
+                    else
+                        return name;
+                }
+                set
+                {
+                    if (Drawing != null)
+                    {
+                        Drawing.Name = value;
+                        Drawing.Modify();
+                        TeklaDB.model.CommitChanges();
+                    }                        
+                    else
+                        name = value;
+                    
+                }
+            }
+
+
+            public string Title1
+            {
+                get
+                {
+                    if (Drawing != null)
+                        return Drawing.Title1;
+                    else
+                        return title1;
+                }
+                set
+                {
+                    if (Drawing != null)
+                    {
+                        Drawing.Title1 = value;
+                        Drawing.Modify();
+                        TeklaDB.model.CommitChanges();
+                    }
+                    else
+                        title1 = value;
+                }
+            }
+            public string Title2
+            {
+                get
+                {
+                    if (Drawing != null)
+                        return Drawing.Title2;
+                    else
+                        return title2;
+                }
+                set
+                {
+                    if (Drawing != null)
+                    {
+                        Drawing.Title2 = value;
+                        Drawing.Modify();
+                        TeklaDB.model.CommitChanges();
+                    }
+                    else
+                        title2 = value;
+                }
+            }
+
+            public string Title3
+            {
+                get
+                {
+                    if (Drawing != null)
+                        return Drawing.Title3;
+                    else
+                        return title3;
+                }
+                set
+                {
+                    if (Drawing != null)
+                    {
+                        Drawing.Title3 = value;
+                        Drawing.Modify();
+                        TeklaDB.model.CommitChanges();
+                    }
+                    else
+                        title3 = value;
+                }
+            }
+
+            public Drawing Drawing { get; }
+
+            internal bool CommitChanges()
+            {
+                if (Drawing != null)
+                {
+                    return Drawing.CommitChanges();
+                }
+                return false;
+            }
+
+            internal bool GetUserProperty(string v, ref string s)
+            {
+                if (Drawing != null)
+                {                    
+                    return Drawing.GetUserProperty(v, ref s);
+                }
+                else
+                {
+                    return drawingData.TryGetValue(v, out s);
+                }
+            }
+
+            internal bool Modify()
+            {
+                if (Drawing != null)
+                {
+                    return Drawing.Modify();
+                }
+                return false;
+            }
+
+            internal void SetUserProperty(string v, string value)
+            {
+                if (Drawing != null & value != null)
+                {
+                    Drawing.SetUserProperty(v, value);
+                }
+                else
+                {
+                    drawingData[v] = value;
+                }
+            }
+        }
         #endregion
     }
 
@@ -581,8 +779,20 @@ namespace TeklaHierarchicDefinitions.Models
         public DrawingManipulatorMap()
         {
             AutoMap(CultureInfo.InvariantCulture);
-            //Map(m => m.ConstructionObject1).Name("ColumnA");
-            //Map(m => m.ObjectName1).Name("ColumnB");
+            Map(m => m.Code);
+            Map(m => m.Complex);
+            Map(m => m.ConstructionObject1);
+            Map(m => m.ConstructionObject2);
+            Map(m => m.ConstructionObject3);
+            Map(m => m.ConstructionObject4);
+            Map(m => m.ObjectName1);
+            Map(m => m.ObjectName2);
+            Map(m => m.ObjectName3);
+            Map(m => m.ObjectName4);
+            Map(m => m.Lists);
+            Map(m => m.Stage);
+            Map(m => m.Name);
+
         }
     }
 
@@ -699,7 +909,7 @@ namespace TeklaHierarchicDefinitions.Models
                     res.Add(new PropertyFillers() { InternalPropertyName = "ObjectName2", PropertyName = "Имя объекта: 2", ReferencedObjectList = objectList });
                     res.Add(new PropertyFillers() { InternalPropertyName = "ObjectName3", PropertyName = "Имя объекта: 3", ReferencedObjectList = objectList });
                     res.Add(new PropertyFillers() { InternalPropertyName = "ObjectName4", PropertyName = "Имя объекта: 4", ReferencedObjectList = objectList });
-                    res.Add(new PropertyFillers() { InternalPropertyName = "ObjectName5", PropertyName = "Имя объекта: 5", ReferencedObjectList = objectList });
+                    //res.Add(new PropertyFillers() { InternalPropertyName = "ObjectName5", PropertyName = "Имя объекта: 5", ReferencedObjectList = objectList });
                     //res.Add(new PropertyFillers() { InternalPropertyName = "ConstructionObject1", PropertyName = "Объект строительства: 1", ReferencedObjectList = objectList });
                     //res.Add(new PropertyFillers() { InternalPropertyName = "ConstructionObject2", PropertyName = "Объект строительства: 2", ReferencedObjectList = objectList });
                     //res.Add(new PropertyFillers() { InternalPropertyName = "ConstructionObject3", PropertyName = "Объект строительства: 3", ReferencedObjectList = objectList });
@@ -988,7 +1198,7 @@ namespace TeklaHierarchicDefinitions.Models
                         ShouldQuote = args => false, 
                         Delimiter = ";", 
                         Encoding = Encoding.GetEncoding(1251)
-                };
+                    };
                     using (var csv = new CsvWriter(writer, config) )
                     {
                         csv.Context.RegisterClassMap<DrawingManipulatorMap>();
@@ -1051,7 +1261,27 @@ namespace TeklaHierarchicDefinitions.Models
 
         internal static void LoadCsv(string path)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var reader = new StreamReader(path, Encoding.GetEncoding(1251)))
+                {
+                    var config = new CsvConfiguration(CultureInfo.CurrentCulture)
+                    {
+                        ShouldQuote = args => false,
+                        Delimiter = ";",
+                        Encoding = Encoding.GetEncoding(1251)
+                    };
+                    using (var csv = new CsvReader(reader, config))
+                    {
+                        var rc = new DrawingManipulator();
+                        var records = csv.GetRecords<DrawingManipulator>().GroupBy(t=>t.Complex).Select(t=>t.FirstOrDefault());
+                        BorrowedListFromCsv.Clear();
+                        BorrowedListFromCsv = records.ToList();
+                    }
+                }
+            }
+            catch (Exception ex) { }
+
         }
         #endregion
     }

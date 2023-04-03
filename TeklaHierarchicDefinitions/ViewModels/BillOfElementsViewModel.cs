@@ -629,7 +629,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         //{
         //    //(this.HODataGrid.SelectedItem as BillOfElements).Material = ((sender as Button) as Tekla.Structures.Dialog.UIControls.WpfMaterialCatalog).SelectedMaterial;
         //}
-#endregion
+        #endregion
 
         #region Задания на фундаменты
         #region Параметры        
@@ -1095,6 +1095,8 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 OnPropertyChanged("VisibleDrawingManipulators");
                 OnPropertyChanged("AlbumDesigners");
                 OnPropertyChanged("PropertyFillersList");
+                OnPropertyChanged("ObjectPropertyFillersList");
+                OnPropertyChanged("ConstructionObjectPropertyFillersList");
                 OnPropertyChanged("DrawingsAlbum");
                 OnPropertyChanged("AlbumPhase");
                 OnPropertyChanged("ListNumber");
@@ -1128,7 +1130,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     DrawingGroup.DrawingManipulators = new List<DrawingManipulator>(Drawings);
                     DrawingGroup.Filler = PropertyRooting.Model;
                     return new ObservableCollection<DrawingManipulator>(Drawings);
-                    
+
                 }
                 else
                 {
@@ -1139,7 +1141,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 OnPropertyChanged("PropertyFillersList");
             }
         }
-             
+
         public ObservableCollection<DrawingManipulator> BorrowedListFromCsv
         {
             get
@@ -1182,7 +1184,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         {
             get => DrawingGroup.AlbumPhase;
         }
-                
+
         public PropertyFillers ListNumber
         {
             get => DrawingGroup.ListNumber;
@@ -1192,7 +1194,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         {
             get => DrawingGroup.ListsInAlbumTotal;
         }
-        
+
 
         public ObservableCollection<PropertyFillers> ModelPropertyFillers
         {
@@ -1201,7 +1203,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
 
         public ObservableCollection<PropertyFillers> CompanyNamePropertyFillers
         {
-            get => DrawingGroup.CompanyNamePropertyFillers;           
+            get => DrawingGroup.CompanyNamePropertyFillers;
         }
 
         public ObservableCollection<PropertyFillers> AlbumDesigners
@@ -1221,6 +1223,8 @@ namespace TeklaHierarchicDefinitions.ViewModels
         {
             DrawingGroup.Filler = PropertyRooting.Drawing;
             OnPropertyChanged("PropertyFillersList");
+            OnPropertyChanged("ObjectPropertyFillersList");
+            OnPropertyChanged("ConstructionObjectPropertyFillersList");
             OnPropertyChanged("AlbumDesigners");
             OnPropertyChanged("DrawingsAlbum");
             OnPropertyChanged("ModelCode");
@@ -1238,7 +1242,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 return new DelegateCommand((obj) =>
                 {
                     var borrowedDM = obj as DrawingManipulator;
-                    if(borrowedDM != null)
+                    if (borrowedDM != null)
                     {
                         foreach (var dm in DrawingGroup.DrawingManipulators)
                         {
@@ -1257,14 +1261,14 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
-                    System.Windows.Forms.OpenFileDialog choofdlog = new System.Windows.Forms.OpenFileDialog();
-                    choofdlog.Filter = "CSV Files (*.csv)|*.csv";
-                    choofdlog.FilterIndex = 1;
-                    choofdlog.Multiselect = false;
+                    System.Windows.Forms.OpenFileDialog dialogWindow = new System.Windows.Forms.OpenFileDialog();
+                    dialogWindow.Filter = "CSV Files (*.csv)|*.csv";
+                    dialogWindow.FilterIndex = 1;
+                    dialogWindow.Multiselect = false;
 
-                    if (choofdlog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    if (dialogWindow.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        string sFileName = choofdlog.FileName;
+                        string sFileName = dialogWindow.FileName;
                         //string[] arrAllFiles = choofdlog.FileNames; //used when Multiselect = true           
                         DrawingGroup.LoadCsv(sFileName);
                         OnPropertyChanged("BorrowedListFromCsv");
@@ -1273,7 +1277,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 , (obj) => true);
             }
         }
-        
+
 
         public ICommand CreateCsv
         {
@@ -1288,13 +1292,13 @@ namespace TeklaHierarchicDefinitions.ViewModels
         }
 
         public ICommand UpdateAlbum
-{
+        {
             get
             {
                 return new DelegateCommand((obj) =>
                 {
                     var tb = (obj as TextBox);
-                    if(obj != null)
+                    if (obj != null)
                     {
                         var value = tb.Text;
                         foreach (var item in VisibleDrawingManipulators)
@@ -1340,12 +1344,111 @@ namespace TeklaHierarchicDefinitions.ViewModels
             while (drawingListEnumerator.MoveNext())
             {
                 Drawing myDrawing = drawingListEnumerator.Current;
-                Drawings.Add(new DrawingManipulator() { Drawing = myDrawing });
+                Drawings.Add(new DrawingManipulator() { Drawing = new DrawingManipulator.DrawingEnvelop(myDrawing) });
             }
             OnPropertyChanged("VisibleDrawingManipulators");
             OnPropertyChanged("DrawingAlbums");
         }
         #endregion
+        #endregion
+
+        #region Результаты проверки
+        #region Параметры
+        ObservableCollection<CheckResult> checkResults = new ObservableCollection<CheckResult>();
+        private CheckResult selectedCheckResult;
+        #endregion
+
+        #region Свойства
+        public CheckResult SelectedCheckResult 
+        { get => selectedCheckResult; 
+            set 
+            { 
+                selectedCheckResult = value; 
+                OnPropertyChanged("CheckResultsDescription");
+                OnPropertyChanged("CheckResultsObjects");
+            } 
+        }
+        public ObservableCollection<CheckResult> CheckResults
+        {
+            get => checkResults;
+            set
+            {
+                checkResults = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<CheckResultSummary> CheckResultsSummary { get; private set; }
+
+        //public ObservableCollection<CheckResult> CheckedErrorItems
+        //{
+
+        //}
+
+        public List<string> CheckResultsDescription
+        {
+            get
+            {
+                List<string> result = new List<string>();
+                if(SelectedCheckResult != null)
+                {
+                    result.Add(SelectedCheckResult.GroupError);
+                    result.Add(SelectedCheckResult.Error);
+                }
+                return result;
+            }
+        }
+
+        public List<string> CheckResultsObjects
+        {
+            get => SelectedCheckResult == null? null:SelectedCheckResult.GUIDs;
+        }
+
+        #endregion
+
+        public ICommand LoadCheckResults
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    System.Windows.Forms.OpenFileDialog dialogWindow = new System.Windows.Forms.OpenFileDialog();
+                    dialogWindow.Filter = "Excel Files (*.xlsx)|*.xlsx";
+                    dialogWindow.FilterIndex = 1;
+                    dialogWindow.Multiselect = false;
+
+                    if (dialogWindow.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        string sFileName = dialogWindow.FileName;
+                        //string[] arrAllFiles = choofdlog.FileNames; //used when Multiselect = true
+                        var loadedRes = CheckResultExtensions.LoadCheckResults(sFileName);
+                        CheckResults = new ObservableCollection<CheckResult>(loadedRes.Item1);
+                        CheckResultsSummary = new ObservableCollection<CheckResultSummary>(loadedRes.Item2);
+                        OnPropertyChanged("CheckResults");
+                        OnPropertyChanged("CheckResultsSummary");
+                        OnPropertyChanged("CheckResultsCodes");
+                    }
+                }
+                , (obj) => true);
+            }
+        }
+
+
+        public ICommand SelectErrorObjectsByGuids
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    var selectors = (obj as ListBox).SelectedItems.Cast<string>().ToList();
+                    if (selectors.Any())
+                        SelectedCheckResult.SelectErrorObjects(selectors);
+                    else
+                        SelectedCheckResult.SelectErrorObjects();
+                }
+                , (obj) => true);
+            }
+        }
         #endregion
 
     }
