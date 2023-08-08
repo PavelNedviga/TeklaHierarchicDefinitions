@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using Tekla.Structures.Model;
 using Tekla.Structures.CustomPropertyPlugin;
+using Tekla.Structures.Model;
 
 namespace CustomPropertyHierarchicObject
 {
@@ -222,7 +222,7 @@ namespace CustomPropertyHierarchicObject
         /// <returns>The <see cref="int"/>.</returns>
         public int GetIntegerProperty(int objectId)
         {
-            var mo = TeklaHierarchicObject.GetModelObject(objectId);            
+            var mo = TeklaHierarchicObject.GetModelObject(objectId);
             if (mo.GetHierarchicObjects().GetSize() > 0)
                 return 1;
             else
@@ -266,16 +266,16 @@ namespace CustomPropertyHierarchicObject
                 while (mobjenum.MoveNext())
                 {
                     var mobj = mobjenum.Current as HierarchicObject;
-                    if(mobj != null)
+                    if (mobj != null)
                     {
                         string classifier = "", prelim_mark = "", pos = "";
-                        
+
                         mobj.GetUserProperty("Classificator", ref classifier);
                         part.GetUserProperty("PRELIM_MARK", ref prelim_mark);
                         mobj.GetUserProperty("Position", ref pos);
-                        
+
                         if (
-                            mobj.Name == part.AssemblyNumber.Prefix 
+                            mobj.Name == part.AssemblyNumber.Prefix
                             & classifier == part.Class
                             & prelim_mark == pos)
                         {
@@ -285,7 +285,7 @@ namespace CustomPropertyHierarchicObject
 
                 }
             }
-                
+
             return 0;
         }
 
@@ -343,10 +343,10 @@ namespace CustomPropertyHierarchicObject
                         if (mobj.GetUserProperty("BOE", ref res))
                             return res;
                     }
-                    
+
                 }
                 return res;
-            }                
+            }
             else
                 return "";
         }
@@ -393,7 +393,7 @@ namespace CustomPropertyHierarchicObject
                     var mobj = mobjenum.Current as HierarchicObject;
                     if (mobj != null)
                     {
-                        if(TeklaHierarchicObject.GetHORootHierarchicDefinitionName(mobj.Identifier.ID) == "Element_list")
+                        if (TeklaHierarchicObject.GetHORootHierarchicDefinitionName(mobj.Identifier.ID) == "Element_list")
                             return mobj.Name;
                     }
 
@@ -496,10 +496,10 @@ namespace CustomPropertyHierarchicObject
         internal static HierarchicObject GetElementListHO(int id)
         {
             Part modelObject = model.SelectModelObject(new Tekla.Structures.Identifier(id)) as Part;
-            if(modelObject != null)
+            if (modelObject != null)
             {
                 var enumHO = modelObject.GetHierarchicObjects();
-                foreach(var item in enumHO)
+                foreach (var item in enumHO)
                 {
                     if (item is HierarchicObject)
                     {
@@ -521,7 +521,7 @@ namespace CustomPropertyHierarchicObject
         internal static HierarchicObject GetHOFather(int id)
         {
             ModelObject modelObject = model.SelectModelObject(new Tekla.Structures.Identifier(id));
-            if(modelObject is HierarchicObject)
+            if (modelObject is HierarchicObject)
             {
                 var ho = (modelObject as HierarchicObject);
                 HierarchicObject fatherHierarchicObject = new HierarchicObject();
@@ -532,7 +532,7 @@ namespace CustomPropertyHierarchicObject
                     {
                         return fatherHierarchicObject;
                     }
-                }                
+                }
                 return null;
             }
             return null;
@@ -557,7 +557,7 @@ namespace CustomPropertyHierarchicObject
                 var hierarchicObject = modelObject as HierarchicObject;
                 string result = string.Empty;
                 hierarchicObject.GetUserProperty("Position", ref result);
-                if (result.Length >0)
+                if (result.Length > 0)
                     return true;
             }
             return false;
@@ -601,11 +601,11 @@ namespace CustomPropertyHierarchicObject
         {
             ModelObject modelObject = model.SelectModelObject(new Tekla.Structures.Identifier(id));
             var ho = (modelObject as HierarchicObject);
-            if (ho!=null)
+            if (ho != null)
             {
                 if (ho.Definition != null)
                 {
-                    HierarchicDefinition fatherHierarchicDefinition = new HierarchicDefinition();   
+                    HierarchicDefinition fatherHierarchicDefinition = new HierarchicDefinition();
                     fatherHierarchicDefinition.Identifier = ho.Definition.Identifier;
                     if (fatherHierarchicDefinition.Select())
                     {

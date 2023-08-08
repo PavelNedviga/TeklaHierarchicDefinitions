@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using Tekla.Structures.Model;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Tekla.Structures.Model;
 
 namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 {
@@ -36,7 +36,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         #region Cвойства
         public string Name
         {
-            get 
+            get
             {
                 if (_hierarchicObject.Father != null)
                 {
@@ -47,7 +47,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                 }
                 return _hierarchicObject.Name;
             }
-            internal set 
+            internal set
             {
                 if (_hierarchicObject.Father == null)
                 {
@@ -84,20 +84,20 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             set { _hierarchicObject = value; }
         }
 
-        public string Father 
+        public string Father
         {
-            get 
+            get
             {
-                if(_hierarchicObject.Father != null)
+                if (_hierarchicObject.Father != null)
                 {
                     return GetFather().Name;
                 }
-                    
+
                 return null;
             }
         }
 
-        public string FatherGUID 
+        public string FatherGUID
         {
             get
             {
@@ -108,7 +108,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                 }
 
                 return "";
-            } 
+            }
         }
 
 
@@ -128,7 +128,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         internal HierarchicObjectInTekla(string name, HierarchicDefinition hierarchicDefinition)
         {
             _hierarchicDefinition = hierarchicDefinition;
-            _hierarchicObject = TeklaDB.CreateHierarchicObject(name , _hierarchicDefinition);
+            _hierarchicObject = TeklaDB.CreateHierarchicObject(name, _hierarchicDefinition);
         }
 
         public HierarchicObjectInTekla()
@@ -153,7 +153,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public bool HierarchicObjectSetAttributes(Dictionary<string,string> input)
+        public bool HierarchicObjectSetAttributes(Dictionary<string, string> input)
         {
             throw new NotImplementedException();
             //_hierarchicObject.SetUserProperty(name,val)
@@ -164,7 +164,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         {
             HierarchicObject.Insert();
             foreach (var obj in input)
-            {                
+            {
                 var pair = (KeyValuePair<string, string>)obj;
                 string strValue = pair.Value;
                 double doubleValue;
@@ -178,7 +178,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                 {
                     HierarchicObject.SetUserProperty(pair.Key, intValue);
                     continue;
-                }                  
+                }
                 if (!strValue.Equals(null))
                     HierarchicObject.SetUserProperty(pair.Key, strValue);
             }
@@ -192,7 +192,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public Dictionary<string,string> HierarchicObjectGetAttributes(List<string> input)
+        public Dictionary<string, string> HierarchicObjectGetAttributes(List<string> input)
         {
             throw new NotImplementedException();
             //return new Dictionary<string, string>();
@@ -214,7 +214,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         /// <param name="input">Значение атрибута</param>
         /// <returns>Значение внесено</returns>
         public bool HierarchicObjectSetAttribute(string name, string input)
-        {            
+        {
             bool res = this.HierarchicObject.SetUserProperty(name, input);
 
             if (res)
@@ -232,7 +232,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                 HierarchicObject hierarchicObject = new HierarchicObject();
                 hierarchicObject.Identifier = _hierarchicObject.Father.Identifier;
                 hierarchicObject.Select();
-                
+
                 if (hierarchicObject.GetUserProperty(name, ref res))
                     return res;
                 return "";
@@ -316,7 +316,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 
             if (res)
             {
-                TeklaDB.model.CommitChanges(HierarchicObject.Name + ": property "+ name + " is set to " + input);
+                TeklaDB.model.CommitChanges(HierarchicObject.Name + ": property " + name + " is set to " + input);
             }
             return res;
         }
@@ -345,7 +345,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             }
 
             bool res = TeklaDB.model.CommitChanges(HierarchicObject.Name + ": property " + name + " is set to " + input);
-            
+
             return res;
         }
 
@@ -368,7 +368,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                 {
                     GetAllAssemblyParts(assembly, ref hsParts);
                 }
-            }            
+            }
             foreach (Part part in hsParts)
             {
                 if (part != null)
@@ -393,7 +393,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     GetAllAssemblyParts(mo as Assembly, ref hs);
                 }
             }
-            
+
         }
 
         public bool PartsSetAttr(string name, int input)
@@ -418,16 +418,16 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         {
             var children = HierarchicObject.GetChildren();
             bool res = false;
-            
+
             foreach (var ch in children)
             {
                 var part = (Part)ch;
                 if (part != null)
                 {
-                    res = TeklaDB.SetProfile(part,profile);
+                    res = TeklaDB.SetProfile(part, profile);
                 }
             }
-            
+
             if (res)
             {
                 res = TeklaDB.model.CommitChanges("7");
@@ -475,7 +475,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 
         internal void DeleteHierarchicObject()
         {
-            if(this._hierarchicObject.Father != null)
+            if (this._hierarchicObject.Father != null)
             {
                 var fatherHO = GetFather();
                 fatherHO.HierarchicChildren.Remove(_hierarchicObject);
@@ -534,7 +534,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         }
 
 
-        
+
 
         /// <summary>
         /// Выдает GUID иерархического объекта
@@ -550,9 +550,9 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             get
             {
                 return _hierarchicObject.Identifier;
-            }            
+            }
         }
-        
+
         public Tekla.Structures.Identifier GetFatherHOID
         {
             get
@@ -590,7 +590,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         internal void GetSelectedModedlObjects()
         {
             var moenum = _hierarchicObject.GetChildren();
-            ArrayList partList = new ArrayList() {};
+            ArrayList partList = new ArrayList() { };
 
             if (moenum != null)
             {
@@ -618,8 +618,8 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         }
 
         internal bool SetPropertiesForAttachingParts(
-            string mark, 
-            string profile, 
+            string mark,
+            string profile,
             string position,
             string m,
             string m_start_reverse,
@@ -629,28 +629,29 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             int endMomentConnection,
             int startFrictionConnection,
             int endFrictionConnection,
-            string n, 
+            string n,
             string n_end,
             string n_start_min,
             string n_end_min,
             string n_summary,
-            string q, 
+            string q,
             string q_end,
             string q_min,
             string q_end_min,
             string q_summary,
-            string material, 
+            string material,
             string notes = "",
             int isSimple = -1,
             int emptyRowsNumber = 0,
             int crossSectionOnOtherList = -1,
             string classificator = "40000",
             string album = "unset",
-            string category = "")
+            string category = "",
+            int rotNotAllowed = 0)
         {
             AllAssemblyPartsSetAttr("RU_BOM_CTG", category);
             return TeklaDB.InheritPropsFromHierarchicObjectToSelectedParts(
-                _hierarchicObject, 
+                _hierarchicObject,
                 mark,
                 profile,
                 position,
@@ -678,7 +679,8 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                 emptyRowsNumber,
                 crossSectionOnOtherList,
                 classificator,
-                album);
+                album,
+                rotNotAllowed);
         }
 
 
@@ -711,7 +713,8 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             int crossSectionOnOtherList = -1,
             string classificator = "40000",
             string album = "unset",
-            string category = "")
+            string category = "",
+            int rotNotAllowed = -1)
         {
             AllAssemblyPartsSetAttr("RU_BOM_CTG", category);
             return TeklaDB.InheritPropsFromHierarchicObjectToAssociatedParts(
@@ -743,7 +746,8 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                 emptyRowsNumber,
                 crossSectionOnOtherList,
                 classificator,
-                album);
+                album,
+                rotNotAllowed);
         }
 
         internal bool AttachSelectedModedlObjects()

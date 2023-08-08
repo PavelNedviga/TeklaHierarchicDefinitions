@@ -1,29 +1,28 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Tekla.Structures.Drawing;
-using System.Collections;
-using System.Linq;
-using System.Collections.Generic;
-using System;
-using System.IO;
-using System.Reflection;
-using TeklaHierarchicDefinitions.TeklaAPIUtils;
-using Tekla.Structures.Model;
-using System.IO;
-using CsvHelper;
-using System.Globalization;
+﻿using CsvHelper;
 using CsvHelper.Configuration;
-using System.Threading.Tasks;
 using CsvHelper.Configuration.Attributes;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
+using Tekla.Structures.Drawing;
+using Tekla.Structures.Model;
+using TeklaHierarchicDefinitions.TeklaAPIUtils;
 
 namespace TeklaHierarchicDefinitions.Models
 {
+
     public class DrawingManipulator : INotifyPropertyChanged
     {
         [Ignore]
-        internal DrawingEnvelop Drawing { get; set; } = new DrawingEnvelop(); 
+        internal DrawingEnvelop Drawing { get; set; } = new DrawingEnvelop();
 
         [Ignore]
         public string Mark
@@ -241,12 +240,12 @@ namespace TeklaHierarchicDefinitions.Models
                 OnPropertyChanged();
             }
         }
-        
+
         [Name("Лист")]
         [Index(12)]
         public string List
         {
-            get 
+            get
             {
                 if (Drawing.Name.Length == 0)
                     return " ";
@@ -288,7 +287,7 @@ namespace TeklaHierarchicDefinitions.Models
             get
             {
                 string[] vs = { Title1, Title2, Title3 };
-                return string.Join(" ",vs);
+                return string.Join(" ", vs);
             }
         }
 
@@ -547,7 +546,7 @@ namespace TeklaHierarchicDefinitions.Models
 
         [Name("Дата утверждения чертежа")]
         [Index(27)]
-        public string DrawingDate        
+        public string DrawingDate
         {
             get
             {
@@ -568,7 +567,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var propInfos = GetType().GetProperties().Where(n=>n.Name != "Tooltip").Select(t => t.Name + " : " + t.GetValue(this, null)).ToList();
+                var propInfos = GetType().GetProperties().Where(n => n.Name != "Tooltip").Select(t => t.Name + " : " + t.GetValue(this, null)).ToList();
                 return string.Join("\r\n", propInfos);
             }
         }
@@ -614,7 +613,7 @@ namespace TeklaHierarchicDefinitions.Models
 
         internal class DrawingEnvelop
         {
-            public DrawingEnvelop()  {}
+            public DrawingEnvelop() { }
 
             public DrawingEnvelop(Drawing myDrawing)
             {
@@ -628,16 +627,16 @@ namespace TeklaHierarchicDefinitions.Models
             private string title2;
             private string title3;
 
-            public string Mark 
-            { 
-                get 
+            public string Mark
+            {
+                get
                 {
                     if (Drawing != null)
                         return Drawing.Mark;
                     else
                         return mark;
-                } 
-            } 
+                }
+            }
             public string Name
             {
                 get
@@ -654,10 +653,10 @@ namespace TeklaHierarchicDefinitions.Models
                         Drawing.Name = value;
                         Drawing.Modify();
                         TeklaDB.model.CommitChanges();
-                    }                        
+                    }
                     else
                         name = value;
-                    
+
                 }
             }
 
@@ -741,8 +740,8 @@ namespace TeklaHierarchicDefinitions.Models
             internal bool GetUserProperty(string v, ref string s)
             {
                 if (Drawing != null)
-                {                    
-                    return Drawing.GetUserProperty(v, ref s);
+                {
+                    return Drawing.GetUserPropertyWrapper(v, ref s);
                 }
                 else
                 {
@@ -763,7 +762,7 @@ namespace TeklaHierarchicDefinitions.Models
             {
                 if (Drawing != null & value != null)
                 {
-                    Drawing.SetUserProperty(v, value);
+                    Drawing.SetUserPropertyWrapper(v, value);
                 }
                 else
                 {
@@ -815,7 +814,8 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         public static PropertyFillers DrawingsAlbum
-        { get
+        {
+            get
             {
                 var objectList = DrawingGroup.DrawingManipulators.Cast<object>().ToList();
                 return new PropertyFillers() { InternalPropertyName = "Album", PropertyName = "Комплект", ReferencedObjectList = objectList };
@@ -842,7 +842,7 @@ namespace TeklaHierarchicDefinitions.Models
             }
         }
 
-        
+
         public static PropertyFillers ListNumber
         {
             get
@@ -862,7 +862,7 @@ namespace TeklaHierarchicDefinitions.Models
                 }
             }
         }
-                
+
         public static PropertyFillers ListsInAlbumTotal
         {
             get
@@ -936,7 +936,7 @@ namespace TeklaHierarchicDefinitions.Models
             }
         }
 
-        
+
         public static ObservableCollection<PropertyFillers> TitleFillerList
         {
             get
@@ -956,7 +956,7 @@ namespace TeklaHierarchicDefinitions.Models
 
         public static PropertyFillers ModelCode
         {
-            get  
+            get
             {
                 var objectList = DrawingGroup.ModelManipulators.Cast<object>().ToList();
                 return new PropertyFillers() { InternalPropertyName = "ProjectCode", PropertyName = "Код проекта", ReferencedObjectList = objectList };
@@ -985,7 +985,7 @@ namespace TeklaHierarchicDefinitions.Models
                 //res.Add(new PropertyFillers() { InternalPropertyName = "DesignerCompany1", PropertyName = "Компания строка 1", ReferencedObjectList = objectList });
                 //res.Add(new PropertyFillers() { InternalPropertyName = "DesignerCompany2", PropertyName = "Компания строка 2", ReferencedObjectList = objectList });
                 //res.Add(new PropertyFillers() { InternalPropertyName = "DesignerCompany3", PropertyName = "Компания строка 3", ReferencedObjectList = objectList });
-                
+
                 return res;
             }
         }
@@ -999,42 +999,61 @@ namespace TeklaHierarchicDefinitions.Models
                 if (Filler == PropertyRooting.Model)
                 {
                     var objectList = DrawingGroup.ModelManipulators.Cast<object>().ToList();
-                    res.Add(new PropertyFillers() { 
-                        InternalPropertyName = "ru_6", PropertyName = "Строка в модели: 1",
-                        InternalPropertyName2 = "ru_6_fam", PropertyName2 = "Фамилия: 1",
-                        ReferencedObjectList = objectList });
+                    res.Add(new PropertyFillers()
+                    {
+                        InternalPropertyName = "ru_6",
+                        PropertyName = "Строка в модели: 1",
+                        InternalPropertyName2 = "ru_6_fam",
+                        PropertyName2 = "Фамилия: 1",
+                        ReferencedObjectList = objectList
+                    });
 
-                    res.Add(new PropertyFillers() { InternalPropertyName = "ru_7", 
+                    res.Add(new PropertyFillers()
+                    {
+                        InternalPropertyName = "ru_7",
                         PropertyName = "Строка в модели: 2",
-                        InternalPropertyName2 = "ru_7_fam",  PropertyName2 = "Фамилия: 2",
-                        ReferencedObjectList = objectList });
+                        InternalPropertyName2 = "ru_7_fam",
+                        PropertyName2 = "Фамилия: 2",
+                        ReferencedObjectList = objectList
+                    });
 
-                    res.Add(new PropertyFillers() { 
-                        InternalPropertyName = "ru_8", 
+                    res.Add(new PropertyFillers()
+                    {
+                        InternalPropertyName = "ru_8",
                         PropertyName = "Строка в модели: 3",
-                        InternalPropertyName2 = "ru_8_fam",  PropertyName2 = "Фамилия: 3",
-                        ReferencedObjectList = objectList });
+                        InternalPropertyName2 = "ru_8_fam",
+                        PropertyName2 = "Фамилия: 3",
+                        ReferencedObjectList = objectList
+                    });
 
-                    res.Add(new PropertyFillers() { 
-                        InternalPropertyName = "ru_9", 
+                    res.Add(new PropertyFillers()
+                    {
+                        InternalPropertyName = "ru_9",
                         PropertyName = "Строка в модели: 4",
                         InternalPropertyName2 = "ru_9_fam",
                         PropertyName2 = "Фамилия: 4",
-                        ReferencedObjectList = objectList });
+                        ReferencedObjectList = objectList
+                    });
 
-                    res.Add(new PropertyFillers() { 
-                        InternalPropertyName = "ru_10", 
+                    res.Add(new PropertyFillers()
+                    {
+                        InternalPropertyName = "ru_10",
                         PropertyName = "Строка в модели: 5",
-                        InternalPropertyName2 = "ru_10_fam",PropertyName2 = "Фамилия: 5",
-                        ReferencedObjectList = objectList });
+                        InternalPropertyName2 = "ru_10_fam",
+                        PropertyName2 = "Фамилия: 5",
+                        ReferencedObjectList = objectList
+                    });
 
-                    res.Add(new PropertyFillers() { 
-                        InternalPropertyName = "ru_11", 
+                    res.Add(new PropertyFillers()
+                    {
+                        InternalPropertyName = "ru_11",
                         PropertyName = "Строка в модели: 6",
-                        InternalPropertyName2 = "ru_11_fam", PropertyName2 = "Фамилия: 6",
-                        ReferencedObjectList = objectList });
+                        InternalPropertyName2 = "ru_11_fam",
+                        PropertyName2 = "Фамилия: 6",
+                        ReferencedObjectList = objectList
+                    });
                 }
-                else if(Filler == PropertyRooting.Album)
+                else if (Filler == PropertyRooting.Album)
                 {
                     var objectList = DrawingGroup.DrawingManipulators.Cast<object>().ToList();
                     res.Add(new PropertyFillers()
@@ -1103,10 +1122,10 @@ namespace TeklaHierarchicDefinitions.Models
                     //res.Add(new PropertyFillers() { InternalPropertyName = "ru_11", PropertyName = "Должность в альбоме: 6", ReferencedObjectList = objectList });
                     //res.Add(new PropertyFillers() { InternalPropertyName = "ru_11_fam", PropertyName = "Фамилия в альбоме: 6", ReferencedObjectList = objectList });
                 }
-                else if(Filler == PropertyRooting.Drawing)
+                else if (Filler == PropertyRooting.Drawing)
                 {
                     var objectList = DrawingGroup.DrawingManipulators.Cast<object>().ToList();
-                    if(objectList.Count > 0)
+                    if (objectList.Count > 0)
                     {
 
                         res.Add(new PropertyFillers()
@@ -1175,7 +1194,7 @@ namespace TeklaHierarchicDefinitions.Models
                         //res.Add(new PropertyFillers() { InternalPropertyName = "ru_11", PropertyName = "Должность в чертеже: 6", ReferencedObjectList = objectList });
                         //res.Add(new PropertyFillers() { InternalPropertyName = "ru_11_fam", PropertyName = "Фамилия в чертеже: 6", ReferencedObjectList = objectList });
                     }
-                    }
+                }
 
                 else
                 {
@@ -1189,17 +1208,17 @@ namespace TeklaHierarchicDefinitions.Models
             try
             {
                 var project = TeklaDB.model.GetInfo();
-                var tt = Path.Combine(project.ModelPath, "#"+Path.GetFileNameWithoutExtension(project.ModelName));
+                var tt = Path.Combine(project.ModelPath, "#" + Path.GetFileNameWithoutExtension(project.ModelName));
                 var path = $"{tt}.csv";
-                using (var writer = new StreamWriter(path,false, Encoding.GetEncoding(1251)))
+                using (var writer = new StreamWriter(path, false, Encoding.GetEncoding(1251)))
                 {
-                    var config = new CsvConfiguration(CultureInfo.CurrentCulture) 
-                    { 
-                        ShouldQuote = args => false, 
-                        Delimiter = ";", 
+                    var config = new CsvConfiguration(CultureInfo.CurrentCulture)
+                    {
+                        ShouldQuote = args => false,
+                        Delimiter = ";",
                         Encoding = Encoding.GetEncoding(1251)
                     };
-                    using (var csv = new CsvWriter(writer, config) )
+                    using (var csv = new CsvWriter(writer, config))
                     {
                         csv.Context.RegisterClassMap<DrawingManipulatorMap>();
 
@@ -1216,21 +1235,21 @@ namespace TeklaHierarchicDefinitions.Models
             catch (Exception ex)
             {
                 return false;
-            }           
+            }
         }
 
         public static PropertyRooting Filler
         {
-            get => filler; 
+            get => filler;
             set
-            { 
+            {
                 filler = value;
                 OnGlobalPropertyChanged("PropertyFillersList");
                 OnGlobalPropertyChanged("AlbumDesigners");
             }
         }
 
-        public static ObservableCollection<PropertyFillers> CompanyNamePropertyFillers 
+        public static ObservableCollection<PropertyFillers> CompanyNamePropertyFillers
         {
             get
             {
@@ -1241,7 +1260,7 @@ namespace TeklaHierarchicDefinitions.Models
                 res.Add(new PropertyFillers() { InternalPropertyName = "DesignerCompany3", PropertyName = "Компания строка 3", ReferencedObjectList = objectList });
 
                 return res;
-                
+
             }
         }
 
@@ -1274,7 +1293,7 @@ namespace TeklaHierarchicDefinitions.Models
                     using (var csv = new CsvReader(reader, config))
                     {
                         var rc = new DrawingManipulator();
-                        var records = csv.GetRecords<DrawingManipulator>().GroupBy(t=>t.Complex).Select(t=>t.FirstOrDefault());
+                        var records = csv.GetRecords<DrawingManipulator>().GroupBy(t => t.Complex).Select(t => t.FirstOrDefault());
                         BorrowedListFromCsv.Clear();
                         BorrowedListFromCsv = records.ToList();
                     }
@@ -1286,13 +1305,13 @@ namespace TeklaHierarchicDefinitions.Models
         #endregion
     }
 
-    public class ModelManipulator  : INotifyPropertyChanged
+    public class ModelManipulator : INotifyPropertyChanged
     {
         public static ProjectInfo projectInfo = TeklaDB.model.GetProjectInfo();
         public string Object
         {
             get
-            {                
+            {
                 return projectInfo.Object;
             }
             set
@@ -1314,7 +1333,7 @@ namespace TeklaHierarchicDefinitions.Models
             set
             {
                 projectInfo.ProjectNumber = value;
-                projectInfo.SetUserProperty("ru_shifr", value);
+                projectInfo.SetUserPropertyWrapper("ru_shifr", value);
                 projectInfo.Modify();
                 TeklaDB.model.CommitChanges();
                 OnPropertyChanged();
@@ -1356,12 +1375,12 @@ namespace TeklaHierarchicDefinitions.Models
             get
             {
                 var s = string.Empty;
-                projectInfo.GetUserProperty("ru_nazvanie_org_1", ref s);
+                projectInfo.GetUserPropertyWrapper("ru_nazvanie_org_1", ref s);
                 return s;
             }
             set
             {
-                projectInfo.SetUserProperty("ru_nazvanie_org_1", value);
+                projectInfo.SetUserPropertyWrapper("ru_nazvanie_org_1", value);
                 projectInfo.Modify();
                 OnPropertyChanged();
             }
@@ -1372,12 +1391,12 @@ namespace TeklaHierarchicDefinitions.Models
             get
             {
                 var s = string.Empty;
-                projectInfo.GetUserProperty("ru_nazvanie_org_2", ref s);
+                projectInfo.GetUserPropertyWrapper("ru_nazvanie_org_2", ref s);
                 return s;
             }
             set
             {
-                projectInfo.SetUserProperty("ru_nazvanie_org_2", value);
+                projectInfo.SetUserPropertyWrapper("ru_nazvanie_org_2", value);
                 projectInfo.Modify();
                 OnPropertyChanged();
             }
@@ -1388,12 +1407,12 @@ namespace TeklaHierarchicDefinitions.Models
             get
             {
                 var s = string.Empty;
-                projectInfo.GetUserProperty("ru_nazvanie_org_3", ref s);
+                projectInfo.GetUserPropertyWrapper("ru_nazvanie_org_3", ref s);
                 return s;
             }
             set
             {
-                projectInfo.SetUserProperty("ru_nazvanie_org_3", value);
+                projectInfo.SetUserPropertyWrapper("ru_nazvanie_org_3", value);
                 projectInfo.Modify();
                 OnPropertyChanged();
             }
@@ -1404,14 +1423,14 @@ namespace TeklaHierarchicDefinitions.Models
             get
             {
                 var s = string.Empty;
-                projectInfo.GetUserProperty("ru_6", ref s);
+                projectInfo.GetUserPropertyWrapper("ru_6", ref s);
                 return s;
             }
             set
             {
-                projectInfo.SetUserProperty("ru_6", value);
+                projectInfo.SetUserPropertyWrapper("ru_6", value);
                 projectInfo.Modify();
-                OnPropertyChanged();                
+                OnPropertyChanged();
             }
         }
 
@@ -1420,12 +1439,12 @@ namespace TeklaHierarchicDefinitions.Models
             get
             {
                 var s = string.Empty;
-                projectInfo.GetUserProperty("ru_6_fam", ref s);
+                projectInfo.GetUserPropertyWrapper("ru_6_fam", ref s);
                 return s;
             }
             set
             {
-                projectInfo.SetUserProperty("ru_6_fam", value);
+                projectInfo.SetUserPropertyWrapper("ru_6_fam", value);
                 projectInfo.Modify();
                 OnPropertyChanged();
             }
@@ -1436,12 +1455,12 @@ namespace TeklaHierarchicDefinitions.Models
             get
             {
                 var s = string.Empty;
-                projectInfo.GetUserProperty("ru_7", ref s);
+                projectInfo.GetUserPropertyWrapper("ru_7", ref s);
                 return s;
             }
             set
             {
-                projectInfo.SetUserProperty("ru_7", value);
+                projectInfo.SetUserPropertyWrapper("ru_7", value);
                 projectInfo.Modify();
                 OnPropertyChanged();
             }
@@ -1452,12 +1471,12 @@ namespace TeklaHierarchicDefinitions.Models
             get
             {
                 var s = string.Empty;
-                projectInfo.GetUserProperty("ru_7_fam", ref s);
+                projectInfo.GetUserPropertyWrapper("ru_7_fam", ref s);
                 return s;
             }
             set
             {
-                projectInfo.SetUserProperty("ru_7_fam", value);
+                projectInfo.SetUserPropertyWrapper("ru_7_fam", value);
                 projectInfo.Modify();
                 OnPropertyChanged();
             }
@@ -1468,12 +1487,12 @@ namespace TeklaHierarchicDefinitions.Models
             get
             {
                 var s = string.Empty;
-                projectInfo.GetUserProperty("ru_8", ref s);
+                projectInfo.GetUserPropertyWrapper("ru_8", ref s);
                 return s;
             }
             set
             {
-                projectInfo.SetUserProperty("ru_8", value);
+                projectInfo.SetUserPropertyWrapper("ru_8", value);
                 projectInfo.Modify();
                 OnPropertyChanged();
             }
@@ -1484,12 +1503,12 @@ namespace TeklaHierarchicDefinitions.Models
             get
             {
                 var s = string.Empty;
-                projectInfo.GetUserProperty("ru_8_fam", ref s);
+                projectInfo.GetUserPropertyWrapper("ru_8_fam", ref s);
                 return s;
             }
             set
             {
-                projectInfo.SetUserProperty("ru_8_fam", value);
+                projectInfo.SetUserPropertyWrapper("ru_8_fam", value);
                 projectInfo.Modify();
                 OnPropertyChanged();
             }
@@ -1500,12 +1519,12 @@ namespace TeklaHierarchicDefinitions.Models
             get
             {
                 var s = string.Empty;
-                projectInfo.GetUserProperty("ru_9", ref s);
+                projectInfo.GetUserPropertyWrapper("ru_9", ref s);
                 return s;
             }
             set
             {
-                projectInfo.SetUserProperty("ru_9", value);
+                projectInfo.SetUserPropertyWrapper("ru_9", value);
                 projectInfo.Modify();
                 OnPropertyChanged();
             }
@@ -1516,12 +1535,12 @@ namespace TeklaHierarchicDefinitions.Models
             get
             {
                 var s = string.Empty;
-                projectInfo.GetUserProperty("ru_9_fam", ref s);
+                projectInfo.GetUserPropertyWrapper("ru_9_fam", ref s);
                 return s;
             }
             set
             {
-                projectInfo.SetUserProperty("ru_9_fam", value);
+                projectInfo.SetUserPropertyWrapper("ru_9_fam", value);
                 projectInfo.Modify();
                 OnPropertyChanged();
             }
@@ -1532,12 +1551,12 @@ namespace TeklaHierarchicDefinitions.Models
             get
             {
                 var s = string.Empty;
-                projectInfo.GetUserProperty("ru_10", ref s);
+                projectInfo.GetUserPropertyWrapper("ru_10", ref s);
                 return s;
             }
             set
             {
-                projectInfo.SetUserProperty("ru_10", value);
+                projectInfo.SetUserPropertyWrapper("ru_10", value);
                 projectInfo.Modify();
                 OnPropertyChanged();
             }
@@ -1548,12 +1567,12 @@ namespace TeklaHierarchicDefinitions.Models
             get
             {
                 var s = string.Empty;
-                projectInfo.GetUserProperty("ru_10_fam", ref s);
+                projectInfo.GetUserPropertyWrapper("ru_10_fam", ref s);
                 return s;
             }
             set
             {
-                projectInfo.SetUserProperty("ru_10_fam", value);
+                projectInfo.SetUserPropertyWrapper("ru_10_fam", value);
                 projectInfo.Modify();
                 OnPropertyChanged();
             }
@@ -1564,12 +1583,12 @@ namespace TeklaHierarchicDefinitions.Models
             get
             {
                 var s = string.Empty;
-                projectInfo.GetUserProperty("ru_11", ref s);
+                projectInfo.GetUserPropertyWrapper("ru_11", ref s);
                 return s;
             }
             set
             {
-                projectInfo.SetUserProperty("ru_11", value);
+                projectInfo.SetUserPropertyWrapper("ru_11", value);
                 projectInfo.Modify();
                 OnPropertyChanged();
             }
@@ -1580,12 +1599,12 @@ namespace TeklaHierarchicDefinitions.Models
             get
             {
                 var s = string.Empty;
-                projectInfo.GetUserProperty("ru_11_fam", ref s);
+                projectInfo.GetUserPropertyWrapper("ru_11_fam", ref s);
                 return s;
             }
             set
             {
-                projectInfo.SetUserProperty("ru_11_fam", value);
+                projectInfo.SetUserPropertyWrapper("ru_11_fam", value);
                 projectInfo.Modify();
                 OnPropertyChanged();
             }
@@ -1658,7 +1677,7 @@ namespace TeklaHierarchicDefinitions.Models
             }
             set
             {
-                foreach(var obj in ReferencedObjectList)
+                foreach (var obj in ReferencedObjectList)
                 {
                     PropertyInfo prop = obj.GetType().GetProperty(InternalPropertyName, BindingFlags.Public | BindingFlags.Instance);
                     if (null != prop && prop.CanWrite)
@@ -1676,7 +1695,7 @@ namespace TeklaHierarchicDefinitions.Models
             get
             {
                 object obj = ReferencedObjectList.FirstOrDefault();
-                if(null != obj)
+                if (null != obj)
                 {
                     PropertyInfo prop = obj.GetType().GetProperty(InternalPropertyName2, BindingFlags.Public | BindingFlags.Instance);
                     if (prop.CanRead)

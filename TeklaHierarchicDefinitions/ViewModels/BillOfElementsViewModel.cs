@@ -2,28 +2,21 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Tekla.Structures.Model;
+using Tekla.Structures.Drawing;
 using TeklaHierarchicDefinitions.Models;
 using TeklaHierarchicDefinitions.TeklaAPIUtils;
-using Tekla.Structures.Dialog;
-using Tekla.Structures.Dialog.UIControls;
 using DataGrid = System.Windows.Controls.DataGrid;
-using System.Collections;
-using System.Threading;
-using System.Reflection;
-using System.Diagnostics;
-using System.IO;
-using System.Windows.Threading;
-using Task = System.Threading.Tasks.Task;
-using Tekla.Structures.Drawing;
 using Part = Tekla.Structures.Model.Part;
+using Task = System.Threading.Tasks.Task;
 
 
 namespace TeklaHierarchicDefinitions.ViewModels
@@ -253,16 +246,23 @@ namespace TeklaHierarchicDefinitions.ViewModels
         /// </summary>
         public BillOfElementsViewModel()
         {
-            List<HierarchicObjectInTekla> hierarchicObjectsInTeklas = TeklaDB.GetHierarchicObjectsWithHierarchicDefinitionName(TeklaDB.hierarchicDefinitionElementListName); //TeklaDB.GetAllHierarchicObjectsInTekla();//
-            _billOfElements = BillOfElementsUtils.GetHierarchicObjectsWithHierarchicDefinitionName(hierarchicObjectsInTeklas);
-            buildingFragments = BuildingFragmentUtils.GetBuildingFragmentsWithHierarchicDefinitionFatherName(TeklaDB.hierarchicDefinitionFoundationListName);
-            SelectedSBOMMaterial = selectedSBOMMaterial;
-            AddDrawingInformationToDrawingListTreeView();
-            var path = Path.Combine(TeklaDB.model.GetInfo().ModelPath, "#ClassConversion.csv");
-            if (!File.Exists(path))
+            try
             {
-                var sourcePath = Path.Combine(AssemblyDirectory, "#ClassConversion.csv");
-                File.Copy(sourcePath, path, false);
+                List<HierarchicObjectInTekla> hierarchicObjectsInTeklas = TeklaDB.GetHierarchicObjectsWithHierarchicDefinitionName(TeklaDB.hierarchicDefinitionElementListName); //TeklaDB.GetAllHierarchicObjectsInTekla();//
+                _billOfElements = BillOfElementsUtils.GetHierarchicObjectsWithHierarchicDefinitionName(hierarchicObjectsInTeklas);
+                buildingFragments = BuildingFragmentUtils.GetBuildingFragmentsWithHierarchicDefinitionFatherName(TeklaDB.hierarchicDefinitionFoundationListName);
+                SelectedSBOMMaterial = selectedSBOMMaterial;
+                AddDrawingInformationToDrawingListTreeView();
+                var path = Path.Combine(TeklaDB.model.GetInfo().ModelPath, "#ClassConversion.csv");
+                if (!File.Exists(path))
+                {
+                    var sourcePath = Path.Combine(AssemblyDirectory, "#ClassConversion.csv");
+                    File.Copy(sourcePath, path, false);
+                }
+            }
+            catch(Exception ex) 
+            {
+                MessageBox.Show(ex.StackTrace, ex.Message);
             }
             //RegisterEventHandler();
         }
@@ -1359,14 +1359,15 @@ namespace TeklaHierarchicDefinitions.ViewModels
         #endregion
 
         #region Свойства
-        public CheckResult SelectedCheckResult 
-        { get => selectedCheckResult; 
-            set 
-            { 
-                selectedCheckResult = value; 
+        public CheckResult SelectedCheckResult
+        {
+            get => selectedCheckResult;
+            set
+            {
+                selectedCheckResult = value;
                 OnPropertyChanged("CheckResultsDescription");
                 OnPropertyChanged("CheckResultsObjects");
-            } 
+            }
         }
         public ObservableCollection<CheckResult> CheckResults
         {
@@ -1390,7 +1391,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             get
             {
                 List<string> result = new List<string>();
-                if(SelectedCheckResult != null)
+                if (SelectedCheckResult != null)
                 {
                     result.Add(SelectedCheckResult.GroupError);
                     result.Add(SelectedCheckResult.Error);
@@ -1401,7 +1402,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
 
         public List<string> CheckResultsObjects
         {
-            get => SelectedCheckResult == null? null:SelectedCheckResult.GUIDs;
+            get => SelectedCheckResult == null ? null : SelectedCheckResult.GUIDs;
         }
 
         #endregion

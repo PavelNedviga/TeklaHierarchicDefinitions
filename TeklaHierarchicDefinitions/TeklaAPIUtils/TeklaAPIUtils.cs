@@ -1,20 +1,17 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using NLog;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tekla.Structures.Model;
-using Tekla.Structures.Catalogs;
-using Tekla.Structures;
-using System.Collections.ObjectModel;
-using System.Collections;
-using ctlg = Tekla.Structures.Catalogs;
-using NLog;
-using System.Windows;
 using System.Text.RegularExpressions;
-using Tekla.Structures.Geometry3d;
+using System.Web.UI.WebControls.WebParts;
+using Tekla.Structures;
+using Tekla.Structures.Catalogs;
 using Tekla.Structures.Drawing;
+using Tekla.Structures.Model;
 using ModelObject = Tekla.Structures.Model.ModelObject;
 using Part = Tekla.Structures.Model.Part;
 
@@ -36,11 +33,11 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             hierarchicDefinition.HierarchyType = HierarchicDefinitionTypeEnum.DOT_HIERARCHIC_CUSTOM_TYPE;
             hierarchicDefinition.Father = mainHD;
             hierarchicDefinition.Insert();
-            return hierarchicDefinition;          
+            return hierarchicDefinition;
         }
 
         internal static string hierarchicDefinitionFoundationListName = "Foundation_List";
-        internal static ModelObjectSelector objectSelector =  model.GetModelObjectSelector();
+        internal static ModelObjectSelector objectSelector = model.GetModelObjectSelector();
         public static Tekla.Structures.Model.UI.ModelObjectSelector modelObjectSelector = new Tekla.Structures.Model.UI.ModelObjectSelector();
         private static Logger logger = LogManager.GetCurrentClassLogger();
         internal static CatalogHandler ch = new CatalogHandler();
@@ -89,8 +86,8 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 
         public static List<HierarchicObjectInTekla> GetHierarchicObjectsWithHierarchicDefinitionName(string hierarchicDefinitionName)
         {
-            
-        List<HierarchicObject> ho = new List<HierarchicObject>();
+
+            List<HierarchicObject> ho = new List<HierarchicObject>();
             List<HierarchicDefinition> hd = new List<HierarchicDefinition>();
             ModelObjectEnumerator defHierarchy = model.GetModelObjectSelector().GetAllObjectsWithType(ModelObject.ModelObjectEnum.HIERARCHIC_DEFINITION);
             List<ModelObject> molho = new List<ModelObject>();
@@ -111,7 +108,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                 if (ne is HierarchicObject)
                 {
                     var pos = ne as HierarchicObject;
-                    if(pos.Definition != null)
+                    if (pos.Definition != null)
                     {
                         ho.Add(pos);
                         logger.Trace("Добавлен в коллекцию " + pos.Name + " с идентификатором " + pos.Identifier.ToString() + " и иерархическим определением " + pos.Definition.Name + " : " + pos.Definition.Identifier);
@@ -135,10 +132,10 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                 hierarchicDefinitionIdentifier = hierarchicDefinitions.Select(k => k.Identifier).FirstOrDefault();
             }
 
-            
+
             logger.Trace("Иерархическое определение, которое ищем: " + hierarchicDefinitionIdentifier);
             var hierarchicObjects = ho.Where(t => hierarchicDefinitionIdentifier.Equals(t.Definition.Identifier)).ToList();
-            
+
 
             List<HierarchicObjectInTekla> array = new List<HierarchicObjectInTekla>();
             foreach (var hobj in hierarchicObjects)
@@ -194,7 +191,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 
         public static HierarchicObject CreateHierarchicObject(HierarchicDefinition hierarchicDefinition)
         {
-            HierarchicObject hierarchicObject = new HierarchicObject();            
+            HierarchicObject hierarchicObject = new HierarchicObject();
 
             hierarchicObject.Name = "New_HO";
             hierarchicObject.Definition = hierarchicDefinition;
@@ -218,7 +215,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         internal static HierarchicObject CreateHierarchicObject(HierarchicDefinition hierarchicDefinition, HierarchicObject receivedHierarchicObject)
         {
             HierarchicObject hierarchicObject = new HierarchicObject();
-            
+
             hierarchicObject.Name = "New_HO";
             hierarchicObject.Definition = hierarchicDefinition;
             hierarchicObject.Father = receivedHierarchicObject;
@@ -236,7 +233,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             //rho.Select();
             //rho.HierarchicChildren.Add(hierarchicObject);
             //rho.Modify();
-            
+
             model.CommitChanges();
             return hierarchicObject;
         }
@@ -314,7 +311,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         /// <returns></returns>
         public static HierarchicDefinition GetHierarchicDefinitionWithName(string name, HierarchicDefinition hierarchicDefinition)
         {
-               throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -357,8 +354,8 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     attObj.Add(modelObj);
                 }
                 return attObj;
-            }).Select(x=>x.Identifier).ToHashSet();
-            foreach(ModelObject mo in modelObjectEnumerator)
+            }).Select(x => x.Identifier).ToHashSet();
+            foreach (ModelObject mo in modelObjectEnumerator)
             {
 
                 if (mo is Part)
@@ -367,7 +364,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     //string prelimMark = string.Empty;
                     //part.GetUserProperty("PRELIM_MARK", ref prelimMark);
                     bool result;
-                    bool prefixesEquality = false, materialEquality = false, profileEquality = false, checkedIdentifier=false;
+                    bool prefixesEquality = false, materialEquality = false, profileEquality = false, checkedIdentifier = false;
                     if (material != null)
                         materialEquality = material == part.Material.MaterialString;
                     else
@@ -383,26 +380,26 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                             if (prefix != null)
                             {
                                 var ass = part.GetAssembly();
-                                if(ass != null)
+                                if (ass != null)
                                     prefixesEquality = ass.AssemblyNumber.Prefix == prefix;
                                 else
                                     prefixesEquality = part.AssemblyNumber.Prefix == prefix;
                             }
-                                
+
                             else
                                 prefixesEquality = true;
                             if (prefixesEquality)
                             {
-                                checkedIdentifier = !distinctAttachedModelObjects.Contains(part.Identifier);     
+                                checkedIdentifier = !distinctAttachedModelObjects.Contains(part.Identifier);
                             }
                         }
                     }
-                    result =  checkedIdentifier
+                    result = checkedIdentifier
                     & prefixesEquality
                     //& internalPosEquality
                     & profileEquality
                     & materialEquality;
-                    if(result)
+                    if (result)
                         selectedArray.Add(mo);
                 }
             }
@@ -418,12 +415,12 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         {
             ArrayList components = new ArrayList();
             foreach (var mo in modelObjectSelector.GetSelectedObjects())
-            {                
+            {
                 if (mo is Detail)
                 {
                     components.Add(mo as Detail);
                 }
-            }            
+            }
             return components;
         }
 
@@ -434,7 +431,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             ArrayList arrayList = new ArrayList();
             foreach (ModelObject modelObject in selectedEnum)
             {
-                if(modelObject is Part)
+                if (modelObject is Part)
                     arrayList.Add(modelObject as Part);
             }
             return arrayList;
@@ -456,11 +453,11 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 
             // Ищем все прикрепленные объекты
             List<ModelObject> listOfRuledByHierarchicObjects = new List<ModelObject>();
-            foreach(var @object in hierarchicObjects)
+            foreach (var @object in hierarchicObjects)
             {
                 var hierarchicObject = @object as HierarchicObject;
                 var moe = hierarchicObject.GetChildren();
-                foreach(var mObject in moe)
+                foreach (var mObject in moe)
                 {
                     listOfRuledByHierarchicObjects.Add(mObject as ModelObject);
                 }
@@ -478,7 +475,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 
             return arrayList;
         }
-        
+
         public static bool IsModelObjectBoundToEL(ModelObject mo)
         {
             if (mo.GetHierarchicObjects().GetSize() > 0)
@@ -531,7 +528,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         internal static bool AttachModedlObjects(HierarchicObject hierarchicObject, List<ModelObject> modelObjects)
         {
             var mol = new ArrayList(modelObjects);
-            bool res = hierarchicObject.AddObjects( mol);
+            bool res = hierarchicObject.AddObjects(mol);
             bool ggg = hierarchicObject.Modify();
             var gg = hierarchicObject.GetChildren();
             return ggg;
@@ -574,6 +571,12 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             return hierarchicObject.RemoveObjects(modelObjects);
         }
 
+        public static string GetUserProperty(this Part part)
+        {
+            var profileType = string.Empty;
+            part.GetUserProperty("PROFILE_TYPE", ref profileType);
+            return profileType;
+        }
 
         internal static bool RemoveSelectedModedlObjects(HierarchicObject hierarchicObject)
         {
@@ -588,8 +591,8 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     {
                         part.Class = "1";
                         part.AssemblyNumber.Prefix = "Б";
-                        part.SetUserProperty("Album", "");
-                        part.SetUserProperty("PRELIM_MARK", "");
+                        part.SetUserProperty(UDANameConverter.ToTeklaProp("Album"), "");
+                        part.SetUserProperty(UDANameConverter.ToTeklaProp("PRELIM_MARK"), "");
                         part.Modify();
                     }
                 }
@@ -602,7 +605,9 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         public static string GetPropertyStr(ModelObject @object, string prop)
         {
             string result = string.Empty;
-            if (@object.GetUserProperty(prop, ref result))
+            if (@object.GetUserProperty(
+                UDANameConverter.ToTeklaProp(prop), 
+                ref result))
                 return result;
             return "";
         }
@@ -610,9 +615,12 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         public static bool SetPropertyStr(ModelObject @object, string prop, string val)
         {
             //HierarchicObject ho = @object as HierarchicObject;
-            bool res = @object.SetUserProperty(prop, val);
+            bool res = @object.SetUserProperty(
+                UDANameConverter.ToTeklaProp(prop), 
+                val);
 
-            if (res) {
+            if (res)
+            {
                 @object.Modify();
                 //model.CommitChanges();
             }
@@ -624,7 +632,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         {
             //HierarchicObject ho = @object as HierarchicObject;
 
-            bool res = @object.SetUserProperty(prop, val);
+            bool res = @object.SetUserProperty(UDANameConverter.ToTeklaProp(prop), val);
 
             if (res)
             {
@@ -648,7 +656,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 
             string profileType = string.Empty;
             var rs = part.GetReportProperty("PROFILE_TYPE", ref profileType);
-            if(profile.Length > 0)
+            if (profile.Length > 0)
             {
                 if (part is ContourPlate)
                 {
@@ -688,11 +696,11 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         }
 
         internal static bool InheritPropsFromHierarchicObjectToSelectedParts(
-            HierarchicObject hierarchicObject, 
-            string mark, 
-            string profile, 
+            HierarchicObject hierarchicObject,
+            string mark,
+            string profile,
             string position,
-            string m, 
+            string m,
             string m_start_reverse,
             string m_end,
             string m_end_reverse,
@@ -700,7 +708,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             int endMomentConnection,
             int startFrictionConnection,
             int endFrictionConnection,
-            string n, 
+            string n,
             string n_end,
             string n_start_min,
             string n_end_min,
@@ -710,22 +718,23 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             string q_min,
             string q_end_min,
             string q_summary,
-            string material, 
+            string material,
             string notes,
             int isSimple,
-            int emptyRowsNumber, 
-            int crossSectionOnOtherList, 
-            string classificator, 
-            string album)
+            int emptyRowsNumber,
+            int crossSectionOnOtherList,
+            string classificator,
+            string album,
+            int rotNotAllowed)
         {
             bool res = false;
             ArrayList arrayList = GetSelectedModelObjects();
-            
+
             foreach (var @object in arrayList)
             {
                 Part part = @object as Part;
                 if (part != null)
-                {                    
+                {
                     string patternPlate = @"^\D*\d+";
 
                     // Instantiate the regular expression object.
@@ -737,7 +746,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
 
                     part.AssemblyNumber.Prefix = mark;
                     string profileType = string.Empty;
-                    var rs = part.GetReportProperty("PROFILE_TYPE", ref profileType);
+                    var rs = part.GetReportProperty(UDANameConverter.ToTeklaProp("PROFILE_TYPE"), ref profileType);
                     if (part is ContourPlate)
                     {
                         Match ms = r.Match(profile);
@@ -756,59 +765,59 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     }
 
                     part.Class = classificator;
-                    part.SetUserProperty("PRELIM_MARK", position);
-                    
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("PRELIM_MARK"), position);
+
                     string moment;
                     if (m == m_end)
                         moment = m;
                     else
                         moment = m + "/" + m_end;
-                    part.SetUserProperty("moment_M", moment);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("moment_M"), moment);
                     double result;
                     Double.TryParse(m, out result);
-                    part.SetUserProperty("momentY1", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("momentY1"), result * 1000);
                     Double.TryParse(m_start_reverse, out result);
-                    part.SetUserProperty("momentRY1", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("momentRY1"), result * 1000);
                     Double.TryParse(m_end, out result);
-                    part.SetUserProperty("momentY2", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("momentY2"), result * 1000);
                     Double.TryParse(m_end_reverse, out result);
-                    part.SetUserProperty("momentRY2", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("momentRY2"), result * 1000);
 
 
-                    part.SetUserProperty("START_MOMENT_CONN", startMomentConnection);
-                    part.SetUserProperty("END_MOMENT_CONN", endMomentConnection);
-                    part.SetUserProperty("START_FRICT_CONN", startFrictionConnection);
-                    part.SetUserProperty("END_FRICT_CONN", endFrictionConnection);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("START_MOMENT_CONN"), startMomentConnection);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("END_MOMENT_CONN"), endMomentConnection);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("START_FRICT_CONN"), startFrictionConnection);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("END_FRICT_CONN"), endFrictionConnection);
 
-                    part.SetUserProperty("usilie_N", n_summary);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("usilie_N"), n_summary);
                     Double.TryParse(n, out result);
-                    part.SetUserProperty("axial1", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("axial1"), result * 1000);
                     Double.TryParse(n_end, out result);
-                    part.SetUserProperty("axial2", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("axial2"), result * 1000);
                     Double.TryParse(n_start_min, out result);
-                    part.SetUserProperty("axialcomp1", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("axialcomp1"), result * 1000);
                     Double.TryParse(n_end_min, out result);
-                    part.SetUserProperty("axialcomp2", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("axialcomp2"), result * 1000);
 
 
-                    part.SetUserProperty("reakciya_A", q_summary);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("reakciya_A"), q_summary);
                     Double.TryParse(q, out result);
-                    part.SetUserProperty("shearZ1", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("shearZ1"), result * 1000);
                     Double.TryParse(q_end, out result);
-                    part.SetUserProperty("shearZ2", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("shearZ2"), result * 1000);
                     Double.TryParse(q_min, out result);
-                    part.SetUserProperty("shear1", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("shear1"), result * 1000);
                     Double.TryParse(q_end_min, out result);
-                    part.SetUserProperty("shear2", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("shear2"), result * 1000);
 
                     part.Material.MaterialString = material;
-                    part.SetUserProperty("prim_vedomost", notes);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("prim_vedomost"), notes);
 
-                    part.SetUserProperty("slozhnoe_sechenie", isSimple);
-                    part.SetUserProperty("pustykh_strok", emptyRowsNumber);
-                    part.SetUserProperty("ru_slozh_sech_list", crossSectionOnOtherList);
-                    part.SetUserProperty("Album", album);
-
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("slozhnoe_sechenie"), isSimple);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("pustykh_strok"), emptyRowsNumber);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("ru_slozh_sech_list"), crossSectionOnOtherList);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("Album"), album);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("ROT_NOT_ALLOWED"), album);
 
                     res = part.Modify();
                 }
@@ -834,17 +843,21 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         {
             Part borrowedPart = GetSelectedModelObjects().ToArray().SkipWhile(x => !(x is Part)).Cast<Part>().FirstOrDefault();
             Hashtable hashtable = new Hashtable();
-            ArrayList stringNames = new ArrayList() { "PRELIM_MARK", "START_FRICT_CONN", "END_FRICT_CONN", "ROT_NOT_ALLOWED","MATERIAL", "PROFILE", "ASSEMBLY.PREFIX", "prim_vedomost", "RU_BOM_CTG" };
+            ArrayList stringNames = new ArrayList() { "PRELIM_MARK", "START_FRICT_CONN", "END_FRICT_CONN", "ROT_NOT_ALLOWED", "MATERIAL", "PROFILE", "ASSEMBLY.PREFIX", "prim_vedomost", "RU_BOM_CTG" };
             ArrayList doubleNames = new ArrayList() { "momentY1", "momentY2", "momentZ1", "momentZ2", "axial1", "axial2", "axialcomp1", "axialcomp2", "shearZ1", "shearZ2", "shear1", "shear2" };
-            ArrayList integerNames = new ArrayList() {};
-            borrowedPart.GetAllReportProperties(stringNames, doubleNames, integerNames, ref hashtable);
+            ArrayList integerNames = new ArrayList() { };
+            borrowedPart.GetAllReportProperties(
+                UDANameConverter.ToTeklaProp(stringNames),
+                UDANameConverter.ToTeklaProp(doubleNames),
+                UDANameConverter.ToTeklaProp(integerNames), 
+                ref hashtable);
             return hashtable;
         }
 
         internal static bool InheritPropsFromHierarchicObjectToAssociatedParts(
-            HierarchicObject hierarchicObject, 
-            string mark, 
-            string profile, 
+            HierarchicObject hierarchicObject,
+            string mark,
+            string profile,
             string position,
             string m,
             string m_start_reverse,
@@ -864,13 +877,14 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             string q_min,
             string q_end_min,
             string q_summary,
-            string material, 
+            string material,
             string notes,
             int isSimple,
-            int emptyRowsNumber, 
-            int crossSectionOnOtherList, 
-            string classificator, 
-            string album)
+            int emptyRowsNumber,
+            int crossSectionOnOtherList,
+            string classificator,
+            string album,
+            int rotNotAllowed)
         {
             bool res = false;
 
@@ -915,57 +929,58 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     }
                     part.Class = classificator;
                     part.Modify();
-                    part.SetUserProperty("PRELIM_MARK", position);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("PRELIM_MARK"), position);
 
                     string moment;
                     if (m == m_end)
                         moment = m;
                     else
                         moment = m + "/" + m_end;
-                    part.SetUserProperty("moment_M", moment);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("moment_M"), moment);
                     double result;
                     Double.TryParse(m, out result);
-                    part.SetUserProperty("momentY1", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("momentY1"), result * 1000);
                     Double.TryParse(m_start_reverse, out result);
-                    part.SetUserProperty("momentRY1", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("momentRY1"), result * 1000);
                     Double.TryParse(m_end, out result);
-                    part.SetUserProperty("momentY2", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("momentY2"), result * 1000);
                     Double.TryParse(m_end_reverse, out result);
-                    part.SetUserProperty("momentRY2", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("momentRY2"), result * 1000);
 
 
-                    part.SetUserProperty("START_MOMENT_CONN", startMomentConnection);
-                    part.SetUserProperty("END_MOMENT_CONN", endMomentConnection);
-                    part.SetUserProperty("START_FRICT_CONN", startFrictionConnection);
-                    part.SetUserProperty("END_FRICT_CONN", endFrictionConnection);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("START_MOMENT_CONN"), startMomentConnection);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("END_MOMENT_CONN"), endMomentConnection);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("START_FRICT_CONN"), startFrictionConnection);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("END_FRICT_CONN"), endFrictionConnection);
 
-                    part.SetUserProperty("usilie_N", n_summary);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("usilie_N"), n_summary);
                     Double.TryParse(n, out result);
-                    part.SetUserProperty("axial1", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("axial1"), result * 1000);
                     Double.TryParse(n_end, out result);
-                    part.SetUserProperty("axial2", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("axial2"), result * 1000);
                     Double.TryParse(n_start_min, out result);
-                    part.SetUserProperty("axialcomp1", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("axialcomp1"), result * 1000);
                     Double.TryParse(n_end_min, out result);
-                    part.SetUserProperty("axialcomp2", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("axialcomp2"), result * 1000);
 
 
-                    part.SetUserProperty("reakciya_A", q_summary);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("reakciya_A"), q_summary);
                     Double.TryParse(q, out result);
-                    part.SetUserProperty("shearZ1", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("shearZ1"), result * 1000);
                     Double.TryParse(q_end, out result);
-                    part.SetUserProperty("shearZ2", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("shearZ2"), result * 1000);
                     Double.TryParse(q_min, out result);
-                    part.SetUserProperty("shear1", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("shear1"), result * 1000);
                     Double.TryParse(q_end_min, out result);
-                    part.SetUserProperty("shear2", result * 1000);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("shear2"), result * 1000);
 
-                    part.SetUserProperty("prim_vedomost", notes);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("prim_vedomost"), notes);
 
-                    part.SetUserProperty("slozhnoe_sechenie", isSimple);
-                    part.SetUserProperty("pustykh_strok", emptyRowsNumber);
-                    part.SetUserProperty("ru_slozh_sech_list", crossSectionOnOtherList);
-                    part.SetUserProperty("Album", album);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("slozhnoe_sechenie"), isSimple);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("pustykh_strok"), emptyRowsNumber);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("ru_slozh_sech_list"), crossSectionOnOtherList);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("Album"), album);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("ROT_NOT_ALLOWED"), rotNotAllowed);
 
                     res = part.Modify();
                 }
@@ -1000,7 +1015,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         }
 
         internal static HierarchicDefinition GetHierarchicDefinitionWithName(string hierarchicDefinitionName)
-        {        
+        {
 
             List<HierarchicDefinition> hd = new List<HierarchicDefinition>();
             ModelObjectEnumerator defHierarchy = model.GetModelObjectSelector().GetAllObjectsWithType(ModelObject.ModelObjectEnum.HIERARCHIC_DEFINITION);
@@ -1055,16 +1070,17 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             LibraryProfileItem LibraryProfileItem1 = new LibraryProfileItem();
             LibraryProfileItem1.Select(profileString);
             var res = LibraryProfileItem1.aProfileItemUserParameters;
-            foreach(var par in res)
+            var symbolName = UDANameConverter.ToTeklaProp("SYMBOL_NAME");
+            foreach (var par in res)
             {
                 var profileItemParameter = par as ProfileItemParameter;
-                if (profileItemParameter.Property == "SYMBOL_NAME")
+                if (profileItemParameter.Property == symbolName)
                 {
                     string extractPattern = @"(?i)([A-Z0-9._ %+-]+@[0-9]{1,3})";
                     var extractedValue = Regex.Matches(profileItemParameter.StringValue, extractPattern)
                         .Cast<Match>()
                         .Select(x => x.Groups[1].Value);
-                    if(extractedValue.FirstOrDefault() != null)
+                    if (extractedValue.FirstOrDefault() != null)
                     {
                         string pattern = @"@";
                         string[] substrings = Regex.Split(extractedValue.FirstOrDefault(), pattern);    // Split on hyphens
@@ -1087,7 +1103,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             foreach (var par in res)
             {
                 var profileItemParameter = par as ProfileItemParameter;
-                if (profileItemParameter.Property == "TPL_NAME")
+                if (profileItemParameter.Property == UDANameConverter.ToTeklaProp("TPL_NAME"))
                     return profileItemParameter.StringValue;
             }
             return "not found in library";
@@ -1098,13 +1114,13 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             try
             {
                 MaterialItem materialItem = new MaterialItem();
-                materialItem.Select(materialString);
+                materialItem.Select(UDANameConverter.ToTeklaProp(materialString));
                 var res = materialItem.AliasName1.Length > 0;
                 return materialItem.AliasName1.Length > 0 ? materialItem.AliasName1 : materialItem.MaterialName;
             }
             catch (Exception ex)
             {
-                return materialString;
+                return UDANameConverter.ToTeklaProp(materialString);
             }
         }
 

@@ -1,15 +1,11 @@
-﻿using System;
+﻿using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using Tekla.Structures;
-using Tekla.Structures.Model;
-using thd = TeklaHierarchicDefinitions;
-using tsm = Tekla.Structures;
-using NPOI.XSSF.UserModel;
-using NPOI.SS.UserModel;
 using System.Windows;
+using Tekla.Structures.Model;
 
 namespace TeklaHierarchicDefinitions.Models
 {
@@ -19,7 +15,7 @@ namespace TeklaHierarchicDefinitions.Models
             string groupErrorCode,
             string errorCode,
             string groupError,
-            string error)        
+            string error)
         {
             GroupErrorCode = groupErrorCode;
             ErrorCode = errorCode;
@@ -28,7 +24,7 @@ namespace TeklaHierarchicDefinitions.Models
         }
 
         #region Свойства
-        public List<string> GUIDs { get;} = new List<string>();
+        public List<string> GUIDs { get; } = new List<string>();
         public string GroupError { get; private set; }
         public string Error { get; private set; }
         public string GroupErrorCode { get; }
@@ -46,9 +42,9 @@ namespace TeklaHierarchicDefinitions.Models
         {
             List<ModelObject> c;
             if (guids == null)
-                c= TeklaAPIUtils.TeklaDB.model.FetchModelObjects(GUIDs, true);
+                c = TeklaAPIUtils.TeklaDB.model.FetchModelObjects(GUIDs, true);
             else
-                c=TeklaAPIUtils.TeklaDB.model.FetchModelObjects(guids, true);
+                c = TeklaAPIUtils.TeklaDB.model.FetchModelObjects(guids, true);
             TeklaAPIUtils.TeklaDB.SelectObjectsInModelView(new System.Collections.ArrayList(c));
         }
         #endregion
@@ -76,8 +72,9 @@ namespace TeklaHierarchicDefinitions.Models
         public int TotalChecks { get; internal set; } = 1;
         public int ErrorNumber { get; internal set; } = 1;
 
-        public double ErrorRate 
-        { get
+        public double ErrorRate
+        {
+            get
             {
                 double res;
                 if (TotalChecks > 0 & ErrorNumber > 0)
@@ -178,15 +175,15 @@ namespace TeklaHierarchicDefinitions.Models
                         string guid = ExcelCellValue(sheet.GetRow(row).GetCell(1));
                         string groupErrorCode = ExcelCellValue(sheet.GetRow(row).GetCell(3));
                         string errorCode = ExcelCellValue(sheet.GetRow(row).GetCell(2));
-                        if (currentCR == null )
+                        if (currentCR == null)
                         {
                             currentCR = new CheckResult(
-                                groupErrorCode, errorCode, 
-                                errorGroupCodeValues[groupErrorCode], 
+                                groupErrorCode, errorCode,
+                                errorGroupCodeValues[groupErrorCode],
                                 errorCodeValues[errorCode]);
                             listOfResults.Add(currentCR);
                         }
-                        else if(!listOfResults.Select(t=>t.CheckResultsCode).Contains(groupErrorCode + " - " + errorCode))
+                        else if (!listOfResults.Select(t => t.CheckResultsCode).Contains(groupErrorCode + " - " + errorCode))
                         {
                             currentCR = new CheckResult(
                                 groupErrorCode, errorCode,
@@ -219,11 +216,11 @@ namespace TeklaHierarchicDefinitions.Models
                     }
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-            return ( listOfResults.OrderBy(t => t.CheckResultsCode).ToList(), summaryListOfResults);
+            return (listOfResults.OrderBy(t => t.CheckResultsCode).ToList(), summaryListOfResults);
         }
     }
 }

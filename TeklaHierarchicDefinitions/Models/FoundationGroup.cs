@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using Tekla.Structures.Model;
 using TeklaHierarchicDefinitions.TeklaAPIUtils;
 using Object = System.Object;
@@ -33,13 +32,13 @@ namespace TeklaHierarchicDefinitions.Models
         #region Конструктор
         internal FoundationGroup(string foundationGroupName, HierarchicDefinition hierarchicDefinition)
         {
-            _hierarchicObjectInTekla = new HierarchicObjectInTekla(foundationGroupName, hierarchicDefinition);    
+            _hierarchicObjectInTekla = new HierarchicObjectInTekla(foundationGroupName, hierarchicDefinition);
             _hierarchicObjectInTekla.Name = foundationGroupName;
         }
 
         internal FoundationGroup(HierarchicObject hierarchicObject, HierarchicDefinition hierarchicDefinition)
         {
-            _hierarchicObjectInTekla = new HierarchicObjectInTekla(hierarchicObject, hierarchicDefinition);            
+            _hierarchicObjectInTekla = new HierarchicObjectInTekla(hierarchicObject, hierarchicDefinition);
         }
 
         #endregion
@@ -120,7 +119,7 @@ namespace TeklaHierarchicDefinitions.Models
             if (Object.ReferenceEquals(this, other)) return true;
 
             //Check whether the products' properties are equal.
-            return BasementMark.Equals(other.BasementMark) 
+            return BasementMark.Equals(other.BasementMark)
                 && Rx.Equals(other.Rx)
                 && Ry.Equals(other.Ry)
                 && Rz.Equals(other.Rz)
@@ -143,12 +142,12 @@ namespace TeklaHierarchicDefinitions.Models
         }
         public string JointNumber
         {
-            get 
+            get
             {
                 var res = _hierarchicObjectInTekla.HierarchicObjectGetIntAttr("Joint").ToString();
                 if (res.Length > 0)
                     return res;
-                return joint; 
+                return joint;
             }
             internal set
             {
@@ -156,14 +155,14 @@ namespace TeklaHierarchicDefinitions.Models
                 OnPropertyChanged();
             }
         }
-        public string St 
+        public string St
         {
-            get 
+            get
             {
                 var res = _hierarchicObjectInTekla.HierarchicObjectGetAttr("St");
                 if (res.Length > 0)
                     return res;
-                return st; 
+                return st;
             }
             internal set
             {
@@ -178,7 +177,7 @@ namespace TeklaHierarchicDefinitions.Models
                 var res = _hierarchicObjectInTekla.HierarchicObjectGetAttr("Cr");
                 if (res.Length > 0)
                     return res;
-                return cr; 
+                return cr;
             }
             internal set
             {
@@ -192,8 +191,8 @@ namespace TeklaHierarchicDefinitions.Models
             {
                 var res = _hierarchicObjectInTekla.HierarchicObjectGetAttr("Gr");
                 if (res.Length > 0)
-                    return res; 
-                return gr; 
+                    return res;
+                return gr;
             }
             internal set
             {
@@ -208,7 +207,7 @@ namespace TeklaHierarchicDefinitions.Models
                 var res = _hierarchicObjectInTekla.HierarchicObjectGetAttr("Sp");
                 if (res.Length > 0)
                     return res;
-                return sp; 
+                return sp;
             }
             internal set
             {
@@ -218,12 +217,12 @@ namespace TeklaHierarchicDefinitions.Models
         }
         public string Crit
         {
-            get 
+            get
             {
                 var res = _hierarchicObjectInTekla.HierarchicObjectGetAttr("Crit");
                 if (res.Length > 0)
-                    return res; 
-                return crit; 
+                    return res;
+                return crit;
             }
             internal set
             {
@@ -233,12 +232,12 @@ namespace TeklaHierarchicDefinitions.Models
         }
         public double Rx
         {
-            get 
+            get
             {
                 var res = _hierarchicObjectInTekla.HierarchicObjectGetDouble("Rx");
                 if (res != 0)
                     return res;
-                return rx; 
+                return rx;
             }
             internal set
             {
@@ -248,11 +247,13 @@ namespace TeklaHierarchicDefinitions.Models
         }
         public double Ry
         {
-            get {
+            get
+            {
                 var res = _hierarchicObjectInTekla.HierarchicObjectGetDouble("Ry");
                 if (res != 0)
-                    return res; 
-                return ry; }
+                    return res;
+                return ry;
+            }
             internal set
             {
                 ry = value;
@@ -261,11 +262,13 @@ namespace TeklaHierarchicDefinitions.Models
         }
         public double Rz
         {
-            get {
+            get
+            {
                 var res = _hierarchicObjectInTekla.HierarchicObjectGetDouble("Rz");
                 if (res != 0)
                     return res;
-                return rz; }
+                return rz;
+            }
             internal set
             {
                 rz = value;
@@ -274,11 +277,13 @@ namespace TeklaHierarchicDefinitions.Models
         }
         public double Rux
         {
-            get {
+            get
+            {
                 var res = _hierarchicObjectInTekla.HierarchicObjectGetDouble("Rux");
                 if (res != 0)
                     return res;
-                return rux; }
+                return rux;
+            }
             internal set
             {
                 rux = value;
@@ -287,11 +292,13 @@ namespace TeklaHierarchicDefinitions.Models
         }
         public double Ruy
         {
-            get {
+            get
+            {
                 var res = _hierarchicObjectInTekla.HierarchicObjectGetDouble("Ruy");
                 if (res != 0)
                     return res;
-                return ruy; }
+                return ruy;
+            }
             internal set
             {
                 ruy = value;
@@ -300,11 +307,13 @@ namespace TeklaHierarchicDefinitions.Models
         }
         public double Ruz
         {
-            get {
+            get
+            {
                 var res = _hierarchicObjectInTekla.HierarchicObjectGetDouble("Ruz");
                 if (res != 0)
                     return res;
-                return ruz; }
+                return ruz;
+            }
             internal set
             {
                 ruz = value;
@@ -313,11 +322,13 @@ namespace TeklaHierarchicDefinitions.Models
         }
         public string ForceMark
         {
-            get {
+            get
+            {
                 var res = _hierarchicObjectInTekla.HierarchicObjectGetAttr("ForceMark");
                 if (res.Length > 0)
                     return res;
-                return forceMark; }
+                return forceMark;
+            }
             set
             {
                 forceMark = value;

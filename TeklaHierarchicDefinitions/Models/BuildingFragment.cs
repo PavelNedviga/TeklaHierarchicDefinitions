@@ -1,19 +1,17 @@
-﻿using NLog;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Tekla.Structures.Model;
-using TeklaHierarchicDefinitions.Models;
-using TeklaHierarchicDefinitions.TeklaAPIUtils;
-using System;
-using Microsoft.Win32;
-using System.IO;
-using System.Windows;
-using NPOI.XSSF.UserModel;
+﻿using Microsoft.Win32;
+using NLog;
 using NPOI.SS.UserModel;
-using System.Collections;
+using NPOI.XSSF.UserModel;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Windows;
+using Tekla.Structures.Model;
+using TeklaHierarchicDefinitions.TeklaAPIUtils;
 
 namespace TeklaHierarchicDefinitions.Models
 {
@@ -203,11 +201,11 @@ namespace TeklaHierarchicDefinitions.Models
                         ff.Add(max);
                         ff.Add(min);
                     }
-                    if(filtered.Count() == 1)
+                    if (filtered.Count() == 1)
                     {
                         ff.Add(filtered.FirstOrDefault());
                     }
-                    
+
                     foreach (var ccc in ff.Distinct())
                         FoundationGroups.Add(ccc);
                 }
@@ -309,7 +307,7 @@ namespace TeklaHierarchicDefinitions.Models
 
         internal void RemoveAllBasements()
         {
-            foreach(var fg in FoundationGroups)
+            foreach (var fg in FoundationGroups)
             {
                 fg.RemoveBasements();
             }

@@ -1,32 +1,19 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using MahApps.Metro.Controls;
-using Tekla.Structures.Dialog;
-using Tekla.Structures.Dialog.UIControls;
-using TeklaHierarchicDefinitions.Models;
-using TeklaHierarchicDefinitions.ViewModels;
-using DataGrid = System.Windows.Controls.DataGrid;
-using Path = System.IO.Path;
 using Tekla.Structures;
-using TeklaHierarchicDefinitions.TeklaAPIUtils;
-using System.Collections;
+using Tekla.Structures.Dialog;
 using Tekla.Structures.Model;
+using TeklaHierarchicDefinitions.Models;
+using TeklaHierarchicDefinitions.TeklaAPIUtils;
+using TeklaHierarchicDefinitions.ViewModels;
 using DrawingGroup = TeklaHierarchicDefinitions.Models.DrawingGroup;
 
 namespace TeklaHierarchicDefinitions
@@ -137,7 +124,7 @@ namespace TeklaHierarchicDefinitions
             var filtered = si.Cast<SteelBOMPosition>().SelectMany(t =>
             {
                 var arr = new List<ModelObject>();
-                IEnumerator<Part> xx = t.Parts.Where(m=>m.IsInElementList < 1).Select(m=>m.Part).GetEnumerator();
+                IEnumerator<Part> xx = t.Parts.Where(m => m.IsInElementList < 1).Select(m => m.Part).GetEnumerator();
                 while (xx.MoveNext())
                     arr.Add(xx.Current as ModelObject);
                 return arr;
@@ -203,7 +190,7 @@ namespace TeklaHierarchicDefinitions
                     TeklaDB.SelectObjectsInModelView(new ArrayList(all));
             }
         }
-        
+
 
         //private void MaterialCatalog_SelectClicked(object sender, EventArgs e)
         //{
@@ -289,7 +276,7 @@ namespace TeklaHierarchicDefinitions
         {
             var dms = (sender as System.Windows.Controls.DataGrid).SelectedItems.Cast<DrawingManipulator>().ToList();
             DrawingGroup.DrawingManipulators = dms;
-            if(this.DataContext != null)
+            if (this.DataContext != null)
                 (this.DataContext as BillOfElementsViewModel).UpdateProps();
         }
     }

@@ -1,13 +1,13 @@
 ﻿using NLog;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using TeklaHierarchicDefinitions.TeklaAPIUtils;
-using TeklaHierarchicDefinitions.Classifiers;
-using System;
 using Tekla.Structures.Model;
-using System.Collections;
+using TeklaHierarchicDefinitions.Classifiers;
+using TeklaHierarchicDefinitions.TeklaAPIUtils;
 
 namespace TeklaHierarchicDefinitions.Models
 {
@@ -43,18 +43,18 @@ namespace TeklaHierarchicDefinitions.Models
             if (boe == null)
                 boe = "КМ";
             if (father != null)
-            { 
+            {
                 _hierarchicObjectInTekla = new HierarchicObjectInTekla(father.FatherHierarchicObject);
                 BOE = father.BOE;
                 Collection = collection;
                 Mark = father.Mark;
-                logger.Debug("father.BOE = "+ father.BOE + ", father.Mark = " + father.Mark);
+                logger.Debug("father.BOE = " + father.BOE + ", father.Mark = " + father.Mark);
                 father.IsComplexCrossSection = true;
             }
             else
             {
                 _hierarchicObjectInTekla = new HierarchicObjectInTekla();
-                
+
                 Collection = collection;
                 BOE = boe;
                 Mark = "New mark";
@@ -77,8 +77,8 @@ namespace TeklaHierarchicDefinitions.Models
             IsComplexCrossSection = true;
             EmptyRowsNumber = 0;
             OnOtherList = false;
-            
-            
+
+
             _hierarchicObjectInTekla.CommitChanges();
             TeklaDB.model.CommitChanges();
         }
@@ -146,9 +146,9 @@ namespace TeklaHierarchicDefinitions.Models
         public bool InstantUpdate
         {
             get { return _instantUpdate; }
-            set 
-            { 
-                _instantUpdate = value;                
+            set
+            {
+                _instantUpdate = value;
             }
         }
 
@@ -161,13 +161,13 @@ namespace TeklaHierarchicDefinitions.Models
         public bool Selection
         {
             get { return _selection; }
-            set 
+            set
             {
                 _selection = value;
                 OnPropertyChanged("Selection");
                 OnPropertyChanged("ButtonIsEnabled");
             }
-        }      
+        }
 
         public int ObjectsCount
         {
@@ -180,7 +180,7 @@ namespace TeklaHierarchicDefinitions.Models
             set
             {
                 _hierarchicObjectInTekla.HierarchicObjectSetDependentAttribute("BOE", value);
-                if(_instantUpdate)
+                if (_instantUpdate)
                     _hierarchicObjectInTekla.PartsSetAttr("BOE", value);
                 OnPropertyChanged();
                 UpdateChildrenAlbum(value);
@@ -189,18 +189,18 @@ namespace TeklaHierarchicDefinitions.Models
 
         public string Mark
         {
-            get 
-            { 
-                return _hierarchicObjectInTekla.Name; 
+            get
+            {
+                return _hierarchicObjectInTekla.Name;
             }
-            set 
-            { 
-                
+            set
+            {
+
                 _hierarchicObjectInTekla.Name = value;
                 if (_instantUpdate)
                     _hierarchicObjectInTekla.PartSetPrefix(value);
                 Classificator = ClassGenerator.Generate(_hierarchicObjectInTekla.Name, Position);
-                Category = ClassGenerator.GenerateCategory(_hierarchicObjectInTekla.Name);                
+                Category = ClassGenerator.GenerateCategory(_hierarchicObjectInTekla.Name);
                 OnPropertyChanged("Mark");
                 OnPropertyChanged("Father");
                 UpdateChildrenMarks(value);
@@ -233,13 +233,13 @@ namespace TeklaHierarchicDefinitions.Models
                 OnPropertyChanged();
                 UpdateRefList(value);
             }
-        }        
+        }
 
         public string Father
         {
             get
-            { 
-                return _hierarchicObjectInTekla.Father; 
+            {
+                return _hierarchicObjectInTekla.Father;
             }
         }
 
@@ -277,7 +277,7 @@ namespace TeklaHierarchicDefinitions.Models
         public string Sketch
         {
             get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("Sketch"); }
-            set 
+            set
             {
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Sketch", value);
                 OnPropertyChanged("Sketch");
@@ -287,13 +287,13 @@ namespace TeklaHierarchicDefinitions.Models
         public string Profile
         {
             get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("Profile"); }
-            set 
-            { 
+            set
+            {
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Profile", value);
                 var sketch = TeklaDB.GetSketch(value);
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Sketch", sketch);
                 ProfileForSpec = TeklaDB.GetProfileForSpec(value);
-                if (_instantUpdate) 
+                if (_instantUpdate)
                     _hierarchicObjectInTekla.PartSetProfile(value);
                 OnPropertyChanged();
                 OnPropertyChanged("Sketch");
@@ -314,10 +314,10 @@ namespace TeklaHierarchicDefinitions.Models
         public string Position
         {
             get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("Position"); }
-            set 
-            { 
+            set
+            {
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Position", value);
-                if (_instantUpdate) 
+                if (_instantUpdate)
                     _hierarchicObjectInTekla.PartsSetAttr("PRELIM_MARK", value);
                 Classificator = ClassGenerator.Generate(Mark, value);
                 OnPropertyChanged("Position");
@@ -327,12 +327,12 @@ namespace TeklaHierarchicDefinitions.Models
         public string M
         {
             get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("M"); }
-            set 
-            { 
+            set
+            {
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M", value);
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_end", value);
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_summary", GetMSummary());
-                if (_instantUpdate)                    
+                if (_instantUpdate)
                     _hierarchicObjectInTekla.PartsSetAttr("moment_M", M_summary);
                 double momentConn;
                 if (double.TryParse(value, out momentConn))
@@ -364,7 +364,7 @@ namespace TeklaHierarchicDefinitions.Models
                         EndMomentConnection = 0;
                     else
                         EndMomentConnection = -1;
-                }                
+                }
                 OnPropertyChanged("M_end");
                 OnPropertyChanged("M_summary");
             }
@@ -416,14 +416,14 @@ namespace TeklaHierarchicDefinitions.Models
             }
         }
 
-        
+
 
         internal void AddAsChildHO(List<BillOfElements> childrenItems)
         {
             //this.HierarchicObjectInTekla.HierarchicObject.HierarchicChildren.AddRange(childrenItems.Select(t=>t.HierarchicObjectInTekla.HierarchicObject).ToList());
             foreach (var i in childrenItems)
             {
-                if(i != this)
+                if (i != this)
                 {
                     //this.HierarchicObjectInTekla.HierarchicObject.HierarchicChildren.Add(i.HierarchicObjectInTekla.HierarchicObject);
                     i.HierarchicObjectInTekla.AddFather(this.HierarchicObjectInTekla);
@@ -465,7 +465,7 @@ namespace TeklaHierarchicDefinitions.Models
             set
             {
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("StartMomentConn", value);
-                if (_instantUpdate)     
+                if (_instantUpdate)
                     _hierarchicObjectInTekla.PartsSetAttr("START_MOMENT_CONN", value);
                 OnPropertyChanged();
             }
@@ -522,14 +522,14 @@ namespace TeklaHierarchicDefinitions.Models
         public string N
         {
             get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("N"); }
-            set 
+            set
             {
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N", value);
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_end", value);
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_start_min", value);
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_end_min", value);
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_summary", GetNSummary());
-                if (_instantUpdate) 
+                if (_instantUpdate)
                     _hierarchicObjectInTekla.PartsSetAttr("usilie_N", N_summary);
                 OnPropertyChanged("N");
                 OnPropertyChanged("N_end");
@@ -575,7 +575,7 @@ namespace TeklaHierarchicDefinitions.Models
             set
             {
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_end_min", value);
-                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_summary", GetNSummary()); 
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("N_summary", GetNSummary());
                 if (_instantUpdate)
                     _hierarchicObjectInTekla.PartsSetAttr("usilie_N", N_summary);
                 OnPropertyChanged("N_end_min");
@@ -598,12 +598,12 @@ namespace TeklaHierarchicDefinitions.Models
         public string Q
         {
             get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("Q"); }
-            set 
-            { 
+            set
+            {
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q", value);
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_end", value);
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_summary", GetQSummary());
-                if (_instantUpdate) 
+                if (_instantUpdate)
                     _hierarchicObjectInTekla.PartsSetAttr("reakciya_A", Q_summary);
                 OnPropertyChanged("Q");
                 OnPropertyChanged("Q_end");
@@ -674,7 +674,7 @@ namespace TeklaHierarchicDefinitions.Models
             {
 
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Material", value);
-                if (_instantUpdate) 
+                if (_instantUpdate)
                     _hierarchicObjectInTekla.PartSetMaterial(value);
                 MaterialLabel = TeklaDB.GetMaterialForSpec(value);
                 OnPropertyChanged("Material");
@@ -694,10 +694,10 @@ namespace TeklaHierarchicDefinitions.Models
         public string Notes
         {
             get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("Notes"); }
-            set 
-            { 
+            set
+            {
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Notes", value);
-                if (_instantUpdate) 
+                if (_instantUpdate)
                     _hierarchicObjectInTekla.PartsSetAttr("prim_vedomost", value);
                 OnPropertyChanged();
             }
@@ -750,7 +750,7 @@ namespace TeklaHierarchicDefinitions.Models
             set
             {
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("EmptyRowsNumber", value);
-                if (_instantUpdate) 
+                if (_instantUpdate)
                     _hierarchicObjectInTekla.PartsSetAttr("pustykh_strok", value);
                 OnPropertyChanged();
             }
@@ -758,9 +758,9 @@ namespace TeklaHierarchicDefinitions.Models
 
         public bool OnOtherList
         {
-            get 
+            get
             {
-                int value =  _hierarchicObjectInTekla.HierarchicObjectGetDependentIntAttribute("OnOtherList");
+                int value = _hierarchicObjectInTekla.HierarchicObjectGetDependentIntAttribute("OnOtherList");
                 _crossSectionOnOtherList = value;
                 return IntToBool(value);
             }
@@ -794,8 +794,8 @@ namespace TeklaHierarchicDefinitions.Models
             this.Mark = ht["ASSEMBLY.PREFIX"].ToString();
             this.Material = ht["MATERIAL"].ToString();
             this.Profile = ht["PROFILE"].ToString();
-            var connConvert = FrictionConnection.ToDictionary(t=>t.Value,t=>t.Key);
-            
+            var connConvert = FrictionConnection.ToDictionary(t => t.Value, t => t.Key);
+
             connConvert["Нет"] = 0;
             connConvert["Да"] = 1;
 
@@ -803,7 +803,7 @@ namespace TeklaHierarchicDefinitions.Models
                 this.EndFrictionConnection = connConvert[ht["END_FRICT_CONN"].ToString()];
             if (ht.ContainsKey("START_FRICT_CONN"))
                 this.StartFrictionConnection = connConvert[ht["START_FRICT_CONN"].ToString()];
-            
+
             var momentConvert = MomentConnection.ToDictionary(t => t.Value, t => t.Key);
             //this.EndMomentConnection = connConvert[ht["END_FRICT_CONN"].ToString()];
             //this.StartMomentConnection
@@ -1023,7 +1023,7 @@ namespace TeklaHierarchicDefinitions.Models
 
             string q_F;
             if (Q_startF == Q_endF)
-            {                
+            {
                 if (Q_startF == "")
                     q_F = "-";
                 else
@@ -1067,9 +1067,10 @@ namespace TeklaHierarchicDefinitions.Models
                 BoolToInt(IsComplexCrossSection),
                 EmptyRowsNumber,
                 _crossSectionOnOtherList,
-                Classificator, 
+                Classificator,
                 BOE,
-                Category);
+                Category,
+                RotNotAllowed);
             OnPropertyChanged("ObjectsCount");
 
             return a && b;
@@ -1138,18 +1139,19 @@ namespace TeklaHierarchicDefinitions.Models
                 Notes,
                 _isComplexCrossSection,
                 EmptyRowsNumber,
-                _crossSectionOnOtherList, 
+                _crossSectionOnOtherList,
                 Classificator,
                 BOE,
-                Category); 
+                Category,
+                RotNotAllowed);
             return res;
         }
 
         private void UpdateChildrenMarks(string mark)
-        {            
+        {
             var collectionCut = this.Collection.Where(t => t.HierarchicObjectInTekla.FatherGUID.Equals(this.GUID));
-            
-            foreach(var boe in collectionCut)
+
+            foreach (var boe in collectionCut)
             {
                 boe.Mark = mark;
             }
@@ -1243,9 +1245,9 @@ namespace TeklaHierarchicDefinitions.Models
                         result = "Check material name";
                     }
                 }
-                else if(name == "Profile")
+                else if (name == "Profile")
                 {
-                    if ((Profile != null) &(!ProfileIsAllowed()))
+                    if ((Profile != null) & (!ProfileIsAllowed()))
                     {
                         result = "Check profile name";
                     }
@@ -1279,7 +1281,7 @@ namespace TeklaHierarchicDefinitions.Models
                 }
                 else if (name == "Mark")
                 {
-                    if (Mark.Length<2)
+                    if (Mark.Length < 2)
                     {
                         result = "Is mark properly set?";
                     }
@@ -1296,5 +1298,5 @@ namespace TeklaHierarchicDefinitions.Models
         No = -1,
         Yes = 0
     }
-    
+
 }

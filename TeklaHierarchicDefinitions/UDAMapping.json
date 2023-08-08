@@ -1,0 +1,257 @@
+{
+  "SYMBOL_NAME": {
+    "2021": "SYMBOL_NAME",
+    "2022": "RU_CTL_SMB_NAM",
+    "2023": "RU_CTL_SMB_NAM"
+  },
+  "TPL_NAME": {
+    "2021": "TPL_NAME",
+    "2022": "RU_CTL_TPL_NAM",
+    "2023": "RU_CTL_TPL_NAM"
+  },
+  "usilie_N": {
+    "2021": "usilie_N",
+    "2022": "RU_BOE_STR_N",
+    "2023": "RU_BOE_STR_N"
+  },
+  "reakciya_A": {
+    "2021": "reakciya_A",
+    "2022": "RU_BOE_STR_A",
+    "2023": "RU_BOE_STR_A"
+  },
+  "moment_M": {
+    "2021": "moment_M",
+    "2022": "RU_BOE_STR_M",
+    "2023": "RU_BOE_STR_M"
+  },
+  "prim_vedomost": {
+    "2021": "prim_vedomost",
+    "2022": "RU_BOE_CMM",
+    "2023": "RU_BOE_CMM"
+  },
+  "slozhnoe_sechenie": {
+    "2021": "slozhnoe_sechenie",
+    "2022": "RU_BOE_PRF_TYP",
+    "2023": "RU_BOE_PRF_TYP"
+  },
+  "pustykh_strok": {
+    "2021": "pustykh_strok",
+    "2022": "RU_BOE_EMP_LIN_QNT",
+    "2023": "RU_BOE_EMP_LIN_QNT"
+  },
+  "ru_slozh_sech_list": {
+    "2021": "ru_slozh_sech_list",
+    "2022": "RU_BOE_PRF_DRW",
+    "2023": "RU_BOE_PRF_DRW"
+  },
+  "ru_tip_elementa": {
+    "2021": "ru_tip_elementa",
+    "2022": "RU_DSG_OBJ_TYP",
+    "2023": "RU_DSG_OBJ_TYP"
+  },
+  "ru_6": {
+    "2021": "ru_6",
+    "2022": "RU_PTB_POS6",
+    "2023": "RU_PTB_POS6"
+  },
+  "ru_6_fam": {
+    "2021": "ru_6_fam",
+    "2022": "RU_PTB_LNM6",
+    "2023": "RU_PTB_LNM6"
+  },
+  "ru_7": {
+    "2021": "ru_7",
+    "2022": "RU_PTB_POS7",
+    "2023": "RU_PTB_POS7"
+  },
+  "ru_7_fam": {
+    "2021": "ru_7_fam",
+    "2022": "RU_PTB_LNM7",
+    "2023": "RU_PTB_LNM7"
+  },
+  "ru_8": {
+    "2021": "ru_8",
+    "2022": "RU_PTB_POS8",
+    "2023": "RU_PTB_POS8"
+  },
+  "ru_8_fam": {
+    "2021": "ru_8_fam",
+    "2022": "RU_PTB_LNM8",
+    "2023": "RU_PTB_LNM8"
+  },
+  "ru_9": {
+    "2021": "ru_9",
+    "2022": "RU_PTB_POS9",
+    "2023": "RU_PTB_POS9"
+  },
+  "ru_9_fam": {
+    "2021": "ru_9_fam",
+    "2022": "RU_PTB_LNM9",
+    "2023": "RU_PTB_LNM9"
+  },
+  "ru_10": {
+    "2021": "ru_10",
+    "2022": "RU_PTB_POS10",
+    "2023": "RU_PTB_POS10"
+  },
+  "ru_10_fam": {
+    "2021": "ru_10_fam",
+    "2022": "RU_PTB_LNM10",
+    "2023": "RU_PTB_LNM10"
+  },
+  "ru_11": {
+    "2021": "ru_11",
+    "2022": "RU_PTB_POS11",
+    "2023": "RU_PTB_POS11"
+  },
+  "ru_11_fam": {
+    "2021": "ru_11_fam",
+    "2022": "RU_PTB_LNM11",
+    "2023": "RU_PTB_LNM11"
+  },
+  "ru_6_dop": {
+    "2021": "ru_6_dop",
+    "2022": "RU_TTB_POS6",
+    "2023": "RU_TTB_POS6"
+  },
+  "ru_6_fam_dop": {
+    "2021": "ru_6_fam_dop",
+    "2022": "RU_TTB_LNM6",
+    "2023": "RU_TTB_LNM6"
+  },
+  "ru_7_dop": {
+    "2021": "ru_7_dop",
+    "2022": "RU_TTB_POS7",
+    "2023": "RU_TTB_POS7"
+  },
+  "ru_7_fam_dop": {
+    "2021": "ru_7_fam_dop",
+    "2022": "RU_TTB_LNM7",
+    "2023": "RU_TTB_LNM7"
+  },
+  "ru_8_dop": {
+    "2021": "ru_8_dop",
+    "2022": "RU_TTB_POS8",
+    "2023": "RU_TTB_POS8"
+  },
+  "ru_8_fam_dop": {
+    "2021": "ru_8_fam_dop",
+    "2022": "RU_TTB_LNM8",
+    "2023": "RU_TTB_LNM8"
+  },
+  "ru_9_dop": {
+    "2021": "ru_9_dop",
+    "2022": "RU_TTB_POS9",
+    "2023": "RU_TTB_POS9"
+  },
+  "ru_9_fam_dop": {
+    "2021": "ru_9_fam_dop",
+    "2022": "RU_TTB_LNM9",
+    "2023": "RU_TTB_LNM9"
+  },
+  "ru_10_dop": {
+    "2021": "ru_10_dop",
+    "2022": "RU_TTB_POS10",
+    "2023": "RU_TTB_POS10"
+  },
+  "ru_10_fam_dop": {
+    "2021": "ru_10_fam_dop",
+    "2022": "RU_TTB_LNM10",
+    "2023": "RU_TTB_LNM10"
+  },
+  "ru_11_dop": {
+    "2021": "ru_11_dop",
+    "2022": "RU_TTB_POS11",
+    "2023": "RU_TTB_POS11"
+  },
+  "ru_11_fam_dop": {
+    "2021": "ru_11_fam_dop",
+    "2022": "RU_TTB_LNM11",
+    "2023": "RU_TTB_LNM11"
+  },
+  "ru_shifr_dop": {
+    "2021": "ru_shifr_dop",
+    "2022": "RU_TTB1",
+    "2023": "RU_TTB1"
+  },
+  "ru_shifr": {
+    "2021": "ru_shifr",
+    "2022": "RU_PTB1",
+    "2023": "RU_PTB1"
+  },
+  "ru_list": {
+    "2021": "ru_list",
+    "2022": "RU_TTB7",
+    "2023": "RU_TTB7"
+  },
+  "ru_marka_komp_chert": {
+    "2021": "ru_marka_komp_chert",
+    "2022": "RU_TTB_DRW_SET_MRK",
+    "2023": "RU_TTB_DRW_SET_MRK"
+  },
+  "ru_list_dop": {
+    "2021": "ru_list_dop",
+    "2022": "RU_TTB_SHT_NMB_ADD",
+    "2023": "RU_TTB_SHT_NMB_ADD"
+  },
+  "RU_BOM_CTG": {
+    "2021": "cm_kat",
+    "2022": "RU_BOM_CTG",
+    "2023": "RU_BOM_CTG"
+  },
+  "Album": {
+    "2021": "Album",
+    "2022": "Album",
+    "2023": "Album"
+  },
+  "ru_multilang": {
+    "2021": "ru_multilang",
+    "2022": "RU_PPP_LNG",
+    "2023": "RU_PPP_LNG"
+  },
+  "ru_tip_betona": {
+    "2021": "ru_tip_betona",
+    "2022": "RU_PPT_CNT_TYP",
+    "2023": "RU_PPT_CNT_TYP"
+  },
+  "ru_fiz_svojstva_F": {
+    "2021": "ru_fiz_svojstva_F",
+    "2022": "RU_PPT_CNT_FRO_RSL",
+    "2023": "RU_PPT_CNT_FRO_RSL"
+  },
+  "ru_udobouklad_bet": {
+    "2021": "ru_udobouklad_bet",
+    "2022": "RU_PPT_CNT_PLB",
+    "2023": "RU_PPT_CNT_PLB"
+  },
+  "ru_fiz_svojstva_W": {
+    "2021": "ru_fiz_svojstva_W",
+    "2022": "RU_PPT_CNT_WTR_RST",
+    "2023": "RU_PPT_CNT_WTR_RST"
+  },
+  "ru_pogon_metr": {
+    "2021": "ru_pogon_metr",
+    "2022": "ru_pogon_metr",
+    "2023": "ru_pogon_metr"
+  },
+  "ru_gost_name": {
+    "2021": "ru_gost_name",
+    "2022": "RU_DSG_GST",
+    "2023": "RU_DSG_GST"
+  },
+  "ru_proektnoe_imya": {
+    "2021": "ru_proektnoe_imya",
+    "2022": "RU_DSG_NAM",
+    "2023": "RU_DSG_NAM"
+  },
+  "ru_koef_zapasa": {
+    "2021": "ru_koef_zapasa",
+    "2022": "ru_koef_zapasa",
+    "2023": "ru_koef_zapasa"
+  },
+  "template": {
+    "2021": "",
+    "2022": "",
+    "2023": ""
+  }
+}

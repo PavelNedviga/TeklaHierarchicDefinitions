@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tekla.Structures.Model;
-using TSC = Tekla.Structures.Catalogs;
 using System.Text.RegularExpressions;
+using System.Windows;
+using Tekla.Structures.Model;
 using TeklaHierarchicDefinitions.TeklaAPIUtils;
 
 namespace TeklaHierarchicDefinitions.Classifiers
@@ -15,14 +12,20 @@ namespace TeklaHierarchicDefinitions.Classifiers
         static Model model = TeklaDB.model;
         public static string Generate(string partMark, string position)
         {
-            
+
             bool connected = model.GetConnectionStatus();
-            if (connected)
+                if (connected)
             {
                 string path = GetClassTablePath();
                 if (System.IO.File.Exists(path))
                 {
-                    var dict = System.IO.File.ReadLines(path).Select(line => line.Split('\t')).ToDictionary(line => line[0], line => line[1]);// GetConversionList(path);
+
+                       var dict = System.IO.File.ReadLines(path)
+                            .Select(line => line.Split('\t'))
+                            .GroupBy(t => t[0])
+                            .ToDictionary(line => line.First()[0], line => line.First()[1]);// GetConversionList(path);
+
+
 
                     var numAlpha = new Regex("(?<Alpha>[a-zA-Zа-яА-ЯёЁ]*)(?<Numeric>[0-9]*)");
                     var match = numAlpha.Match(partMark);
@@ -47,7 +50,7 @@ namespace TeklaHierarchicDefinitions.Classifiers
                 }
 
             }
-            return "30000";
+            return "30000";            
         }
 
         public static string GenerateCategory(string partMark)
@@ -59,7 +62,10 @@ namespace TeklaHierarchicDefinitions.Classifiers
                 string path = GetClassTablePath();
                 if (System.IO.File.Exists(path))
                 {
-                    var dict = System.IO.File.ReadLines(path).Select(line => line.Split('\t')).ToDictionary(line => line[0], line => line[2]);// GetConversionList(path);
+                    var dict = System.IO.File.ReadLines(path)
+                            .Select(line => line.Split('\t'))
+                            .GroupBy(t => t[0])
+                            .ToDictionary(line => line.First()[0], line => line.First()[2]);// GetConversionList(path);
 
                     var numAlpha = new Regex("(?<Alpha>[a-zA-Zа-яА-ЯёЁ]*)(?<Numeric>[0-9]*)");
                     var match = numAlpha.Match(partMark);
@@ -86,7 +92,7 @@ namespace TeklaHierarchicDefinitions.Classifiers
 
         internal static string GetClassTablePath()
         {
-            string path = model.GetInfo().ModelPath + "\\#ClassConversion.csv"; 
+            string path = model.GetInfo().ModelPath + "\\#ClassConversion.csv";
 
             return path;
         }

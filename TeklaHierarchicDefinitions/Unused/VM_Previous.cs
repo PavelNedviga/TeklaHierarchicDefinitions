@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Data;
 using TeklaHierarchicDefinitions.TeklaAPIUtils;
-using TeklaHierarchicDefinitions;
-using System.Windows;
 
 namespace TeklaHierarchicDefinitions.ViewModels
 {

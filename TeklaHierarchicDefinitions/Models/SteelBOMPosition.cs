@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Tekla.Structures.Model;
 
 namespace TeklaHierarchicDefinitions.Models
@@ -41,8 +38,8 @@ namespace TeklaHierarchicDefinitions.Models
 
         public string Profile
         {
-            get 
-            { 
+            get
+            {
                 string profileType = string.Empty;
                 double profileWidth = 0;
                 var ct = part as ContourPlate;
@@ -61,14 +58,14 @@ namespace TeklaHierarchicDefinitions.Models
                 string profileTplName = string.Empty;
                 //if (part.GetReportProperty("PROFILE.TPL_NAME", ref profileTplName) && profileTplName.Length>0)
                 //    return profileTplName;
-                return part.Profile.ProfileString; 
+                return part.Profile.ProfileString;
             }
         }
 
         public double Weight
         {
             get
-            {                
+            {
                 double weight = 0;
                 part.GetReportProperty("WEIGHT", ref weight);
                 return weight;
@@ -142,7 +139,7 @@ namespace TeklaHierarchicDefinitions.Models
                 return material + ". " + materialGost;
             }
         }
-        
+
         public string GroupingCode
         {
             get { return Material + Category + Profile; }
@@ -165,7 +162,7 @@ namespace TeklaHierarchicDefinitions.Models
     public class SteelBOMPosition : INotifyPropertyChanged
     {
         #region Параметры
-        ObservableCollection<SteelBOMPart> parts= new ObservableCollection<SteelBOMPart>();
+        ObservableCollection<SteelBOMPart> parts = new ObservableCollection<SteelBOMPart>();
         #endregion
 
         #region Конструктор
@@ -191,7 +188,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                var proportion = Parts.Select(t=>t.IsInElementList).Sum()/ Parts.Count;
+                var proportion = Parts.Select(t => t.IsInElementList).Sum() / Parts.Count;
                 if (proportion == 0)
                     return "Нет";
                 if (proportion < 1)
@@ -200,19 +197,19 @@ namespace TeklaHierarchicDefinitions.Models
             }
         }
 
-        public string Material 
-        { 
-            get { return parts.FirstOrDefault().Material; } 
+        public string Material
+        {
+            get { return parts.FirstOrDefault().Material; }
         }
 
-        public string Profile 
-        { 
-            get { return parts.FirstOrDefault().Profile; } 
+        public string Profile
+        {
+            get { return parts.FirstOrDefault().Profile; }
         }
 
-        public double Weight 
-        { 
-            get { return parts.Select(t =>t.Weight).Sum(); } 
+        public double Weight
+        {
+            get { return parts.Select(t => t.Weight).Sum(); }
         }
 
         public double WeightGross
@@ -224,7 +221,7 @@ namespace TeklaHierarchicDefinitions.Models
         {
             get
             {
-                return double.Parse( Weight.ToString("F"));
+                return double.Parse(Weight.ToString("F"));
             }
         }
 
@@ -236,14 +233,14 @@ namespace TeklaHierarchicDefinitions.Models
             }
         }
 
-        public string ProfileGost 
-        { 
-            get {return parts.FirstOrDefault().ProfileGost; } 
+        public string ProfileGost
+        {
+            get { return parts.FirstOrDefault().ProfileGost; }
         }
 
         public string Category
         {
-            get 
+            get
             {
                 string cat = parts.FirstOrDefault().Category;
                 if (cat.Length > 0)

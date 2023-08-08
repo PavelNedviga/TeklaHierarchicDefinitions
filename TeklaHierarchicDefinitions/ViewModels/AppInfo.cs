@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Deployment.Application;
 using System.Reflection;
 
@@ -17,7 +13,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 //// get deployment version
                 version = Assembly.GetEntryAssembly().GetName().Version;
-                return version.Major + "."+ version.Minor;
+                return version.Major + "." + version.Minor;
 
             }
             catch (InvalidDeploymentException)
