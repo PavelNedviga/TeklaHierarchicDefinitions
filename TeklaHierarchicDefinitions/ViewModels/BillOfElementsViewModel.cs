@@ -1,4 +1,7 @@
-﻿using System;
+﻿using NPOI.HSSF.UserModel;
+using NPOI.XSSF.UserModel;
+using NPOI.SS.UserModel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -14,10 +17,12 @@ using System.Windows.Input;
 using Tekla.Structures.Drawing;
 using TeklaHierarchicDefinitions.Models;
 using TeklaHierarchicDefinitions.TeklaAPIUtils;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using DataGrid = System.Windows.Controls.DataGrid;
 using Part = Tekla.Structures.Model.Part;
 using Task = System.Threading.Tasks.Task;
-
+using Tekla.Structures.Model;
+using NPOI.SS.Format;
 
 namespace TeklaHierarchicDefinitions.ViewModels
 {
@@ -47,6 +52,95 @@ namespace TeklaHierarchicDefinitions.ViewModels
         //private Tekla.Structures.Model.Events _events = new Tekla.Structures.Model.Events();
         //private object _selectionEventHandlerLock = new object();
         //private object _changedObjectHandlerLock = new object();
+
+        private Tekla.Structures.Model.Events ModelEvents { get; set; }
+        private object _changedObjectHandlerLock = new object();
+
+        internal void RegisterHandlers()
+        {
+            try
+            {
+                ModelEvents = new Tekla.Structures.Model.Events();
+                //ModelEvents.SelectionChange += this.ModelEvents_SelectionChanged;
+                ModelEvents.ModelObjectChanged += this.ModelEvents_ModelObjectChanged;
+                //ModelEvents.ModelSave += this.ModelEvents_ModelSave;
+                //ModelEvents.Interrupted += this.OnInterrupted;
+                //ModelEvents.TeklaStructuresExit += this.ModelEvents_TeklaExit;
+
+                ModelEvents.Register();
+                //MessageBox.Show("Events activated");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void ModelEvents_ModelObjectChanged(System.Collections.Generic.List<ChangeData> changes)
+        {
+            lock (_changedObjectHandlerLock)
+            {
+                new System.Threading.Tasks.Task(delegate
+                {
+                    //MessageBox.Show("ModelObject changed: " + changes[0].Type.ToString() + " Id: " + changes[0].Object.Identifier.ID.ToString() + " type: " + changes[0].Object.GetType().ToString());
+                    if(changes.Where(t => t.Object is Part).Any(t => t.Type.ToString() == "OBJECT_INSERT"))
+                    {
+                        var objs = changes.Where(t => t.Type.ToString() == "OBJECT_INSERT")
+                                          .Where(t => t.Object is Part)
+                                          .Select(t=>t.Object as Part)
+                                          .ToList();
+                        var mos = new Tekla.Structures.Model.UI.ModelObjectSelector();
+                        var moe = mos.GetSelectedObjects();
+                        List<Tekla.Structures.Model.ModelObject> smo = new List<Tekla.Structures.Model.ModelObject>();
+                        while (moe.MoveNext()) { smo.Add(moe.Current); }
+
+                        var dictHO = BillOfElementsDict;
+                        List<KeyValuePair<BillOfElements, Part>> kvPairs = new List<KeyValuePair<BillOfElements, Part>>();
+                        string album = string.Empty;
+                        foreach (var mo in objs)
+                        {
+                            if (mo.GetUserProperty("Album", ref album))
+                            {
+                                var part = TeklaDB.model.SelectModelObject( mo.Identifier) as Part;
+                                BillOfElements billOfElements;
+                                if (dictHO.TryGetValue(album + "_" + part.Class, out billOfElements))
+                                {
+                                    kvPairs.Add(new KeyValuePair<BillOfElements, Part>(billOfElements, part));                                
+                                }
+                            }
+                        }
+                        var dct = kvPairs.GroupBy(g => g.Key).ToDictionary(k=>k.Key,v=>v.Select(t=>t.Value).ToList()); 
+                        foreach(var kv in dct)
+                            kv.Key.AttachObjects(kv.Value);
+                    }
+                }).Start();
+            };
+        }
+
+        private void ModelEvents_SelectionChanged()
+        {
+            MessageBox.Show("SelectionChanged");
+        }
+
+        private void ModelEvents_ModelSave()
+        {
+            MessageBox.Show("ModelSave");
+        }
+
+        private void OnInterrupted()
+        {
+            MessageBox.Show("Interrupted");
+        }
+
+        private void ModelEvents_TeklaExit()
+        {
+            ModelEvents.UnRegister();
+        }
+
+        //private void ModelEvents_TrackEvent(System.Collections.Generic.List<ChangeData> changes)
+        //{
+        //    MessageBox.Show("SelectionChanged");
+        //}
 
         //public void RegisterEventHandler()
         //{
@@ -144,6 +238,14 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        private Dictionary<string, BillOfElements> BillOfElementsDict 
+        { 
+            get 
+            {
+                return _billOfElements.GroupBy(g => g.BOE + "_" + g.Classificator).ToDictionary(k => k.Key, v => v.First());
+            } 
+        }
+    //
         public string SelectedBOE
         {
             get { return _selectedBOE; }
@@ -259,6 +361,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     var sourcePath = Path.Combine(AssemblyDirectory, "#ClassConversion.csv");
                     File.Copy(sourcePath, path, false);
                 }
+                RegisterHandlers();
             }
             catch(Exception ex) 
             {
@@ -436,6 +539,74 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 }, (obj) => _billOfElements.Where(x => x.Selection == true & x.Profile.Length > 0).Count() > 0);
             }
         }
+
+        public ICommand ExportELToExcel_Click
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    List<string> upd = new List<string>();
+                    bool updated = false;
+                    var elementsList = BillOfElements;
+
+                    IWorkbook workbook = new XSSFWorkbook();
+                    ISheet excelSheet = workbook.CreateSheet(SelectedBOE);
+                    IRow row = excelSheet.CreateRow(0);
+
+                    var excelColumns = new[] { "Марка","Позиция","Сечение", "Материал", "Q, кН", "N, кН", "M, кНм" };
+                    IRow headerRow = excelSheet.CreateRow(0);
+                    var headerColumn = 0;
+                    excelColumns.ToList().ForEach(excelColumn =>
+                    {
+                        var cell = headerRow.CreateCell(headerColumn);
+                        cell.SetCellValue(excelColumn);
+                        headerColumn++;
+                    });
+                    var rowCount = 1;
+                    elementsList.ToList().ForEach(element => {
+                        var row1 = excelSheet.CreateRow(rowCount);
+                        var cellCount = 0;
+                        var elementList = new List<string>()
+                        {
+                            element.Mark,
+                            element.Position,
+                            element.Profile,
+                            element.Material,
+                            element.M_summary,
+                            element.N_summary,
+                            element.M_summary
+                        };                  
+                        excelColumns.ToList().ForEach(column => {
+                            var cell = row1.CreateCell(cellCount);
+                            cell.SetCellValue(elementList[cellCount]);
+                            cellCount++;
+                        });
+                        rowCount++;
+                    });
+                    Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog();
+                    dialog.FileName = "ElementList"; // Default file name
+                    dialog.DefaultExt = ".xlsx"; // Default file extension
+                    dialog.Filter = "Excel (.xlsx)|*.xlsx"; // Filter files by extension
+                    bool? result = dialog.ShowDialog(); // Show the dialog.
+                    if (result == true) // Test result.
+                    {
+                        string FilePath = dialog.FileName; //path to download
+                        try
+                        {
+                            using (FileStream stream = new FileStream(FilePath, FileMode.OpenOrCreate,
+                                               FileAccess.Write))
+                            {
+                                workbook.Write(stream);
+                            }   
+                        }
+                        catch { }
+                    }
+
+                }, (obj) => BillOfElements.Count() > 0);
+            }
+        }
+
 
         public ICommand SelectUnboundParts_Click
         {
@@ -1277,7 +1448,6 @@ namespace TeklaHierarchicDefinitions.ViewModels
                 , (obj) => true);
             }
         }
-
 
         public ICommand CreateCsv
         {

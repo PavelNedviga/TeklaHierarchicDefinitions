@@ -647,7 +647,8 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             string classificator = "40000",
             string album = "unset",
             string category = "",
-            int rotNotAllowed = 0)
+            int rotNotAllowed = 0,
+            List<Part> parts = null)
         {
             AllAssemblyPartsSetAttr("RU_BOM_CTG", category);
             return TeklaDB.InheritPropsFromHierarchicObjectToSelectedParts(
@@ -680,7 +681,8 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                 crossSectionOnOtherList,
                 classificator,
                 album,
-                rotNotAllowed);
+                rotNotAllowed,
+                parts);
         }
 
 
@@ -750,9 +752,14 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                 rotNotAllowed);
         }
 
-        internal bool AttachSelectedModedlObjects()
+        internal bool AttachSelectedModelObjects()
         {
-            return TeklaDB.AttachSelectedModedlObjects(_hierarchicObject);
+            return TeklaDB.AttachSelectedModelObjects(_hierarchicObject);
+        }
+
+        internal bool AttachModelObjects(List<Part> parts)
+        {
+            return TeklaDB.AttachModelObjects(_hierarchicObject, parts);
         }
 
         internal bool AttachSelectedDetails()
