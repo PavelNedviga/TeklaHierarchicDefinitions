@@ -1036,9 +1036,51 @@ namespace TeklaHierarchicDefinitions.Models
             return q_F;
         }
 
+        public bool AttachObjects(List<Part> parts)
+        {
+            bool b = _hierarchicObjectInTekla.AttachModelObjects(parts);
+            OnPropertyChanged("IsComplexCrossSection");
+            bool a = _hierarchicObjectInTekla.SetPropertiesForAttachingParts(
+                Mark,
+                Profile,
+                Position,
+                M,
+                MyStartReverse,
+                M_end,
+                MyEndReverse,
+                StartMomentConnection,
+                EndMomentConnection,
+                StartFrictionConnection,
+                EndFrictionConnection,
+                N,
+                N_end,
+                N_start_min,
+                N_end_min,
+                N_summary,
+                Q,
+                Q_end,
+                Q_y,
+                Q_end_y,
+                Q_summary,
+                Material,
+                Notes,
+                BoolToInt(IsComplexCrossSection),
+                EmptyRowsNumber,
+                _crossSectionOnOtherList,
+                Classificator,
+                BOE,
+                Category,
+                RotNotAllowed,
+                parts);
+            OnPropertyChanged("ObjectsCount");
+
+            return a && b;
+        }
+
+
         public bool AttachSelectedObjects()
         {
-            bool b = _hierarchicObjectInTekla.AttachSelectedModedlObjects();
+            bool b = _hierarchicObjectInTekla.AttachSelectedModelObjects();
             OnPropertyChanged("IsComplexCrossSection");
             bool a = _hierarchicObjectInTekla.SetPropertiesForAttachingParts(
                 Mark,

@@ -15,7 +15,7 @@
                             xmlns:vm="clr-namespace:TeklaHierarchicDefinitions.ViewModels" 
                             mc:Ignorable="d"
                             Title="{tsd:Loc albl_WindowName}"
-                            Height="650" Width="1250" MinWidth="1350" MinHeight="680" Topmost="True">
+                            Height="400" Width="1250" MinWidth="1000" MinHeight="600" Topmost="True">
     <Window.Resources>
         <Convertors:LevelToIndentConverter x:Key="LevelToIndentConverter"/>
     </Window.Resources>
@@ -402,9 +402,13 @@
                       HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="6" 
                       VerticalAlignment="Top" Height="30" Width="180" Grid.ColumnSpan="2" Grid.Column="1" ClickMode="Press"/>
                     <Button x:Name="UpdateModelObjectFromHierarchicObject" 
-                    Content="{tsd:Loc albl_Update_parts}" HorizontalAlignment="Left" Margin="714,0,0,0" 
+                    Content="{tsd:Loc albl_Update_parts}" HorizontalAlignment="Left" Margin="680,0,0,0" 
                     Command="{Binding UpdateModelObjectFromHierarchicObject_Click}" 
                     CommandParameter="{Binding ElementName=InstantUpdate}"
+                    Grid.Row="9" VerticalAlignment="Center" Width="120" Height="30"/>
+                    <Button x:Name="ExportToExcel" 
+                    Content="{tsd:Loc albl_Export_EL_to_excel}" HorizontalAlignment="Left" Margin="820,0,0,0" 
+                    Command="{Binding ExportELToExcel_Click}" 
                     Grid.Row="9" VerticalAlignment="Center" Width="120" Height="30"/>
                     <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal">
                         <ComboBox ItemsSource ="{Binding BillOfElementsList, UpdateSourceTrigger =PropertyChanged}" 
@@ -415,7 +419,7 @@
 
                     </StackPanel>
                     <Button x:Name="SelectUnboundedParts" 
-                Content="{tsd:Loc albl_Unbounded_parts}" HorizontalAlignment="Left" Margin="544,0,0,0" 
+                Content="{tsd:Loc albl_Unbounded_parts}" HorizontalAlignment="Left" Margin="500,0,0,0" 
                 Command="{Binding SelectUnboundParts_Click}" 
                 CommandParameter="{Binding ElementName=HODataGrid}"
                 Grid.Row="9" VerticalAlignment="Center" Width="160" Height="30"/>

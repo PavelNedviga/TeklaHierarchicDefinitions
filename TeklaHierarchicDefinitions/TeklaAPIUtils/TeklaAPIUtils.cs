@@ -275,6 +275,20 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             return result;
         }
 
+        internal static bool RemoveModedlObjectsFromHierarchicObject(List<Part> parts)
+        {
+            ArrayList selectedObjects = new ArrayList( parts );
+            var hierarchicObjectList = GetHierarchicObjectsWithHierarchicDefinitionName(hierarchicDefinitionElementListName);
+            bool res = false;
+            foreach (var ho in hierarchicObjectList)
+            {
+                res = (res || ho.HierarchicObject.RemoveObjects(selectedObjects));
+            }
+
+            return res;
+
+        }
+
         internal static bool RemoveSelectedModedlObjectsFromHierarchicObject()
         {
             var selectedObjects = GetSelectedModelObjects();
@@ -494,6 +508,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             }
             return false;
         }
+
         internal static string GetHORootHierarchicDefinitionName(int id)
         {
             ModelObject modelObject = model.SelectModelObject(new Tekla.Structures.Identifier(id));
@@ -518,10 +533,17 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
         /// </summary>
         /// <param name="hierarchicObject"> Иерархический объект </param>
         /// <returns></returns>
-        internal static bool AttachSelectedModedlObjects(HierarchicObject hierarchicObject)
+        internal static bool AttachSelectedModelObjects(HierarchicObject hierarchicObject)
         {
             RemoveSelectedModedlObjectsFromHierarchicObject();
             bool res = hierarchicObject.AddObjects(GetSelectedModelObjects());
+            return hierarchicObject.Modify();
+        }
+
+        internal static bool AttachModelObjects(HierarchicObject hierarchicObject, List<Part> parts)
+        {
+            RemoveModedlObjectsFromHierarchicObject(parts);
+            bool res = hierarchicObject.AddObjects(new ArrayList(parts));
             return hierarchicObject.Modify();
         }
 
@@ -532,7 +554,6 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             bool ggg = hierarchicObject.Modify();
             var gg = hierarchicObject.GetChildren();
             return ggg;
-
         }
 
         internal static bool AttachSelectedDetails(HierarchicObject hierarchicObject)
@@ -725,10 +746,20 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             int crossSectionOnOtherList,
             string classificator,
             string album,
-            int rotNotAllowed)
+            int rotNotAllowed,
+            List<Part> parts)
         {
             bool res = false;
-            ArrayList arrayList = GetSelectedModelObjects();
+            ArrayList arrayList;
+            if (parts == null)
+            {
+                arrayList = GetSelectedModelObjects();
+            }
+            else
+            {
+                arrayList = new ArrayList(parts);
+            }
+            
 
             foreach (var @object in arrayList)
             {

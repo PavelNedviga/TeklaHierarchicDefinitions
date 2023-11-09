@@ -249,6 +249,46 @@
     "2022": "ru_koef_zapasa",
     "2023": "ru_koef_zapasa"
   },
+  "ru_objekt_stroit_1": {
+    "2021": "ru_objekt_stroit_1",
+    "2022": "RU_DTB3_1",
+    "2023": "RU_DTB3_1"
+  },
+  "ru_objekt_stroit_2": {
+    "2021": "ru_objekt_stroit_2",
+    "2022": "RU_DTB3_2",
+    "2023": "RU_DTB3_2"
+  },
+  "ru_objekt_stroit_3": {
+    "2021": "ru_objekt_stroit_3",
+    "2022": "RU_DTB3_3",
+    "2023": "RU_DTB3_3"
+  },
+  "ru_objekt_stroit_4": {
+    "2021": "ru_objekt_stroit_4",
+    "2022": "RU_DTB3_4",
+    "2023": "RU_DTB3_4"
+  },
+  "ru_naimen_stroit_1": {
+    "2021": "ru_naimen_stroit_1",
+    "2022": "RU_DTB2_1",
+    "2023": "RU_DTB2_1"
+  },
+  "ru_naimen_stroit_2": {
+    "2021": "ru_naimen_stroit_2",
+    "2022": "RU_DTB2_2",
+    "2023": "RU_DTB2_2"
+  },
+  "ru_naimen_stroit_3": {
+    "2021": "ru_naimen_stroit_3",
+    "2022": "RU_DTB2_3",
+    "2023": "RU_DTB2_3"
+  },
+  "ru_naimen_stroit_4": {
+    "2021": "ru_naimen_stroit_4",
+    "2022": "RU_DTB2_4",
+    "2023": "RU_DTB2_4"
+  },
   "template": {
     "2021": "",
     "2022": "",

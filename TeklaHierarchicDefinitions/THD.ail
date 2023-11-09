@@ -1682,6 +1682,27 @@ string_utf8 albl_ErrorRate
 };
 
 
+string_utf8 albl_Export_EL_to_excel
+{
+    entry = ("enu", "Save to XLSX");
+    entry = ("chs", "Save to XLSX");
+    entry = ("cht", "Save to XLSX");
+    entry = ("csy", "Save to XLSX");
+    entry = ("deu", "Save to XLSX");
+    entry = ("esp", "Save to XLSX");
+    entry = ("fra", "Save to XLSX");
+    entry = ("hun", "Save to XLSX");
+    entry = ("ita", "Save to XLSX");
+    entry = ("jpn", "Save to XLSX");
+    entry = ("kor", "Save to XLSX");
+    entry = ("nld", "Save to XLSX");
+    entry = ("plk", "Save to XLSX");
+    entry = ("ptb", "Save to XLSX");
+    entry = ("ptg", "Save to XLSX");
+    entry = ("rus", "Сохранить в XLSX");
+};
+
+
 string_utf8 albl_
 {
     entry = ("enu", "Temp");
