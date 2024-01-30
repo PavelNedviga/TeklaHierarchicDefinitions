@@ -575,7 +575,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                             element.Material,
                             element.M_summary,
                             element.N_summary,
-                            element.M_summary
+                            element.Q_summary
                         };                  
                         excelColumns.ToList().ForEach(column => {
                             var cell = row1.CreateCell(cellCount);
@@ -1455,6 +1455,8 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
+                    var zz = Drawings.First().Album;
+                    var cc = Drawings.First().Code;
                     DrawingGroup.CsvExport(Drawings);
                 }
                 , (obj) => true);
