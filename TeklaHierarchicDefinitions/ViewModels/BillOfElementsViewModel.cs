@@ -573,9 +573,9 @@ namespace TeklaHierarchicDefinitions.ViewModels
                             element.Position,
                             element.Profile,
                             element.Material,
-                            element.M_summary,
+                            element.Q_summary,
                             element.N_summary,
-                            element.Q_summary
+                            element.M_summary
                         };                  
                         excelColumns.ToList().ForEach(column => {
                             var cell = row1.CreateCell(cellCount);
