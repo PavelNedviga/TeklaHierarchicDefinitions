@@ -61,7 +61,7 @@ namespace CustomPropertyHierarchicObject
     }
 
     /// <summary>The test plugin for father component name or number.</summary>
-    [Export(typeof(ICustomPropertyPlugin))]
+    [Export(typeof(Tekla.Structures.CustomPropertyPlugin.ICustomPropertyPlugin))]
     [ExportMetadata("CustomProperty", "CUSTOM.HO.CLASS_ATTR")]
     public class CUSTOM_HO_CLASS_ATTR : ICustomPropertyPlugin
     {
