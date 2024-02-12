@@ -191,6 +191,10 @@
     <Compile Include="Models\SteelBOMPosition.cs" />
     <Compile Include="TeklaAPIUtils\NameConverter.cs" />
     <Compile Include="TeklaAPIUtils\HierarchicObjectInTekla.cs" />
+    <AdditionalFiles Include="Configs\Release-THD.exe.config">
+      <LastGenOutput>2022-THD.exe.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AdditionalFiles>
     <None Include="replace.ps1" />
     <None Include="replace_templates.json" />
     <None Include="UDAMapping.json">
@@ -339,7 +343,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>// xcopy "$(TargetDir)Configs\$(ConfigurationName)-THD.exe.config" "$(TargetDir)THD.exe.config" /Y
+    <PostBuildEvent>xcopy "$(TargetDir)Configs\$(ConfigurationName)-THD.exe.config" "$(TargetDir)THD.exe.config" /Y
 </PostBuildEvent>
   </PropertyGroup>
 </Project>
