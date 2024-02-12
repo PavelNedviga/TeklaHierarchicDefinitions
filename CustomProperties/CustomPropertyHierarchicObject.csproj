@@ -112,18 +112,6 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Runtime.Remoting" />
-    <Reference Include="Tekla.Structures, Version=2021.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tekla.Structures.2021.0.0\lib\net40\Tekla.Structures.dll</HintPath>
-    </Reference>
-    <Reference Include="Tekla.Structures.CustomPropertyPlugin, Version=2023.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tekla.Structures.CustomPropertyPlugin.2023.0.1\lib\net451\Tekla.Structures.CustomPropertyPlugin.dll</HintPath>
-    </Reference>
-    <Reference Include="Tekla.Structures.Datatype, Version=2023.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tekla.Structures.Datatype.2023.0.1\lib\net40\Tekla.Structures.Datatype.dll</HintPath>
-    </Reference>
-    <Reference Include="Tekla.Structures.Model, Version=2021.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tekla.Structures.Model.2021.0.0\lib\net40\Tekla.Structures.Model.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomProperty.cs" />
@@ -131,7 +119,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

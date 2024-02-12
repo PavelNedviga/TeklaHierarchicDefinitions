@@ -39,12 +39,12 @@ build:
     #- '& msbuild restore "AutoJoint\AutoJoint.cproj"'
     #- '& "$env:NUGET_PATH" restore'
     - '& msbuild /t:restore /m:$env:MSBUILD_CONCURRENCY /nr:false /clp:ErrorsOnly'
-    - '& msbuild /p:Configuration=Release /p:Platform="x64" /m:$env:MSBUILD_CONCURRENCY /nr:false /clp:ErrorsOnly' # ;  clp:ErrorsOnly   ;  nr:false   msbuild     
+    - '& msbuild /p:Configuration=Release /p:Platform="Any CPU" /m:$env:MSBUILD_CONCURRENCY /nr:false /clp:ErrorsOnly' # ;  clp:ErrorsOnly   ;  nr:false   msbuild     
     #- Any CPU
     - |
       $projects = @("TeklaHierarchicDefinitions", "CustomProperties")
       foreach ($project in $projects) {
-        $sourcePath = "$project/bin/x64/Release/"
+        $sourcePath = "$project/bin/Any CPU/Release/"
         $destPath = "Release/$project/"
         if (Test-Path $sourcePath) {
           New-Item -ItemType Directory -Force -Path $destPath | Out-Null
