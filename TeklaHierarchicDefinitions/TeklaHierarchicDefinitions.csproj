@@ -339,7 +339,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetDir)Configs\$(ConfigurationName)-THD.exe.config" "$(TargetDir)\THD.exe.config" /Y
+    <PostBuildEvent>xcopy "$(TargetDir)Configs\$(ConfigurationName)-THD.exe.config" "$(TargetDir)THD.exe.config" /Y
 </PostBuildEvent>
   </PropertyGroup>
 </Project>
