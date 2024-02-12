@@ -35,15 +35,15 @@ namespace Tekla.Technology.Akit.UserScript
             string ApplicationConfigName = "THD.exe.config";
             string ApplicationConfigPath = Path.Combine(dir, "Environments\\common\\extensions\\ElementList\\" + ApplicationConfigName);
 
-            if (!File.Exists(ApplicationConfigPath))
-            {
+            //if (!File.Exists(ApplicationConfigPath))
+            //{
                 string ApplicationConfigPathCorrect = Path.Combine(dir, "Environments\\common\\extensions\\ElementList\\Configs\\" + versionShort + "-THD.exe.config");
                 File.Copy(ApplicationConfigPathCorrect, ApplicationConfigPath);
                 //if (TeklaStructuresInfo.GetCurrentProgramVersion().Contains("2021"))
                 //    File.Copy(Path.Combine(dir, "nt\\bin\\TeklaStructures.exe.config"), ApplicationConfigPath);
                 //else
                 //    File.Copy(Path.Combine(dir, "bin\\TeklaStructures.exe.config"), ApplicationConfigPath);
-            }
+            //}
 
             string ApplicationName = "THD.exe";
             string ApplicationPath = Path.Combine(dir, "Environments\\common\\extensions\\ElementList\\" + ApplicationName);
