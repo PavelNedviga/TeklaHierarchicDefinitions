@@ -55,8 +55,9 @@ build:
     #- ls "AutoJoint/bin/x64"
     #- ls "AutoJoint/bin/x64/Release"
     - echo $CI_PROJECT_DIR
-    - ls "$CI_PROJECT_DIR\TeklaHierarchicDefinitions"
-    - C:\TeklaStructures\2023.0\bin\TeklaExtensionPackage.BatchBuilder.exe -i $CI_PROJECT_DIR\TeklaHierarchicDefinitions\TSEP Package input\Manifest.xml -o $CI_PROJECT_DIR\Release\TSEP\ElementList.tsep -l $CI_PROJECT_DIR\Release\TSEP\
+    - ls "$CI_PROJECT_DIR\TeklaHierarchicDefinitions\TSEP Package input"
+    - ls "$CI_PROJECT_DIR\TeklaHierarchicDefinitions\TSEP Package input"
+    - C:\TeklaStructures\2023.0\bin\TeklaExtensionPackage.BatchBuilder.exe -i "$CI_PROJECT_DIR\TeklaHierarchicDefinitions\TSEP Package input\Manifest.xml" -o "$CI_PROJECT_DIR\Release\TSEP\ElementList.tsep" -l "$CI_PROJECT_DIR\Release\TSEP\"
   artifacts:
     expire_in: 2 days   
     paths:
