@@ -33,7 +33,7 @@ build:
   tags:
     - windows-build
   only:
-    - Ci-Cd
+    - master
   script: 
     - 'dotnet restore AutoJoint.sln'
     #- '& msbuild restore "AutoJoint\AutoJoint.cproj"'
@@ -67,15 +67,15 @@ deploy:
   tags:
     - linux-build
   only:
-    - Ci-Cd
+    - master
   #before_script:  
   # - CHCP 65001
   script: 
     #- ls /Release/TSEP/
     #- ping fs-ide.gti.local
-    #- ls "\\fs-ide.gti.local\20_Office\80_Библиотека\110_КМ\Tekla\ASD-Presets\TRIMBLE\IDE-Library\ExtensionsLibrary\TSEP installators\" 
+    #- ls "\\fs-ide.gti.local\20_Office\80_\110_\Tekla\ASD-Presets\TRIMBLE\IDE-Library\ExtensionsLibrary\TSEP installators\" 
     - cp -fr Release/TSEP/Autojoint.tsep "/etc/fs/ElementList/"
-    #- Copy-Item -Path 'Release\TSEP\Autojoint.tsep' -Destination '\\fs-ide.gti.local\20_Office\80_Библиотека\110_КМ\Tekla\ASD-Presets\TRIMBLE\IDE-Library\ExtensionsLibrary\TSEP installators\Autojoint.tsep' -Force
+    #- Copy-Item -Path 'Release\TSEP\Autojoint.tsep' -Destination '\\fs-ide.gti.local\20_Office\80_\110_\Tekla\ASD-Presets\TRIMBLE\IDE-Library\ExtensionsLibrary\TSEP installators\Autojoint.tsep' -Force
   needs:
     - job: build
       artifacts: true
