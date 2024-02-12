@@ -60,10 +60,7 @@ build:
     expire_in: 2 days   
     paths:
       - Release/
-  #when: manual  
-  #artifacts: #      ,     gitlab (.. )         
-  #  paths: #  ,      
-  #    - './*/bin'
+ 
 
 deploy:  
   stage: deploy
