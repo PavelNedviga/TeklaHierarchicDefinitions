@@ -35,7 +35,7 @@ build:
   only:
     - master
   script: 
-    - 'dotnet restore AutoJoint.sln'
+    - 'dotnet restore TeklaHierarchicDefinitions.sln'
     #- '& msbuild restore "AutoJoint\AutoJoint.cproj"'
     #- '& "$env:NUGET_PATH" restore'
     - '& msbuild /t:restore /m:$env:MSBUILD_CONCURRENCY /nr:false /clp:ErrorsOnly'
