@@ -76,7 +76,7 @@ deploy:
     #- ls /Release/TSEP/
     #- ping fs-ide.gti.local
     #- ls "\\fs-ide.gti.local\20_Office\80_\110_\Tekla\ASD-Presets\TRIMBLE\IDE-Library\ExtensionsLibrary\TSEP installators\" 
-    - cp -fr Release/TSEP/Autojoint.tsep "/etc/fs/ElementList/"
+    - cp -fr Release/TSEP/ElementList.tsep "/etc/fs/ElementList/"
     #- Copy-Item -Path 'Release\TSEP\Autojoint.tsep' -Destination '\\fs-ide.gti.local\20_Office\80_\110_\Tekla\ASD-Presets\TRIMBLE\IDE-Library\ExtensionsLibrary\TSEP installators\Autojoint.tsep' -Force
   needs:
     - job: build
