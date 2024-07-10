@@ -185,6 +185,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <None Include="Macro\UDAMapping21-23.cs" />
     <Compile Include="Models\BuildingFragmentUtils.cs" />
     <Compile Include="Models\ClassGenerator.cs" />
     <Compile Include="Models\ReadDirectus.cs" />
