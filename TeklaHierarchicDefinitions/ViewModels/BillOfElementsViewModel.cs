@@ -23,6 +23,14 @@ using Part = Tekla.Structures.Model.Part;
 using Task = System.Threading.Tasks.Task;
 using Tekla.Structures.Model;
 using NPOI.SS.Format;
+using NPOI.HSSF.Util;
+using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
+using Syncfusion.Windows.Controls.Grid;
+using NPOI.SS.Util;
+using System.Collections;
+using ControlzEx.Standard;
+using static TeklaHierarchicDefinitions.Models.DrawingManipulator;
 
 namespace TeklaHierarchicDefinitions.ViewModels
 {
@@ -546,6 +554,9 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
+                    
+
+                    // Content
                     List<string> upd = new List<string>();
                     bool updated = false;
                     var elementsList = BillOfElements;
@@ -554,8 +565,23 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     ISheet excelSheet = workbook.CreateSheet(SelectedBOE);
                     IRow row = excelSheet.CreateRow(0);
 
-                    var excelColumns = new[] { "Марка","Позиция","Сечение", "Материал", "Q, кН", "N, кН", "M, кНм" };
-                    IRow headerRow = excelSheet.CreateRow(0);
+                    // Styling
+                    IFont fontContent= workbook.CreateFont();
+                    fontContent.FontName = "Arial";
+                    fontContent.FontHeightInPoints = 10;
+                    fontContent.Color = HSSFColor.DarkBlue.Index;
+                    ICellStyle cellStyleContent= workbook.CreateCellStyle();
+                    cellStyleContent.SetFont(fontContent);
+                    //cellStyleContent.FillForegroundColor = HSSFColor.LightCornflowerBlue.Index;
+                    //cellStyleContent.FillPattern = FillPattern.SolidForeground;
+                    cellStyleContent.BorderLeft = BorderStyle.Thin;
+                    cellStyleContent.BorderTop = BorderStyle.Thin;
+                    cellStyleContent.BorderRight = BorderStyle.Thin;
+                    cellStyleContent.BorderBottom = BorderStyle.Thin;
+
+                    // Content
+                    var excelColumns = new[] { "Префикс сборки","Профиль", "Материал", "Q, кН", "N, кН", "M, кН*м" };
+                    IRow headerRow = excelSheet.CreateRow(3);
                     var headerColumn = 0;
                     excelColumns.ToList().ForEach(excelColumn =>
                     {
@@ -563,15 +589,15 @@ namespace TeklaHierarchicDefinitions.ViewModels
                         cell.SetCellValue(excelColumn);
                         headerColumn++;
                     });
-                    var rowCount = 1;
+                    var rowCount = 4;
                     elementsList.ToList().ForEach(element => {
                         var row1 = excelSheet.CreateRow(rowCount);
                         var cellCount = 0;
                         var elementList = new List<string>()
                         {
                             element.Mark,
-                            element.Position,
-                            element.Profile,
+                            //element.Position,
+                            element.Profile.Split('_')[0],
                             element.Material,
                             element.Q_summary,
                             element.N_summary,
@@ -580,10 +606,110 @@ namespace TeklaHierarchicDefinitions.ViewModels
                         excelColumns.ToList().ForEach(column => {
                             var cell = row1.CreateCell(cellCount);
                             cell.SetCellValue(elementList[cellCount]);
+                            cell.CellStyle = cellStyleContent;
                             cellCount++;
                         });
                         rowCount++;
                     });
+
+                    // Formatting ----------------------------------------------------------
+
+                    //Column widths
+                    excelSheet.SetColumnWidth(0, 19 * 256);
+                    excelSheet.SetColumnWidth(1, 19 * 256);
+                    excelSheet.SetColumnWidth(2, 10 * 256);
+                    excelSheet.SetColumnWidth(3, 8 * 256);
+                    excelSheet.SetColumnWidth(4, 8 * 256);
+                    excelSheet.SetColumnWidth(5, 8 * 256);
+                    
+
+                    // Header style
+                    IFont font = workbook.CreateFont();
+                    font.FontName = "Arial";
+                    font.IsBold = true;
+                    font.FontHeightInPoints = 10;
+                    ICellStyle cellStyleHeader = workbook.CreateCellStyle();
+                    cellStyleHeader.SetFont(font);
+
+                    cellStyleHeader.BorderLeft = BorderStyle.Medium;
+                    cellStyleHeader.BorderTop = BorderStyle.Medium;
+                    cellStyleHeader.BorderRight = BorderStyle.Medium;
+                    cellStyleHeader.BorderBottom = BorderStyle.Medium;
+
+                    IRow header = excelSheet.GetRow(3);
+                    foreach (var cell in header.Cells) {
+                        cell.CellStyle = cellStyleHeader;
+                    }
+
+                    // Populate title
+                    Model model = new Model();
+                    string modelNameFull = model.GetInfo().ModelName;
+                    string modelName = modelNameFull.Split('.')[0];
+                    var prinfo = model.GetProjectInfo();
+                    Hashtable ht = new Hashtable();
+                    prinfo.GetStringUserProperties(ref ht);
+                    string nameStroit1 = string.Empty;
+                    string nameStroit2 = string.Empty;
+                    string nameStroit3 = string.Empty;
+                    prinfo.GetUserProperty("RU_PTB3_1", ref nameStroit1);
+                    prinfo.GetUserProperty("RU_PTB3_2", ref nameStroit2);
+                    prinfo.GetUserProperty("RU_PTB3_3", ref nameStroit3);
+
+                    excelSheet.CreateRow(0).CreateCell(0).SetCellValue("Номер проекта");
+                    var row2 = excelSheet.CreateRow(1);
+                    row2.HeightInPoints= (short)48.8f;
+                    row2.CreateCell(0).SetCellValue("Название проекта");
+                    excelSheet.GetRow(0).CreateCell(1).SetCellValue(modelName);
+                    excelSheet.GetRow(1).CreateCell(1).SetCellValue(nameStroit1 + "\n" + nameStroit2 + "\n" + nameStroit1);
+
+                    // Format title
+                    IFont fontTitleBold = workbook.CreateFont();
+                    IFont fontTitle = workbook.CreateFont();
+                    fontTitleBold.FontName = "Arial";
+                    fontTitleBold.FontHeightInPoints = 10;
+                    fontTitleBold.Color = HSSFColor.DarkBlue.Index;
+                    fontTitleBold.IsBold = false;
+                    ICellStyle cellStyleTitle = workbook.CreateCellStyle();
+                    cellStyleTitle.SetFont(fontTitleBold);
+                    cellStyleTitle.Alignment = NPOI.SS.UserModel.HorizontalAlignment.Center;
+                    cellStyleTitle.VerticalAlignment = NPOI.SS.UserModel.VerticalAlignment.Center;
+
+                    fontTitle.FontName = "Arial";
+                    fontTitle.FontHeightInPoints = 10;
+                    fontTitle.Color = HSSFColor.DarkBlue.Index;
+                    fontTitle.IsBold = true;
+                    ICellStyle cellStyleTitleBold = workbook.CreateCellStyle();
+                    cellStyleTitleBold.SetFont(fontTitle);
+                    cellStyleTitleBold.Alignment = NPOI.SS.UserModel.HorizontalAlignment.Center;
+                    cellStyleTitleBold.VerticalAlignment = NPOI.SS.UserModel.VerticalAlignment.Center;
+
+                    //cellStyleTitleBold.FillForegroundColor = HSSFColor.Grey25Percent.Index;
+                    //cellStyleTitleBold.FillPattern = FillPattern.SolidForeground;
+
+
+                    //cellStyleTitleBold.BorderLeft = BorderStyle.Thin;
+                    //cellStyleTitleBold.BorderTop = BorderStyle.Thin;
+                    //cellStyleTitleBold.BorderRight = BorderStyle.Thin;
+                    //cellStyleTitleBold.BorderBottom = BorderStyle.Thin;
+                    //cellStyleTitle.BorderLeft = BorderStyle.Thin;
+                    //cellStyleTitle.BorderTop = BorderStyle.Thin;
+                    //cellStyleTitle.BorderRight = BorderStyle.Thin;
+                    //cellStyleTitle.BorderBottom = BorderStyle.Thin;
+
+                    var row0 = excelSheet.GetRow(0);
+                    var cells = excelSheet.GetRow(0).Cells;
+                    excelSheet.GetRow(0).Cells[0].CellStyle = cellStyleTitleBold;
+                    excelSheet.GetRow(1).Cells[0].CellStyle = cellStyleTitleBold;
+                    excelSheet.GetRow(0).Cells[1].CellStyle = cellStyleTitle;
+                    excelSheet.GetRow(1).Cells[1].CellStyle = cellStyleTitle;
+                    
+
+
+                    // Merging
+                    excelSheet.AddMergedRegion(new CellRangeAddress(0, 0, 1, 5));
+                    excelSheet.AddMergedRegion(new CellRangeAddress(1, 1, 1, 5));
+
+                    // Saving ---------------------------------------------------------------
                     Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog();
                     dialog.FileName = "ElementList"; // Default file name
                     dialog.DefaultExt = ".xlsx"; // Default file extension
