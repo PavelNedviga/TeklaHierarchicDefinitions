@@ -186,6 +186,7 @@
       <SubType>Code</SubType>
     </Compile>
     <None Include="Macro\UDAMapping21-23.cs" />
+    <Compile Include="Logging\Logging.cs" />
     <Compile Include="Models\BuildingFragmentUtils.cs" />
     <Compile Include="Models\ClassGenerator.cs" />
     <Compile Include="Models\ReadDirectus.cs" />
@@ -269,9 +270,9 @@
     <Resource Include="DirectusService.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Content Include="NLog.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="Logging\NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -328,6 +329,9 @@
     </PackageReference>
     <PackageReference Include="NLog.Config">
       <Version>4.7.11</Version>
+    </PackageReference>
+    <PackageReference Include="NLog.Targets.GraylogHttp">
+      <Version>2.0.1</Version>
     </PackageReference>
     <PackageReference Include="NPOI">
       <Version>2.5.6</Version>

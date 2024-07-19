@@ -31,12 +31,16 @@ using NPOI.SS.Util;
 using System.Collections;
 using ControlzEx.Standard;
 using static TeklaHierarchicDefinitions.Models.DrawingManipulator;
+using NLog;
+using TeklaHierarchicDefinitions.Logging;
 
 namespace TeklaHierarchicDefinitions.ViewModels
 {
 
     public class BillOfElementsViewModel : INotifyPropertyChanged
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         #region Ведомость элементов
         //internal WpfMaterialCatalog mc;
         #region Параметры
@@ -1558,17 +1562,25 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
-                    System.Windows.Forms.OpenFileDialog dialogWindow = new System.Windows.Forms.OpenFileDialog();
-                    dialogWindow.Filter = "CSV Files (*.csv)|*.csv";
-                    dialogWindow.FilterIndex = 1;
-                    dialogWindow.Multiselect = false;
-
-                    if (dialogWindow.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    try
                     {
-                        string sFileName = dialogWindow.FileName;
-                        //string[] arrAllFiles = choofdlog.FileNames; //used when Multiselect = true           
-                        DrawingGroup.LoadCsv(sFileName);
-                        OnPropertyChanged("BorrowedListFromCsv");
+
+                        System.Windows.Forms.OpenFileDialog dialogWindow = new System.Windows.Forms.OpenFileDialog();
+                        dialogWindow.Filter = "CSV Files (*.csv)|*.csv";
+                        dialogWindow.FilterIndex = 1;
+                        dialogWindow.Multiselect = false;
+
+                        if (dialogWindow.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                        {
+                            string sFileName = dialogWindow.FileName;
+                            //string[] arrAllFiles = choofdlog.FileNames; //used when Multiselect = true           
+                            DrawingGroup.LoadCsv(sFileName);
+                            OnPropertyChanged("BorrowedListFromCsv");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Logging.ExceptionLog(logger, ex);
                     }
                 }
                 , (obj) => true);
@@ -1581,9 +1593,16 @@ namespace TeklaHierarchicDefinitions.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
-                    var zz = Drawings.First().Album;
-                    var cc = Drawings.First().Code;
-                    DrawingGroup.CsvExport(Drawings);
+                    try
+                    {
+                        var zz = Drawings.First().Album;
+                        var cc = Drawings.First().Code;
+                        DrawingGroup.CsvExport(Drawings);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Logging.ExceptionLog(logger, ex);
+                    }
                 }
                 , (obj) => true);
             }
