@@ -208,6 +208,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         #endregion
 
         #region Свойства
+        [CustomLog]
         public string WindowName { get => $"Ведомость элементов {typeof(BillOfElementsViewModel).Assembly.GetName().Version.Major.ToString()}.{typeof(BillOfElementsViewModel).Assembly.GetName().Version.Minor.ToString()}"; }
         public bool FilterByMark { get; set; } = true;
 
@@ -215,7 +216,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
 
         public bool FilterByMaterial { get; set; } = true;
 
-
+        [CustomLog]
         public MyObservableCollection<BillOfElements> BillOfElements
         {
             get
@@ -236,7 +237,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         }
 
 
-
+        [CustomLog]
         public List<string> BillOfElementsList
         {
             get
@@ -250,6 +251,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         private Dictionary<string, BillOfElements> BillOfElementsDict 
         { 
             get 
@@ -258,6 +260,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             } 
         }
     //
+        [CustomLog]
         public string SelectedBOE
         {
             get { return _selectedBOE; }
@@ -270,6 +273,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public string BOELChanger
         {
             get { return SelectedBOE; }
@@ -288,6 +292,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public bool InstantUpdate
         {
             get
@@ -302,6 +307,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public bool ModificationBlocked
         {
             get
@@ -316,6 +322,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public bool WindowOnTop
         {
             get
@@ -329,6 +336,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public bool ButtonIsEnabled
         {
             get
@@ -342,6 +350,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public BillOfElements SelectedItem
         {
             get { return _selectedItem; }
@@ -384,6 +393,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         #endregion
 
         #region Методы
+        [CustomLog]
         public string AssemblyDirectory
         {
             get
@@ -406,6 +416,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         #endregion
 
         #region Команды
+        [CustomLog]
         public ICommand ReleaseNotes_Click
         {
             get
@@ -425,6 +436,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public ICommand AddModelObjectToHierarchicObject_Click
         {
             get
@@ -445,6 +457,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public ICommand RemoveModelObjectFromHierarchicObject_Click
         {
             get
@@ -480,6 +493,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public ICommand SetOnTop
         {
             get
@@ -494,6 +508,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public ICommand AddHierarchicObject_Click
         {
             get
@@ -508,6 +523,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public ICommand DeleteHierarchicObject_Click
         {
             get
@@ -527,6 +543,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public ICommand UpdateModelObjectFromHierarchicObject_Click
         {
             get
@@ -552,6 +569,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public ICommand ExportELToExcel_Click
         {
             get
@@ -789,7 +807,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
-
+        [CustomLog]
         public ICommand SelectUnboundParts_Click
         {
             get
@@ -802,6 +820,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public ICommand UpdateButtonsAccessCommand
         {
             get
@@ -813,6 +832,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public ICommand UpdateBillOfElementsList
         {
             get
@@ -824,6 +844,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public ICommand AddToHO_Click
         {
             get
@@ -841,6 +862,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public ICommand RemoveFromHO_Click
         {
             get
@@ -860,6 +882,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public ICommand CopyHO_Click
         {
             get
@@ -884,6 +907,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public ICommand SelectDeselectRows_Click
         {
             get
@@ -910,6 +934,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public ICommand SelectSimilarParts_Click
         {
             get
@@ -923,6 +948,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public ICommand BorrowProperties_Click
         {
             get
@@ -1215,6 +1241,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         #endregion
 
         #region Свойства
+        [CustomLog]
         public ObservableCollection<SteelBOMPosition> SteelBOMPositions
         {
             get
@@ -1245,6 +1272,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
 
         public ObservableCollection<SteelBOMPosition> SteelBOMPositionsByCategory { get; set; }
 
+        [CustomLog]
         public double SummarySBOMParts
         {
             get
@@ -1255,6 +1283,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public double SummaryGrossSBOMParts
         {
             get
@@ -1288,6 +1317,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
 
         public bool SelectPartlyAttachedObjects { get; set; }
 
+        [CustomLog]
         public string SelectedAttachmentToEL
         {
             get => selectedAttachmentsToEL;
@@ -1299,6 +1329,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public bool IsLoadingSBOM
         {
             get => isLoadingSBOM;
@@ -1311,6 +1342,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         #endregion
 
         #region Команды
+        [CustomLog]
         public ICommand SelectedSBOMMaterials
         {
             get
@@ -1333,7 +1365,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
-
+        [CustomLog]
         public ICommand AddSBOMParts
         {
             get
@@ -1362,7 +1394,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
-
+        [CustomLog]
         public ICommand UnselectAll
         {
             get
@@ -1430,13 +1462,17 @@ namespace TeklaHierarchicDefinitions.ViewModels
         #endregion
 
         #region Свойства
+
+        [CustomLog]
         public ObservableCollection<DrawingManipulator> Drawings { get; set; } = new ObservableCollection<DrawingManipulator>();
 
+        [CustomLog]
         public List<string> Albums
         {
             get => Drawings.Select(t => t.Album).ToList();
         }
 
+        [CustomLog]
         public string SelectedDrawingAlbum
         {
             get => selectedDrawingAlbum;
@@ -1458,6 +1494,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public DrawingManipulator SelectedDrawingManipulator
         {
             get => selectedDrawingManipulator;
@@ -1469,11 +1506,13 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public ObservableCollection<string> DrawingAlbums
         {
             get { return new ObservableCollection<string>(Drawings.Select(t => t.Album).Distinct()); }
         }
 
+        [CustomLog]
         public ObservableCollection<DrawingManipulator> VisibleDrawingManipulators
         {
             get
@@ -1495,6 +1534,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public ObservableCollection<DrawingManipulator> BorrowedListFromCsv
         {
             get
@@ -1571,7 +1611,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         }
         #endregion
 
-
+        [CustomLog]
         public void UpdateProps()
         {
             DrawingGroup.Filler = PropertyRooting.Drawing;
@@ -1629,8 +1669,6 @@ namespace TeklaHierarchicDefinitions.ViewModels
                             DrawingGroup.LoadCsv(sFileName);
                             OnPropertyChanged("BorrowedListFromCsv");
                         }
-                        
-                        throw new Exception("LoadException");
 
                 }
                 , (obj) => true);
@@ -1647,12 +1685,12 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     var zz = Drawings.First().Album; 
                     var cc = Drawings.First().Code;
                     DrawingGroup.CsvExport(Drawings);
-                    throw new Exception("CreateException");
                 }
                 , (obj) => true);
             }
         }
 
+        [CustomLog]
         public ICommand UpdateAlbum
         {
             get
@@ -1674,6 +1712,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public ICommand UpdateAlbumList
         {
             get
@@ -1685,6 +1724,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public ICommand UpdateDrawingList
         {
             get
