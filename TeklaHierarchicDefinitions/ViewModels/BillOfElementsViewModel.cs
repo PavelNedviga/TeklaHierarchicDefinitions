@@ -36,7 +36,7 @@ using TeklaHierarchicDefinitions.Logging;
 
 namespace TeklaHierarchicDefinitions.ViewModels
 {
-
+    [CustomLog]
     public class BillOfElementsViewModel : INotifyPropertyChanged
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
@@ -1588,6 +1588,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
         }
 
         #region Команды
+        [CustomLog]
         public ICommand BorrowFromCsv
         {
             get
@@ -1608,14 +1609,13 @@ namespace TeklaHierarchicDefinitions.ViewModels
             }
         }
 
+        [CustomLog]
         public ICommand LoadFromCsv
         {
             get
             {
                 return new DelegateCommand((obj) =>
                 {
-                    try
-                    {
 
                         System.Windows.Forms.OpenFileDialog dialogWindow = new System.Windows.Forms.OpenFileDialog();
                         dialogWindow.Filter = "CSV Files (*.csv)|*.csv";
@@ -1629,32 +1629,25 @@ namespace TeklaHierarchicDefinitions.ViewModels
                             DrawingGroup.LoadCsv(sFileName);
                             OnPropertyChanged("BorrowedListFromCsv");
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Logging.ExceptionLog(logger, ex);
-                    }
+                        
+                        throw new Exception("LoadException");
+
                 }
                 , (obj) => true);
             }
         }
 
+        [CustomLog]
         public ICommand CreateCsv
         {
             get
             {
                 return new DelegateCommand((obj) =>
                 {
-                    try
-                    {
-                        var zz = Drawings.First().Album;
-                        var cc = Drawings.First().Code;
-                        DrawingGroup.CsvExport(Drawings);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Logging.ExceptionLog(logger, ex);
-                    }
+                    var zz = Drawings.First().Album; 
+                    var cc = Drawings.First().Code;
+                    DrawingGroup.CsvExport(Drawings);
+                    throw new Exception("CreateException");
                 }
                 , (obj) => true);
             }
