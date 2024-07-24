@@ -580,7 +580,16 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     cellStyleContent.BorderBottom = BorderStyle.Thin;
 
                     // Content
-                    var excelColumns = new[] { "Префикс сборки","Профиль", "Материал", "Q, кН", "N, кН", "M, кН*м" };
+                    var excelColumns = new[] { 
+                        "Префикс сборки",
+                        "Профиль", 
+                        "Материал", 
+                        "Qz, кН",
+                        "Qy, кН",
+                        "N, кН", 
+                        "My, кН*м",
+                        "Mz, кН*м", //? а есть такой
+                    };
                     IRow headerRow = excelSheet.CreateRow(3);
                     var headerColumn = 0;
                     excelColumns.ToList().ForEach(excelColumn =>
@@ -596,12 +605,17 @@ namespace TeklaHierarchicDefinitions.ViewModels
                         var elementList = new List<string>()
                         {
                             element.Mark,
-                            //element.Position,
                             element.Profile.Split('_')[0],
                             element.Material,
-                            element.Q_summary,
+                            element.GetQySummary(),
+                            element.GetQzSummary(),
                             element.N_summary,
-                            element.M_summary
+                            element.M_summary, // GetMySummary
+                            element.M_summary, // GetMzSummary
+                            element.M_end,
+                            
+
+
                         };                  
                         excelColumns.ToList().ForEach(column => {
                             var cell = row1.CreateCell(cellCount);
@@ -611,6 +625,10 @@ namespace TeklaHierarchicDefinitions.ViewModels
                         });
                         rowCount++;
                     });
+
+                    var lastRow = excelSheet.CreateRow(rowCount + 1);
+                    var lastCell = lastRow.CreateCell(0);
+                    lastCell.SetCellValue("* Символ '/' означает усилие в начале/конце. Если символ не указан, то усилие одинаковое.");
 
                     // Formatting ----------------------------------------------------------
 
