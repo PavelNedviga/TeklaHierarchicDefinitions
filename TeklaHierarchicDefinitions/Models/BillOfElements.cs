@@ -1035,6 +1035,32 @@ namespace TeklaHierarchicDefinitions.Models
             }
             return q_F;
         }
+        internal string GetQzSummary()
+        {
+            string q_F;
+            if (Q == Q_end)
+            {
+                q_F = Q;
+            }
+            else
+            {
+                q_F = Q + "/" + Q_end;
+            }
+            return q_F;
+        }
+        internal string GetQySummary()
+        {
+            string q_F;
+            if (Q_y == Q_end_y)
+            {
+                q_F = Q;
+            }
+            else
+            {
+                q_F = Q_y + "/" + Q_end_y;
+            }
+            return q_F;
+        }
 
         public bool AttachObjects(List<Part> parts)
         {
