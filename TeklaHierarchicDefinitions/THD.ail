@@ -340,22 +340,22 @@ string_utf8 albl_NSummary
 
 string_utf8 albl_QSummary
 {
-    entry = ("enu", "Q field");
-    entry = ("chs", "Q field");
-    entry = ("cht", "Q field");
-    entry = ("csy", "Q field");
-    entry = ("deu", "Q field");
-    entry = ("esp", "Q field");
-    entry = ("fra", "Q field");
-    entry = ("hun", "Q field");
-    entry = ("ita", "Q field");
-    entry = ("jpn", "Q field");
-    entry = ("kor", "Q field");
-    entry = ("nld", "Q field");
-    entry = ("plk", "Q field");
-    entry = ("ptb", "Q field");
-    entry = ("ptg", "Q field");
-    entry = ("rus", "Q поле");
+    entry = ("enu", "Qz field");
+    entry = ("chs", "Qz field");
+    entry = ("cht", "Qz field");
+    entry = ("csy", "Qz field");
+    entry = ("deu", "Qz field");
+    entry = ("esp", "Qz field");
+    entry = ("fra", "Qz field");
+    entry = ("hun", "Qz field");
+    entry = ("ita", "Qz field");
+    entry = ("jpn", "Qz field");
+    entry = ("kor", "Qz field");
+    entry = ("nld", "Qz field");
+    entry = ("plk", "Qz field");
+    entry = ("ptb", "Qz field");
+    entry = ("ptg", "Qz field");
+    entry = ("rus", "QZ поле");
 };
 
 string_utf8 albl_MomentConnections
@@ -927,22 +927,22 @@ string_utf8 albl_SelectDeselectRows
 
 string_utf8 albl_MSummary
 {
-    entry = ("enu", "M Field");
-    entry = ("chs", "M Field");
-    entry = ("cht", "M Field");
-    entry = ("csy", "M Field");
-    entry = ("deu", "M Field");
-    entry = ("esp", "M Field");
-    entry = ("fra", "M Field");
-    entry = ("hun", "M Field");
-    entry = ("ita", "M Field");
-    entry = ("jpn", "M Field");
-    entry = ("kor", "M Field");
-    entry = ("nld", "M Field");
-    entry = ("plk", "M Field");
-    entry = ("ptb", "M Field");
-    entry = ("ptg", "M Field");
-    entry = ("rus", "М Поле");
+    entry = ("enu", "My Field");
+    entry = ("chs", "My Field");
+    entry = ("cht", "My Field");
+    entry = ("csy", "My Field");
+    entry = ("deu", "My Field");
+    entry = ("esp", "My Field");
+    entry = ("fra", "My Field");
+    entry = ("hun", "My Field");
+    entry = ("ita", "My Field");
+    entry = ("jpn", "My Field");
+    entry = ("kor", "My Field");
+    entry = ("nld", "My Field");
+    entry = ("plk", "My Field");
+    entry = ("ptb", "My Field");
+    entry = ("ptg", "My Field");
+    entry = ("rus", "Мy Поле");
 };
 
 
