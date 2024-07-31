@@ -416,6 +416,98 @@ namespace TeklaHierarchicDefinitions.Models
             }
         }
 
+        public string M_z
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("M_z"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_z", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_end_z", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_summary", GetMSummary());
+                if (_instantUpdate)
+                    _hierarchicObjectInTekla.PartsSetAttr("moment_M", M_summary);
+                double momentConn;
+                if (double.TryParse(value, out momentConn))
+                {
+                    if (momentConn != 0)
+                        StartMomentConnection = 0;
+                    else
+                        StartMomentConnection = -1;
+                }
+                OnPropertyChanged("M_z");
+                OnPropertyChanged("M_end_z");
+                OnPropertyChanged("M_summary");
+            }
+        }
+
+        public string M_end_z
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("M_end_z"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_end_z", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_summary", GetMSummary());
+                if (_instantUpdate)
+                    _hierarchicObjectInTekla.PartsSetAttr("moment_M", M_summary);
+                double momentConn;
+                if (double.TryParse(value, out momentConn))
+                {
+                    if (momentConn != 0)
+                        EndMomentConnection = 0;
+                    else
+                        EndMomentConnection = -1;
+                }
+                OnPropertyChanged("M_end_z");
+                OnPropertyChanged("M_summary");
+            }
+        }
+
+        public string MzStartReverse
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("MyStartReverse"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("MyStartReverse", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("MyEndReverse", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_summary", GetMSummary());
+                if (_instantUpdate)
+                    _hierarchicObjectInTekla.PartsSetAttr("moment_M", M_summary);
+                double momentConn;
+                if (double.TryParse(value, out momentConn))
+                {
+                    if (momentConn != 0)
+                        StartMomentConnection = 0;
+                    else
+                        StartMomentConnection = -1;
+                }
+                OnPropertyChanged("MyStartReverse");
+                OnPropertyChanged("MyEndReverse");
+                OnPropertyChanged("M_summary");
+            }
+        }
+
+        public string MzEndReverse
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("MyEndReverse"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("MyEndReverse", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_summary", GetMSummary());
+                if (_instantUpdate)
+                    _hierarchicObjectInTekla.PartsSetAttr("moment_M", M_summary);
+                double momentConn;
+                if (double.TryParse(value, out momentConn))
+                {
+                    if (momentConn != 0)
+                        StartMomentConnection = 0;
+                    else
+                        StartMomentConnection = -1;
+                }
+                OnPropertyChanged("MyEndReverse");
+                OnPropertyChanged("M_summary");
+            }
+        }
+
 
 
         internal void AddAsChildHO(List<BillOfElements> childrenItems)
@@ -602,7 +694,7 @@ namespace TeklaHierarchicDefinitions.Models
             {
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q", value);
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_end", value);
-                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_summary", GetQSummary());
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_summary", GetQzSummary());
                 if (_instantUpdate)
                     _hierarchicObjectInTekla.PartsSetAttr("reakciya_A", Q_summary);
                 OnPropertyChanged("Q");
@@ -617,7 +709,7 @@ namespace TeklaHierarchicDefinitions.Models
             set
             {
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_end", value);
-                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_summary", GetQSummary());
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_summary", GetQzSummary());
                 if (_instantUpdate)
                     _hierarchicObjectInTekla.PartsSetAttr("reakciya_A", Q_summary);
                 OnPropertyChanged("Q_end");
@@ -632,7 +724,7 @@ namespace TeklaHierarchicDefinitions.Models
             {
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_y", value);
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_end_y", value);
-                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_summary", GetQSummary());
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_summary", GetQzSummary());
                 if (_instantUpdate)
                     _hierarchicObjectInTekla.PartsSetAttr("reakciya_A", Q_summary);
                 OnPropertyChanged("Q_y");
@@ -647,7 +739,7 @@ namespace TeklaHierarchicDefinitions.Models
             set
             {
                 _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_end_y", value);
-                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_summary", GetQSummary());
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("Q_summary", GetQzSummary());
                 if (_instantUpdate)
                     _hierarchicObjectInTekla.PartsSetAttr("reakciya_A", Q_summary);
                 OnPropertyChanged("Q_end_y");
@@ -1074,6 +1166,11 @@ namespace TeklaHierarchicDefinitions.Models
                 MyStartReverse,
                 M_end,
                 MyEndReverse,
+                M_summary,
+                M_z,
+                MzStartReverse,
+                M_end_z,
+                MzEndReverse,
                 StartMomentConnection,
                 EndMomentConnection,
                 StartFrictionConnection,
@@ -1116,6 +1213,11 @@ namespace TeklaHierarchicDefinitions.Models
                 MyStartReverse,
                 M_end,
                 MyEndReverse,
+                M_summary,
+                M_z,
+                MzStartReverse,
+                M_end_z,
+                MzEndReverse,
                 StartMomentConnection,
                 EndMomentConnection,
                 StartFrictionConnection,
@@ -1189,6 +1291,11 @@ namespace TeklaHierarchicDefinitions.Models
                 MyStartReverse,
                 M_end,
                 MyEndReverse,
+                M_summary,
+                M_z,
+                MzStartReverse,
+                M_end_z,
+                MzEndReverse,
                 StartMomentConnection,
                 EndMomentConnection,
                 StartFrictionConnection,

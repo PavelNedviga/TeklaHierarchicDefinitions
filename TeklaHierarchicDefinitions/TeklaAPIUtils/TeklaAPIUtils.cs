@@ -12,6 +12,7 @@ using Tekla.Structures;
 using Tekla.Structures.Catalogs;
 using Tekla.Structures.Drawing;
 using Tekla.Structures.Model;
+using TeklaHierarchicDefinitions.Models;
 using ModelObject = Tekla.Structures.Model.ModelObject;
 using Part = Tekla.Structures.Model.Part;
 
@@ -725,6 +726,11 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             string m_start_reverse,
             string m_end,
             string m_end_reverse,
+            string m_summary,
+            string m_z,
+            string m_start_reverse_z,
+            string m_end_z,
+            string m_end_reverse_z,
             int startMomentConnection,
             int endMomentConnection,
             int startFrictionConnection,
@@ -798,12 +804,12 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     part.Class = classificator;
                     part.SetUserProperty(UDANameConverter.ToTeklaProp("PRELIM_MARK"), position);
 
-                    string moment;
-                    if (m == m_end)
-                        moment = m;
-                    else
-                        moment = m + "/" + m_end;
-                    part.SetUserProperty(UDANameConverter.ToTeklaProp("moment_M"), moment);
+                    //string moment;
+                    //if (m == m_end)
+                    //    moment = m;
+                    //else
+                    //    moment = m + "/" + m_end;
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("moment_M"), m_summary);
                     double result;
                     Double.TryParse(m, out result);
                     part.SetUserProperty(UDANameConverter.ToTeklaProp("momentY1"), result * 1000);
@@ -894,6 +900,11 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             string m_start_reverse,
             string m_end,
             string m_end_reverse,
+            string m_summary,
+            string m_z,
+            string m_start_reverse_z,
+            string m_end_z,
+            string m_end_reverse_z,
             int startMomentConnection,
             int endMomentConnection,
             int startFrictionConnection,
@@ -962,12 +973,12 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     part.Modify();
                     part.SetUserProperty(UDANameConverter.ToTeklaProp("PRELIM_MARK"), position);
 
-                    string moment;
-                    if (m == m_end)
-                        moment = m;
-                    else
-                        moment = m + "/" + m_end;
-                    part.SetUserProperty(UDANameConverter.ToTeklaProp("moment_M"), moment);
+                    //string moment;
+                    //if (m == m_end)
+                    //    moment = m;
+                    //else
+                    //    moment = m + "/" + m_end;
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("moment_M"), m_summary);
                     double result;
                     Double.TryParse(m, out result);
                     part.SetUserProperty(UDANameConverter.ToTeklaProp("momentY1"), result * 1000);
