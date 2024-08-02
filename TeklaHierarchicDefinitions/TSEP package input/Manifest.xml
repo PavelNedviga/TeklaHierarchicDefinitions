@@ -36,6 +36,8 @@
   <Component Id="Element list" Guid="593D3417-83C9-48D8-BC83-DB9BAEB7F509">
     <!--Иконка-->
     <File Id="Icon" Source="%ManFolderInput%\Element list.png" Target="%BitmapsDirectory%"/>
+	<!--Картинка для вкладки Условия на концах-->
+	<File Id="IconEndConditions" Source="%ManFolderInput%\end_conditions.bmp" Target="%BitmapsDirectory%"/>
     
     <!--Макрос для запуска приложения и его картинка-->
     <File Id="MacroFiles" Source="%Macro%\*" Target="%CommonMacroDirectory%"/>
