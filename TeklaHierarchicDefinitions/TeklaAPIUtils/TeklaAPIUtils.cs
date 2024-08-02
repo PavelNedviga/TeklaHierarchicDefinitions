@@ -731,6 +731,8 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             string m_start_reverse_z,
             string m_end_z,
             string m_end_reverse_z,
+            string m_x,
+            string m_end_x,
             int startMomentConnection,
             int endMomentConnection,
             int startFrictionConnection,
@@ -810,6 +812,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     //else
                     //    moment = m + "/" + m_end;
                     part.SetUserProperty(UDANameConverter.ToTeklaProp("moment_M"), m_summary);
+
                     double result;
                     Double.TryParse(m, out result);
                     part.SetUserProperty(UDANameConverter.ToTeklaProp("momentY1"), result * 1000);
@@ -819,6 +822,15 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     part.SetUserProperty(UDANameConverter.ToTeklaProp("momentY2"), result * 1000);
                     Double.TryParse(m_end_reverse, out result);
                     part.SetUserProperty(UDANameConverter.ToTeklaProp("momentRY2"), result * 1000);
+                    Double.TryParse(m_z, out result);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("moment1"), result * 1000);                  
+                    Double.TryParse(m_end_z, out result);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("moment2"), result * 1000);
+                    Double.TryParse(m_x, out result);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("torsion1"), result * 1000);
+                    Double.TryParse(m_end_x, out result);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("torsion2"), result * 1000);
+
 
 
                     part.SetUserProperty(UDANameConverter.ToTeklaProp("START_MOMENT_CONN"), startMomentConnection);
@@ -881,7 +893,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             Part borrowedPart = GetSelectedModelObjects().ToArray().SkipWhile(x => !(x is Part)).Cast<Part>().FirstOrDefault();
             Hashtable hashtable = new Hashtable();
             ArrayList stringNames = new ArrayList() { "PRELIM_MARK", "START_FRICT_CONN", "END_FRICT_CONN", "ROT_NOT_ALLOWED", "MATERIAL", "PROFILE", "ASSEMBLY.PREFIX", "prim_vedomost", "RU_BOM_CTG" };
-            ArrayList doubleNames = new ArrayList() { "momentY1", "momentY2", "momentZ1", "momentZ2", "axial1", "axial2", "axialcomp1", "axialcomp2", "shearZ1", "shearZ2", "shear1", "shear2" };
+            ArrayList doubleNames = new ArrayList() { "momentY1", "momentY2", "moment1", "moment2", "axial1", "axial2", "axialcomp1", "axialcomp2", "shearZ1", "shearZ2", "shear1", "shear2" };
             ArrayList integerNames = new ArrayList() { };
             borrowedPart.GetAllReportProperties(
                 UDANameConverter.ToTeklaProp(stringNames),
@@ -905,6 +917,8 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
             string m_start_reverse_z,
             string m_end_z,
             string m_end_reverse_z,
+            string m_x,
+            string m_end_x,
             int startMomentConnection,
             int endMomentConnection,
             int startFrictionConnection,
@@ -979,6 +993,7 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     //else
                     //    moment = m + "/" + m_end;
                     part.SetUserProperty(UDANameConverter.ToTeklaProp("moment_M"), m_summary);
+
                     double result;
                     Double.TryParse(m, out result);
                     part.SetUserProperty(UDANameConverter.ToTeklaProp("momentY1"), result * 1000);
@@ -988,6 +1003,14 @@ namespace TeklaHierarchicDefinitions.TeklaAPIUtils
                     part.SetUserProperty(UDANameConverter.ToTeklaProp("momentY2"), result * 1000);
                     Double.TryParse(m_end_reverse, out result);
                     part.SetUserProperty(UDANameConverter.ToTeklaProp("momentRY2"), result * 1000);
+                    Double.TryParse(m_z, out result);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("moment1"), result * 1000);
+                    Double.TryParse(m_end_z, out result);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("moment2"), result * 1000);
+                    Double.TryParse(m_x, out result);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("torsion1"), result * 1000);
+                    Double.TryParse(m_end_x, out result);
+                    part.SetUserProperty(UDANameConverter.ToTeklaProp("torsion2"), result * 1000);
 
 
                     part.SetUserProperty(UDANameConverter.ToTeklaProp("START_MOMENT_CONN"), startMomentConnection);

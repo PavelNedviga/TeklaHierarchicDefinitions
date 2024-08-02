@@ -508,6 +508,43 @@ namespace TeklaHierarchicDefinitions.Models
             }
         }
 
+        public string M_x
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("M_x"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_x", value);
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_end_x", value);
+                double momentConn;
+                if (double.TryParse(value, out momentConn))
+                {
+                    if (momentConn != 0)
+                        StartMomentConnection = 0;
+                    else
+                        StartMomentConnection = -1;
+                }
+                OnPropertyChanged("M_x");
+                OnPropertyChanged("M_end_x");
+            }
+        }
+        public string M_end_x
+        {
+            get { return _hierarchicObjectInTekla.HierarchicObjectGetAttr("M_end_x"); }
+            set
+            {
+                _hierarchicObjectInTekla.HierarchicObjectSetAttribute("M_end_x", value);
+                double momentConn;
+                if (double.TryParse(value, out momentConn))
+                {
+                    if (momentConn != 0)
+                        StartMomentConnection = 0;
+                    else
+                        StartMomentConnection = -1;
+                }
+                OnPropertyChanged("M_end_x");
+            }
+        }
+
 
 
         internal void AddAsChildHO(List<BillOfElements> childrenItems)
@@ -921,6 +958,14 @@ namespace TeklaHierarchicDefinitions.Models
                 this.Q = (double.Parse(ht["shearZ1"].ToString()) / 1000).ToString();
             if (ht.ContainsKey("shearZ2"))
                 this.Q_end = (double.Parse(ht["shearZ2"].ToString()) / 1000).ToString();
+            if (ht.ContainsKey("shear1"))
+                this.Q = (double.Parse(ht["shear1"].ToString()) / 1000).ToString();
+            if (ht.ContainsKey("shear2"))
+                this.Q_end = (double.Parse(ht["shear2"].ToString()) / 1000).ToString();
+            if (ht.ContainsKey("moment1"))
+                this.M = (double.Parse(ht["moment1"].ToString()) / 1000).ToString();
+            if (ht.ContainsKey("moment2"))
+                this.M_end = (double.Parse(ht["moment2"].ToString()) / 1000).ToString();
 
             var rotConvert = RotationOptions.ToDictionary(t => t.Value, t => t.Key);
             rotConvert["Да"] = -1;
@@ -1171,6 +1216,8 @@ namespace TeklaHierarchicDefinitions.Models
                 MzStartReverse,
                 M_end_z,
                 MzEndReverse,
+                M_x,
+                M_end_x,
                 StartMomentConnection,
                 EndMomentConnection,
                 StartFrictionConnection,
@@ -1218,6 +1265,8 @@ namespace TeklaHierarchicDefinitions.Models
                 MzStartReverse,
                 M_end_z,
                 MzEndReverse,
+                M_x,
+                M_end_x,
                 StartMomentConnection,
                 EndMomentConnection,
                 StartFrictionConnection,
@@ -1296,6 +1345,8 @@ namespace TeklaHierarchicDefinitions.Models
                 MzStartReverse,
                 M_end_z,
                 MzEndReverse,
+                M_x,
+                M_end_x,
                 StartMomentConnection,
                 EndMomentConnection,
                 StartFrictionConnection,
