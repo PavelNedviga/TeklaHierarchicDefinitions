@@ -127,7 +127,12 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header=" Qz "  >
+                            <DataGridTemplateColumn Header=" Qz " >
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="Qz" ToolTip="Вертикальная плоскость" ToolTipService.InitialShowDelay="0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid>
@@ -149,8 +154,19 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             
-                            <DataGridTextColumn Header="{tsd:Loc albl_QSummary}" Binding="{Binding Q_summary, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="{tsd:Loc albl_QSummary}" Binding="{Binding Q_summary, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridTextColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="Qz поле"/>
+                                    </DataTemplate>
+                                </DataGridTextColumn.HeaderTemplate>
+                            </DataGridTextColumn>
                             <DataGridTemplateColumn Header="N раст"  >
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="N раст"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid>
@@ -175,6 +191,11 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn Header="N сж"  >
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="N сж"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid>
@@ -197,9 +218,20 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="{tsd:Loc albl_NSummary}" Binding="{Binding N_summary, UpdateSourceTrigger=PropertyChanged}"/>
-                            
+                            <DataGridTextColumn Header="{tsd:Loc albl_NSummary}" Binding="{Binding N_summary, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridTextColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="N поле"/>
+                                    </DataTemplate>
+                                </DataGridTextColumn.HeaderTemplate>
+                            </DataGridTextColumn>
+
                             <DataGridTemplateColumn Header="My"  >
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="My" ToolTip="Вертикальная плоскость" ToolTipService.InitialShowDelay="0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid>
@@ -223,6 +255,11 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn Header="My обр."  >
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="My обр." ToolTip="Вертикальная плоскость" ToolTipService.InitialShowDelay="0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid>
@@ -245,29 +282,45 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="{tsd:Loc albl_MSummary}" Binding="{Binding M_summary, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="{tsd:Loc albl_MSummary}" Binding="{Binding M_summary, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridTextColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="My поле"/>
+                                    </DataTemplate>
+                                </DataGridTextColumn.HeaderTemplate>
+                            </DataGridTextColumn>
                             <DataGridTemplateColumn Header=" Qy "  >
-                                                            <DataGridTemplateColumn.CellTemplate>
-                                                                <DataTemplate>
-                                                                    <Grid>
-                                                                        <Grid.RowDefinitions>
-                                                                            <RowDefinition/>
-                                                                            <RowDefinition/>
-                                                                        </Grid.RowDefinitions>
-                                                                        <DockPanel Grid.Row="0">
-                                                                            <TextBox Text="{Binding Q_y, UpdateSourceTrigger=PropertyChanged}" 
-                                                                             IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="Qy" ToolTip="Горизонтальная плоскость" ToolTipService.InitialShowDelay="0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <DockPanel Grid.Row="0">
+                                                <TextBox Text="{Binding Q_y, UpdateSourceTrigger=PropertyChanged}" 
+                                                    IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
 
-                                                                        </DockPanel>
-                                                                        <DockPanel Grid.Row="1">
-                                                                            <TextBox Text="{Binding Q_end_y, UpdateSourceTrigger=PropertyChanged}" 
-                                                                             IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
-                                                                        </DockPanel>
-                                                                    </Grid>
-                                                                </DataTemplate>
-                                                            </DataGridTemplateColumn.CellTemplate>
-                                                        </DataGridTemplateColumn>
+                                            </DockPanel>
+                                            <DockPanel Grid.Row="1">
+                                                <TextBox Text="{Binding Q_end_y, UpdateSourceTrigger=PropertyChanged}" 
+                                                    IsReadOnly="{Binding DataContext.ModificationBlocked, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, NotifyOnSourceUpdated=True}"/>
+                                            </DockPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTemplateColumn Header="M_z"  >
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="Mz" ToolTip="Горизонтальная плоскость" ToolTipService.InitialShowDelay="0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid>
@@ -291,6 +344,11 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn Header="M_x"  >
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="Mx"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid>
