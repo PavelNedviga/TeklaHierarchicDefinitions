@@ -584,11 +584,23 @@ namespace TeklaHierarchicDefinitions.ViewModels
                         "Префикс сборки",
                         "Профиль", 
                         "Материал", 
-                        "Qz, кН",
-                        "Qy, кН",
-                        "N, кН", 
-                        "My, кН*м",
-                        "Mz, кН*м", //? а есть такой
+                        "Q",
+                        "N",
+                        "M",
+                        "Qz_start",
+                        "Qz_end",
+                        "Nt_start",
+                        "Nt_end",
+                        "Nc_start",
+                        "Nc_end",
+                        "My_start",
+                        "My_end",
+                        "-My_start",
+                        "-My_end",
+                        "Qy_start",
+                        "Qy_end",
+                        "Mz_start",
+                        "Mz_end"
                     };
                     IRow headerRow = excelSheet.CreateRow(3);
                     var headerColumn = 0;
@@ -608,14 +620,22 @@ namespace TeklaHierarchicDefinitions.ViewModels
                             element.Profile.Split('_')[0],
                             element.Material,
                             element.GetQySummary(),
-                            element.GetQzSummary(),
-                            element.N_summary,
-                            element.M_summary, // GetMySummary
-                            element.M_summary, // GetMzSummary
+                            element.GetNSummary(),
+                            element.GetMSummary(),
+                            element.Q,
+                            element.Q_end,
+                            element.N,
+                            element.N_end,
+                            element.N_start_min,
+                            element.N_end_min,
+                            element.M,
                             element.M_end,
-                            
-
-
+                            element.MyStartReverse, 
+                            element.MyEndReverse,
+                            element.Q_y, 
+                            element.Q_end_y,
+                            element.M_z,
+                            element.M_end_z
                         };                  
                         excelColumns.ToList().ForEach(column => {
                             var cell = row1.CreateCell(cellCount);
@@ -626,9 +646,19 @@ namespace TeklaHierarchicDefinitions.ViewModels
                         rowCount++;
                     });
 
-                    var lastRow = excelSheet.CreateRow(rowCount + 1);
-                    var lastCell = lastRow.CreateCell(0);
-                    lastCell.SetCellValue("* Символ '/' означает усилие в начале/конце. Если символ не указан, то усилие одинаковое.");
+                    // Comments below table
+                    var lastRow1 = excelSheet.CreateRow(rowCount + 1);
+                    var lastCell1 = lastRow1.CreateCell(0);
+                    lastCell1.SetCellValue("Формат обозначения для усилий прикрепления");
+                    var lastRow2 = excelSheet.CreateRow(rowCount + 2);
+                    var lastCell2 = lastRow2.CreateCell(0);
+                    lastCell2.SetCellValue("Qz нач / Qz кон");
+                    var lastRow3 = excelSheet.CreateRow(rowCount + 3);
+                    var lastCell3 = lastRow3.CreateCell(0);
+                    lastCell3.SetCellValue("N нач max;N нач min/N кон max;N кон min");
+                    var lastRow4 = excelSheet.CreateRow(rowCount + 4);
+                    var lastCell4 = lastRow3.CreateCell(0);
+                    lastCell4.SetCellValue("My нач;My нач обр/My кон;My кон обр");
 
                     // Formatting ----------------------------------------------------------
 
@@ -636,10 +666,11 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     excelSheet.SetColumnWidth(0, 19 * 256);
                     excelSheet.SetColumnWidth(1, 19 * 256);
                     excelSheet.SetColumnWidth(2, 10 * 256);
-                    excelSheet.SetColumnWidth(3, 8 * 256);
-                    excelSheet.SetColumnWidth(4, 8 * 256);
-                    excelSheet.SetColumnWidth(5, 8 * 256);
-                    
+                    for (int i = 3; i < 20; i++)
+                    {
+                        excelSheet.SetColumnWidth(i, 8 * 256);
+                    }
+
 
                     // Header style
                     IFont font = workbook.CreateFont();
