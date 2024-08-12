@@ -657,7 +657,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     var lastCell3 = lastRow3.CreateCell(0);
                     lastCell3.SetCellValue("N нач max;N нач min/N кон max;N кон min");
                     var lastRow4 = excelSheet.CreateRow(rowCount + 4);
-                    var lastCell4 = lastRow3.CreateCell(0);
+                    var lastCell4 = lastRow4.CreateCell(0);
                     lastCell4.SetCellValue("My нач;My нач обр/My кон;My кон обр");
 
                     // Formatting ----------------------------------------------------------
@@ -666,7 +666,10 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     excelSheet.SetColumnWidth(0, 19 * 256);
                     excelSheet.SetColumnWidth(1, 19 * 256);
                     excelSheet.SetColumnWidth(2, 10 * 256);
-                    for (int i = 3; i < 20; i++)
+                    excelSheet.SetColumnWidth(3, 15 * 256);
+                    excelSheet.SetColumnWidth(4, 15 * 256);
+                    excelSheet.SetColumnWidth(5, 15 * 256);
+                    for (int i = 6; i < 20; i++)
                     {
                         excelSheet.SetColumnWidth(i, 8 * 256);
                     }
