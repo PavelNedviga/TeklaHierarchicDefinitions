@@ -619,7 +619,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                             element.Mark,
                             element.Profile.Split('_')[0],
                             element.Material,
-                            element.GetQySummary(),
+                            element.GetQzSummary(),
                             element.GetNSummary(),
                             element.GetMSummary(),
                             element.Q,
@@ -652,7 +652,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     lastCell1.SetCellValue("Формат обозначения для усилий прикрепления");
                     var lastRow2 = excelSheet.CreateRow(rowCount + 2);
                     var lastCell2 = lastRow2.CreateCell(0);
-                    lastCell2.SetCellValue("Qz нач / Qz кон");
+                    lastCell2.SetCellValue("Qz нач/Qz кон");
                     var lastRow3 = excelSheet.CreateRow(rowCount + 3);
                     var lastCell3 = lastRow3.CreateCell(0);
                     lastCell3.SetCellValue("N нач max;N нач min/N кон max;N кон min");
