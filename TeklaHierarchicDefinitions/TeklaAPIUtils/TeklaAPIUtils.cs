@@ -12,7 +12,6 @@ using Tekla.Structures;
 using Tekla.Structures.Catalogs;
 using Tekla.Structures.Drawing;
 using Tekla.Structures.Model;
-using TeklaHierarchicDefinitions.Models;
 using ModelObject = Tekla.Structures.Model.ModelObject;
 using Part = Tekla.Structures.Model.Part;
 
