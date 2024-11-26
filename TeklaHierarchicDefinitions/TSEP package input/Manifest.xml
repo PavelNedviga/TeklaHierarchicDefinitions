@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TEP Version="2.0">
-  <Product Id="ElementList" UpgradeCode="AAF3BA07-57EB-406C-B22B-6C9254CB2502" Version="1.28" Language="1033"
+  <Product Id="ElementList" UpgradeCode="AAF3BA07-57EB-406C-B22B-6C9254CB2502" Version="1.29" Language="1033"
 		Name="Element list" Manufacturer="Pavel Nedviga"  Description= "This application operates with model and creates control bindings for parts and tables"
 		IconPath="%TEPDEFINITIONFILEFOLDER%\..\TSEP package input\Element list.png" Type="Extension"
 		CreateExeConfig="yes">
@@ -36,6 +36,8 @@
   <Component Id="Element list" Guid="593D3417-83C9-48D8-BC83-DB9BAEB7F509">
     <!--Иконка-->
     <File Id="Icon" Source="%ManFolderInput%\Element list.png" Target="%BitmapsDirectory%"/>
+	<!--Картинка для вкладки Условия на концах-->
+	<File Id="IconEndConditions" Source="%ManFolderInput%\end_conditions.bmp" Target="%BitmapsDirectory%"/>
     
     <!--Макрос для запуска приложения и его картинка-->
     <File Id="MacroFiles" Source="%Macro%\*" Target="%CommonMacroDirectory%"/>
