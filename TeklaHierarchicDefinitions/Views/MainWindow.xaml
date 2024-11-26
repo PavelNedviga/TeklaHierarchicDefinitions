@@ -15,7 +15,7 @@
                             xmlns:vm="clr-namespace:TeklaHierarchicDefinitions.ViewModels" 
                             mc:Ignorable="d"
                             Title="{tsd:Loc albl_WindowName}"
-                            Height="400" Width="2216" MinWidth="1000" MinHeight="600" Topmost="True">
+                            Height="400" Width="1200" MinWidth="1000" MinHeight="600" Topmost="True">
     <Window.Resources>
         <Convertors:LevelToIndentConverter x:Key="LevelToIndentConverter"/>
     </Window.Resources>

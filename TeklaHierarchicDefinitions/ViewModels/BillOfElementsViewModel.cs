@@ -606,23 +606,23 @@ namespace TeklaHierarchicDefinitions.ViewModels
                         "Префикс сборки",
                         "Профиль", 
                         "Материал", 
-                        "Q",
-                        "N",
-                        "M",
-                        "Qz_start",
-                        "Qz_end",
-                        "Nt_start",
-                        "Nt_end",
-                        "Nc_start",
-                        "Nc_end",
-                        "My_start",
-                        "My_end",
-                        "-My_start",
-                        "-My_end",
-                        "Qy_start",
-                        "Qy_end",
-                        "Mz_start",
-                        "Mz_end"
+                        "Q, кН",
+                        "N, кН",
+                        "M, кН*м",
+                        "Qz_start, кН",
+                        "Qz_end, кН",
+                        "Nt_start, кН",
+                        "Nt_end, кН",
+                        "Nc_start, кН",
+                        "Nc_end, кН",
+                        "My_start, кН*м",
+                        "My_end, кН*м",
+                        "-My_start, кН*м",
+                        "-My_end, кН*м",
+                        "Qy_start, кН",
+                        "Qy_end, кН",
+                        "Mz_start, кН*м",
+                        "Mz_end, кН*м"
                     };
                     IRow headerRow = excelSheet.CreateRow(3);
                     var headerColumn = 0;
@@ -688,12 +688,12 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     excelSheet.SetColumnWidth(0, 19 * 256);
                     excelSheet.SetColumnWidth(1, 19 * 256);
                     excelSheet.SetColumnWidth(2, 10 * 256);
-                    excelSheet.SetColumnWidth(3, 15 * 256);
-                    excelSheet.SetColumnWidth(4, 15 * 256);
-                    excelSheet.SetColumnWidth(5, 15 * 256);
+                    excelSheet.SetColumnWidth(3, 10 * 256);
+                    excelSheet.SetColumnWidth(4, 10 * 256);
+                    excelSheet.SetColumnWidth(5, 10 * 256);
                     for (int i = 6; i < 20; i++)
                     {
-                        excelSheet.SetColumnWidth(i, 8 * 256);
+                        excelSheet.SetColumnWidth(i, 13 * 256);
                     }
 
 
