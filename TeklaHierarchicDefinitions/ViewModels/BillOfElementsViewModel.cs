@@ -693,7 +693,7 @@ namespace TeklaHierarchicDefinitions.ViewModels
                     excelSheet.SetColumnWidth(5, 10 * 256);
                     for (int i = 6; i < 20; i++)
                     {
-                        excelSheet.SetColumnWidth(i, 13 * 256);
+                        excelSheet.SetColumnWidth(i, 15 * 256);
                     }
 
 
